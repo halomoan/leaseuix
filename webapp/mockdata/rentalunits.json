@@ -10,9 +10,8 @@
 			"Size": 1249,
 			"SizeUnit": "SF",
 			"Name": "#01-02",
-			"DateOfSale": "2017-04-17",
 			"UnitPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg",
-			"Status": "Available"
+			"Available": true
 		},
 		{
 			"UnitId": "#01-03",
@@ -24,9 +23,34 @@
 			"Size": 1249,
 			"SizeUnit": "SF",
 			"Name": "#01-03",
-			"DateOfSale": "2017-04-17",
 			"UnitPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg",
-			"Status": "Available"
+			"Available": true
+		},
+		{
+			"UnitId": "#01-04",
+			"CoCode": "1000",
+			"Category": "Jewelly",
+			"MainCategory": "Shop",
+			"Level": "#01-04",
+			"ContractNo": "",
+			"Size": 1239,
+			"SizeUnit": "SF",
+			"Name": "#01-04",
+			"UnitPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg",
+			"Available": true
+		},
+		{
+			"UnitId": "#01-05",
+			"CoCode": "1000",
+			"Category": "Jewelly",
+			"MainCategory": "Shop",
+			"Level": "#01-05",
+			"ContractNo": "",
+			"Size": 1239,
+			"SizeUnit": "SF",
+			"Name": "#01-05",
+			"UnitPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg",
+			"Available": false
 		}
 	]
 }

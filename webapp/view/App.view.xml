@@ -7,6 +7,14 @@
 					<Panel>
 						<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
 					</Panel>
+						<Panel>
+						<mvc:XMLView viewName="refx.leaseuix.components.selectcustomer.selectcustomer" id="selectcustomer" async="true"></mvc:XMLView>
+					</Panel>
+					<Panel>
+						<content>
+							<Button type="Accept" text="Accept" press="getValue"></Button>
+						</content>
+					</Panel>
 				</content>
 			</Page>
 		</pages>

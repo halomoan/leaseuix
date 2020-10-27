@@ -1,0 +1,17 @@
+{
+	"cols": [
+		{
+			"label": "Customer Id",
+			"template": "CustomerId",
+			"width": "5rem"
+		},
+		{
+			"label": "Name",
+			"template": "Name"
+		},
+		{
+			"label": "Email",
+			"template": "Email"
+		}
+	]
+}

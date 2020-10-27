@@ -37,6 +37,16 @@
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
+						name="Available"
+						label="{i18n>AvailableOnly}"
+						visibleInFilterBar="true"
+					>
+						<fb:control>
+							<m:CheckBox name="Available" text="" selected="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem
+						groupName="__$INTERNAL$"
 						name="MainCategory"
 						label="Main Category"
 						visibleInFilterBar="true"
@@ -55,6 +65,8 @@
 							<m:Input name="Category" />
 						</fb:control>
 					</fb:FilterGroupItem>
+					
+					
 					
 				</fb:filterGroupItems>
 			</fb:FilterBar>

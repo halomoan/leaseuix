@@ -1,0 +1,22 @@
+{
+	"Customers": [
+		{
+			"CustomerId": "2000101",
+			"Name": "Jacky Chen",
+			"Email": "jacky.chen@gmail.com",
+			"CoCode": "1000",
+			"BP": "3000101",
+			"BPRole" : "Customer",
+			"CustomerPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg"
+		},
+		{
+			"CustomerId": "2000102",
+			"Name": "Rudy Zhang",
+			"Email": "rudy.zhang@gmail.com",
+			"CoCode": "1000",
+			"BP": "3000102",
+			"BPRole" : "Customer",
+			"CustomerPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg"
+		}
+	]
+}

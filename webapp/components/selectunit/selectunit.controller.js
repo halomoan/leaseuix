@@ -14,7 +14,7 @@ sap.ui.define([
 
 	return Controller.extend("refx.leaseuix.components.selectunit.selectunit", {
 		onInit: function () {
-			this._oMultiInput = this.getView().byId("multiInput");
+			this._oMultiInput = this.getView().byId("rentalUnits");
 			this._oMultiInput.addValidator(this._onMultiInputValidate);
 			//this._oMultiInput.setTokens(this._getDefaultTokens());
 
@@ -86,29 +86,61 @@ sap.ui.define([
 		},
 
 		onFilterBarSearch: function (oEvent) {
+			
 			var sSearchQuery = this._oBasicSearchField.getValue(),
 				aSelectionSet = oEvent.getParameter("selectionSet");
 			var aFilters = aSelectionSet.reduce(function (aResult, oControl) {
-				if (oControl.getValue()) {
-					aResult.push(new Filter({
-						path: oControl.getName(),
-						operator: FilterOperator.Contains,
-						value1: oControl.getValue()
-					}));
+				
+				var sType = oControl.getMetadata().getName();
+				switch(sType){
+					case "sap.m.Switch":
+							if (oControl.getState()) {
+								aResult.push(new Filter({
+									path: oControl.getName(),
+									operator: FilterOperator.EQ,
+									value1: oControl.getState()
+								}));
+							}
+							
+							break;
+					case "sap.m.Input" :
+							if (oControl.getValue()) {
+								aResult.push(new Filter({
+									path: oControl.getName(),
+									operator: FilterOperator.Contains,
+									value1: oControl.getValue()
+								}));
+							}
+							
+							break;
+					
+					case "sap.m.CheckBox" :
+							if (oControl.getSelected()) {
+								aResult.push(new Filter({
+									path: oControl.getName(),
+									operator: FilterOperator.EQ,
+									value1: true
+								}));
+							}
+							
+							break;
 				}
-
 				return aResult;
 			}, []);
-
+			
+		
+			
 			aFilters.push(new Filter({
 				filters: [
 					new Filter({ path: "UnitId", operator: FilterOperator.Contains, value1: sSearchQuery }),
 					new Filter({ path: "Name", operator: FilterOperator.Contains, value1: sSearchQuery }),
 					new Filter({ path: "MainCategory", operator: FilterOperator.Contains, value1: sSearchQuery }),
 					new Filter({ path: "Category", operator: FilterOperator.Contains, value1: sSearchQuery })
+					
 				],
 				and: false
 			}));
+		
 
 			this._filterTable(new Filter({
 				filters: aFilters,
