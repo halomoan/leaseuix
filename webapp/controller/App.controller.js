@@ -3,7 +3,7 @@ sap.ui.define([
 ], function(Controller) {
 	"use strict";
 
-	return Controller.extend("refxleaseuix.controller.App", {
+	return Controller.extend("refx.leaseuix.controller.App", {
 
 	});
 });

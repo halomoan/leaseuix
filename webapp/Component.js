@@ -1,11 +1,11 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
-	"refxleaseuix/model/models"
+	"refx/leaseuix/model/models"
 ], function(UIComponent, Device, models) {
 	"use strict";
 
-	return UIComponent.extend("refxleaseuix.Component", {
+	return UIComponent.extend("refx.leaseuix.Component", {
 
 		metadata: {
 			manifest: "json"

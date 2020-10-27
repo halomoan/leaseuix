@@ -1,0 +1,32 @@
+{
+	"RentalUnits": [
+		{
+			"UnitId": "#01-02",
+			"CoCode": "1000",
+			"Category": "F&B",
+			"MainCategory": "Shop",
+			"Level": "#01-02",
+			"ContractNo": "",
+			"Size": 1249,
+			"SizeUnit": "SF",
+			"Name": "#01-02",
+			"DateOfSale": "2017-04-17",
+			"UnitPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg",
+			"Status": "Available"
+		},
+		{
+			"UnitId": "#01-03",
+			"CoCode": "1000",
+			"Category": "Jewelly",
+			"MainCategory": "Shop",
+			"Level": "#01-03",
+			"ContractNo": "",
+			"Size": 1249,
+			"SizeUnit": "SF",
+			"Name": "#01-03",
+			"DateOfSale": "2017-04-17",
+			"UnitPicUrl": "https://openui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg",
+			"Status": "Available"
+		}
+	]
+}

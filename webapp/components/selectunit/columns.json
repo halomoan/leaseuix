@@ -1,0 +1,17 @@
+{
+	"cols": [
+		{
+			"label": "Unit Id",
+			"template": "UnitId",
+			"width": "5rem"
+		},
+		{
+			"label": "Unit Name",
+			"template": "Name"
+		},
+		{
+			"label": "Category",
+			"template": "Category"
+		}
+	]
+}

@@ -1,7 +1,7 @@
 {
 	"_version": "1.7.0",
 	"sap.app": {
-		"id": "refxleaseuix",
+		"id": "refx.leaseuix",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"applicationVersion": {
@@ -39,7 +39,7 @@
 
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "refxleaseuix.view.App",
+			"viewName": "refx.leaseuix.view.App",
 			"type": "XML"
 		},
 		"dependencies": {
@@ -62,7 +62,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "refxleaseuix.i18n.i18n"
+					"bundleName": "refx.leaseuix.i18n.i18n"
 				}
 			}
 		},
