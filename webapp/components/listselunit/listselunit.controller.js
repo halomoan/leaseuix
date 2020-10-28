@@ -17,11 +17,19 @@ sap.ui.define([
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
 			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunits.json");
-			this.getView().setModel(this.oRentalUnitsModel);
+			this.oSelectedUnits = new JSONModel({
+				"SelectedUnits" : []
+			});
+			
+			this.getView().setModel(this.oSelectedUnits);
 		},
 
+
+	
+		
 		// #region
 		onValueHelpRequested: function() {
+			
 			var aCols = this.oColModel.getData().cols;
 			this._oBasicSearchField = new SearchField({
 				showSearchButton: false
@@ -70,9 +78,18 @@ sap.ui.define([
 
 		onValueHelpOkPress: function (oEvent) {
 			var aTokens = oEvent.getParameter("tokens");
-			console.log(aTokens);
-			//this._oMultiInput.setTokens(aTokens);
-			aTokens.map()
+			var oThis = this;
+			
+			if (aTokens.length) {	
+				oThis.oSelectedUnits.setProperty("/SelectedUnits",[]);
+				aTokens.map(function(token){
+					var sKey = token.getKey();	
+					var oUnit = oThis._getUnitByKey(sKey);
+					oThis.oSelectedUnits.getProperty("/SelectedUnits").push(oUnit);
+				});
+				this.byId("selectedunit").getModel().updateBindings(true);
+			}
+			 
 			this._oValueHelpDialog.close();
 		},
 
@@ -197,6 +214,16 @@ sap.ui.define([
 			}
 
 			return null;
-		}
+		},
+		
+		_getUnitByKey: function(sKey) {
+			var oData = this.oRentalUnitsModel.getData().RentalUnits;
+			
+			var index = $.inArray(sKey, $.map(oData, function(n){
+			    return n.UnitId;
+			}));
+			return this.oRentalUnitsModel.getProperty("/RentalUnits/" + index);
+			
+		},
 	});
 });

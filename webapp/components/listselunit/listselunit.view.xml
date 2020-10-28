@@ -4,11 +4,11 @@
 	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m">
-	<List id="productList" items="{/ProductCollection}" width="400px" >
+	<List id="selectedunit" items="{/SelectedUnits}" width="400px" >
 		<items>
 			<StandardListItem
 				title="{Name}"
-				description="{ProductId}"
+				description="{UnitId}"
 				icon="{ProductPicUrl}"
 				iconDensityAware="false"
 				iconInset="false" />
