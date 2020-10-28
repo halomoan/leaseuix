@@ -8,22 +8,76 @@ sap.ui.define([
 	'sap/m/SearchField',
 	'sap/m/Token',
 	'sap/ui/model/Filter',
-	'sap/ui/model/FilterOperator'
-], function (compLibrary, Controller, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator) {
+	'sap/ui/model/FilterOperator',
+	"refx/leaseuix/model/formatter"
+], function (compLibrary, Controller, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator,formatter) {
 	"use strict";
 
 	return Controller.extend("refx.leaseuix.components.listselunit.listselunit", {
+		formatter: formatter,
 		onInit: function () {
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
 			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunits.json");
 			this.oSelectedUnits = new JSONModel({
-				"SelectedUnits" : []
+				"SelectedUnits" : [
+					{
+							"UnitId": "#01-02",
+							"CoCode": "1000",
+							"Category": "F&B",
+							"MainCategory": "Shop",
+							"Level": "#01-02",
+							"ContractNo": "",
+							"Size": 1249,
+							"SizeUnit": "SF",
+							"Name": "#01-02",
+							"UnitPicUrl": "",
+							"Available": true
+						},
+						{
+							"UnitId": "#01-03",
+							"CoCode": "1000",
+							"Category": "F&B",
+							"MainCategory": "Shop",
+							"Level": "#01-03",
+							"ContractNo": "",
+							"Size": 229,
+							"SizeUnit": "SF",
+							"Name": "#01-03",
+							"UnitPicUrl": "",
+							"Available": true
+						}
+				],
+				"TotalSize": 0,
+				"SizeUnit": "SF",
+				"TotalUnits": 0
 			});
 			
 			this.getView().setModel(this.oSelectedUnits);
 		},
 
+
+		onDelete: function(oEvent){
+			
+			var sPath = oEvent.getParameter("listItem").getBindingContext().getPath();
+		
+			var iLength = sPath.length;
+			var iIndex = sPath.slice(iLength - 1);
+
+			var oModel = this.getView().getModel();
+			var oData = oModel.getData(); 
+			
+			oData.SelectedUnits.splice(iIndex, 1);
+			var iTotalSize = 0;
+			var iTotalUnits = 0;
+			oData.SelectedUnits.map(function(unit){
+				iTotalSize += unit.Size;
+				iTotalUnits++;
+			});
+			oData.TotalUnits = iTotalUnits;
+			oData.TotalSize = iTotalSize;
+			oModel.setData(oData);
+		},
 
 	
 		
@@ -82,12 +136,21 @@ sap.ui.define([
 			
 			if (aTokens.length) {	
 				oThis.oSelectedUnits.setProperty("/SelectedUnits",[]);
+				var iTotalSize = 0;
+				var iTotalUnits = 0;
+				
 				aTokens.map(function(token){
 					var sKey = token.getKey();	
 					var oUnit = oThis._getUnitByKey(sKey);
 					oThis.oSelectedUnits.getProperty("/SelectedUnits").push(oUnit);
+					iTotalUnits++;
+					iTotalSize += oUnit.Size;
 				});
-				this.byId("selectedunit").getModel().updateBindings(true);
+				
+				oThis.oSelectedUnits.setProperty("/TotalUnits",iTotalUnits);
+				oThis.oSelectedUnits.setProperty("/TotalSize",iTotalSize);
+				//this.byId("selectedunit").getModel().updateBindings(true);
+				oThis.getView().setModel(oThis.oSelectedUnits);
 			}
 			 
 			this._oValueHelpDialog.close();
