@@ -12,21 +12,9 @@
 		<FlexBox alignItems="End" direction="Column" width="7rem" class="sapUiSmallMargin" >
 		<Label text="{ path: '/TotalSize', formatter: '.formatter.NumberFormat'}" class="sapMNCLargeFontSize green"></Label>
 		<Label text="{/SizeUnit}, Total Size"></Label>
-		</FlexBox>
-		<FlexBox alignItems="End" direction="Column" width="7rem" class="sapUiSmallMargin" >
-		<Label text="{/TotalUnits}" class="sapMNCLargeFontSize"></Label>
+		<Label text="{/TotalUnits}" class="sapMNCLargeFontSize sapUiSmallMarginTop"></Label>
 		<Label text="Total Units"></Label>
 		</FlexBox>
-		<!--<TileContent footer="Total Size" unit="SF" class="sapUiSmallMarginRight">-->
-		<!--	<NumericContent scale="" value="{ path: '/TotalSize', formatter: '.formatter.NumberFormat'}"-->
-		<!--		valueColor="Good" indicator="" />-->
-		<!--</TileContent>-->
-
-		<!--<TileContent footer="Total Unit" unit="" class="sapUiSmallMarginRight">-->
-		<!--	<NumericContent scale="" value="{/TotalUnits}"-->
-		<!--		 indicator="" />-->
-		<!--</TileContent>-->
-	
 	</VBox>
 		<List id="selectedunit" items="{/SelectedUnits}" width="400px" mode="Delete" delete="onDelete">
 		<items>

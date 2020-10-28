@@ -21,35 +21,35 @@ sap.ui.define([
 			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunits.json");
 			this.oSelectedUnits = new JSONModel({
 				"SelectedUnits" : [
-					{
-							"UnitId": "#01-02",
-							"CoCode": "1000",
-							"Category": "F&B",
-							"MainCategory": "Shop",
-							"Level": "#01-02",
-							"ContractNo": "",
-							"Size": 1249,
-							"SizeUnit": "SF",
-							"Name": "#01-02",
-							"UnitPicUrl": "",
-							"Available": true
-						},
-						{
-							"UnitId": "#01-03",
-							"CoCode": "1000",
-							"Category": "F&B",
-							"MainCategory": "Shop",
-							"Level": "#01-03",
-							"ContractNo": "",
-							"Size": 229,
-							"SizeUnit": "SF",
-							"Name": "#01-03",
-							"UnitPicUrl": "",
-							"Available": true
-						}
+					// {
+					// 		"UnitId": "#01-02",
+					// 		"CoCode": "1000",
+					// 		"Category": "F&B",
+					// 		"MainCategory": "Shop",
+					// 		"Level": "#01-02",
+					// 		"ContractNo": "",
+					// 		"Size": 1249,
+					// 		"SizeUnit": "SF",
+					// 		"Name": "#01-02",
+					// 		"UnitPicUrl": "",
+					// 		"Available": true
+					// 	},
+					// 	{
+					// 		"UnitId": "#01-03",
+					// 		"CoCode": "1000",
+					// 		"Category": "F&B",
+					// 		"MainCategory": "Shop",
+					// 		"Level": "#01-03",
+					// 		"ContractNo": "",
+					// 		"Size": 229,
+					// 		"SizeUnit": "SF",
+					// 		"Name": "#01-03",
+					// 		"UnitPicUrl": "",
+					// 		"Available": true
+					// 	}
 				],
 				"TotalSize": 0,
-				"SizeUnit": "SF",
+				"SizeUnit": "M2",
 				"TotalUnits": 0
 			});
 			
@@ -70,12 +70,16 @@ sap.ui.define([
 			oData.SelectedUnits.splice(iIndex, 1);
 			var iTotalSize = 0;
 			var iTotalUnits = 0;
+			var sSizeUnit = "";
 			oData.SelectedUnits.map(function(unit){
 				iTotalSize += unit.Size;
 				iTotalUnits++;
+				sSizeUnit = unit.SizeUnit;
+				
 			});
 			oData.TotalUnits = iTotalUnits;
 			oData.TotalSize = iTotalSize;
+			oData.SizeUnit = sSizeUnit;
 			oModel.setData(oData);
 		},
 
@@ -127,6 +131,7 @@ sap.ui.define([
 			}.bind(this));
 
 			//this._oValueHelpDialog.setTokens(this._oMultiInput.getTokens());
+			this._oValueHelpDialog.setTokens(this._getListTokens());
 			this._oValueHelpDialog.open();
 		},
 
@@ -138,6 +143,7 @@ sap.ui.define([
 				oThis.oSelectedUnits.setProperty("/SelectedUnits",[]);
 				var iTotalSize = 0;
 				var iTotalUnits = 0;
+				var sSizeUnit = "";
 				
 				aTokens.map(function(token){
 					var sKey = token.getKey();	
@@ -145,10 +151,13 @@ sap.ui.define([
 					oThis.oSelectedUnits.getProperty("/SelectedUnits").push(oUnit);
 					iTotalUnits++;
 					iTotalSize += oUnit.Size;
+					sSizeUnit = oUnit.SizeUnit;
 				});
 				
 				oThis.oSelectedUnits.setProperty("/TotalUnits",iTotalUnits);
 				oThis.oSelectedUnits.setProperty("/TotalSize",iTotalSize);
+				oThis.oSelectedUnits.setProperty("/SizeUnit",sSizeUnit);
+				
 				//this.byId("selectedunit").getModel().updateBindings(true);
 				oThis.getView().setModel(oThis.oSelectedUnits);
 			}
@@ -245,6 +254,20 @@ sap.ui.define([
 
 		// #endregion
 
+		_getListTokens: function() {
+			var oData = this.getView().getModel().getData();
+			
+			var aTokens = [];
+			oData.SelectedUnits.map(function(unit){
+				var oToken = new Token({
+					key: unit.UnitId,
+					text: unit.Name
+				});
+				
+				aTokens.push(oToken); 
+			});
+			return aTokens;
+		},
 		_getDefaultTokens: function () {
 			var ValueHelpRangeOperation = compLibrary.valuehelpdialog.ValueHelpRangeOperation;
 			var oToken1 = new Token({
