@@ -1,0 +1,28 @@
+<mvc:View
+	controllerName="refx.leaseuix.components.listselunit.listselunit"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<List id="productList" items="{/ProductCollection}" width="400px" >
+		<items>
+			<StandardListItem
+				title="{Name}"
+				description="{ProductId}"
+				icon="{ProductPicUrl}"
+				iconDensityAware="false"
+				iconInset="false" />
+		</items>
+		<headerToolbar>
+			<OverflowToolbar>
+				<Title text="{i18n>RentalUnit}" level="H2" />
+				<ToolbarSpacer />
+				
+				<Button
+					icon="sap-icon://add"
+					press="onValueHelpRequested" />
+				
+			</OverflowToolbar>
+		</headerToolbar>
+	</List>
+</mvc:View>
