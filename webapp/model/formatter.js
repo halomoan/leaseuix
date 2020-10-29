@@ -1,7 +1,7 @@
 sap.ui.define(["sap/ui/core/format/NumberFormat"], function (NumberFormat) {
 	"use strict";
 	return {
-		UnitStatus :  function (bStatus) {
+		TGFRStatus :  function (bStatus) {
 			
 				if (bStatus) {
 					return "Success";

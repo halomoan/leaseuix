@@ -1,0 +1,70 @@
+<mvc:View height="100%" controllerName="refx.leaseuix.components.formselcustomer.formselcustomer"
+		  xmlns:mvc="sap.ui.core.mvc"
+		  xmlns:layout="sap.ui.layout"
+		  xmlns:form="sap.ui.layout.form"
+		  xmlns="sap.m"
+		  xmlns:core="sap.ui.core">
+
+	<layout:Grid defaultSpan="L12 M12 S12" class="customCSS">
+		<layout:content>
+			
+		<form:Form id="FormDisplay480_12120"
+			editable="false">
+			<form:toolbar>
+				<Toolbar id="TB1">
+						<core:Icon
+						src="sap-icon://customer"
+						class="iconSize2"
+						color="#ff9900" >
+					</core:Icon>
+					<Title text="{i18n>Customer} : {/SelectedCustomer/CustomerId}"/>
+					<ToolbarSpacer />
+					<Button icon="sap-icon://edit" press=".onValueHelpRequested"/>
+				</Toolbar>
+			</form:toolbar>
+			<form:layout>
+				<form:ResponsiveGridLayout
+					labelSpanXL="4"
+					labelSpanL="4"
+					labelSpanM="12"
+					labelSpanS="12"
+					adjustLabelSpan="false"
+					emptySpanXL="0"
+					emptySpanL="0"
+					emptySpanM="0"
+					emptySpanS="0"
+					columnsXL="2"
+					columnsL="2"
+					columnsM="2"
+					singleContainerFullSize="false" />
+			</form:layout>
+			<form:formContainers>
+				<form:FormContainer title="">
+					<form:formElements>
+						<form:FormElement label="Name">
+							<form:fields>
+								<Text text="{/SelectedCustomer/Name}" id="Name"  />
+							</form:fields>
+						</form:FormElement>
+						<form:FormElement label="Address">
+							<form:fields>
+								<Text text="{/SelectedCustomer/Address}" id="Address"/>
+							</form:fields>
+						</form:FormElement>
+						<form:FormElement label="Email">
+							<form:fields>
+								<Text text="{/SelectedCustomer/Email}" id="Email" />
+							</form:fields>
+						</form:FormElement>
+						<form:FormElement label="BP No.">
+							<form:fields>
+								<Text text="{/SelectedCustomer/BP}" id="BP" />
+							</form:fields>
+						</form:FormElement>
+					</form:formElements>
+				</form:FormContainer>
+			</form:formContainers>
+		</form:Form>
+		</layout:content>
+	</layout:Grid>
+</mvc:View>

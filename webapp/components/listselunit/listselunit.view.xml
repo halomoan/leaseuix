@@ -16,16 +16,26 @@
 		<Label text="Total Units"></Label>
 		</FlexBox>
 	</VBox>
-		<List id="selectedunit" items="{/SelectedUnits}" width="400px" mode="Delete" delete="onDelete">
+		<List id="selectedunit" items="{ path: '/SelectedUnits', sorter: { path: 'UnitId', descending: false} }" width="400px" mode="Delete" delete="onDelete">
 		<items>
 		<CustomListItem>
 			<HBox>
-				<core:Icon size="2rem" src="sap-icon://building" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
-				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+				<core:Icon size="2rem" src="sap-icon://building" class="sapUiSmallMarginBegin sapUiSmallMarginTop" />
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" width="50%"  >
 					<Link text="{Name}" target="{UnitPicUrl}" press="handlePress"/>
-					<Label text="{= ${Available} ? 'Available' : 'Occupied' }"/>
+					
+					<ObjectStatus
+						class="sapUiSmallMarginBottom"
+						text="{= ${Available} ? 'Available' : 'Occupied' }"
+						icon="{= ${Available} ? '' : 'sap-icon://alert' }"
+						state="{= ${Available} ? 'Success': 'Error' }" />
 				</VBox>
+				<FlexBox alignItems="End" direction="Column" width="80%" class="sapUiSmallMargin" >
+				<Label text="{ path: 'Size', formatter: '.formatter.NumberFormat' }"></Label>
+				<Label text="{SizeUnit}" class="sapMObjectNumberUnit"></Label>
+				</FlexBox>
 			</HBox>
+		
 		</CustomListItem>
 		</items>
 		<headerToolbar>

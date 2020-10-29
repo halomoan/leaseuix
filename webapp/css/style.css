@@ -2,3 +2,16 @@
 .customCSS .green {
 	color: green;
 }
+
+.customCSS .grey {
+	color: #A6ACAF;
+}
+
+.customCSS .gold {
+	color: #ff9900;
+}
+
+
+.customCSS .iconSize2 {
+	font-size : 2rem;
+}

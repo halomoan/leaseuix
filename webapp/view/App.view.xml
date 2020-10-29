@@ -8,7 +8,10 @@
 						<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
 					</Panel>
 					<Panel>
-						<mvc:XMLView viewName="refx.leaseuix.components.selectcustomer.selectcustomer" id="selectcustomer" async="true"></mvc:XMLView>
+						<HBox>
+						<mvc:XMLView viewName="refx.leaseuix.components.formselcustomer.formselcustomer"   id="selectcustomer" async="true"></mvc:XMLView>
+						<mvc:XMLView viewName="refx.leaseuix.components.tableselcontact.tableselcontact"  id="tableselcontact" async="true"></mvc:XMLView>
+						</HBox>
 					</Panel>
 					<Panel>
 						<mvc:XMLView viewName="refx.leaseuix.components.listselunit.listselunit" id="listselunit" async="true"></mvc:XMLView>

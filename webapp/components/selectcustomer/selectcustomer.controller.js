@@ -13,8 +13,8 @@ sap.ui.define([
 			//this._oInput.setSelectedKey("HT-1001");
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectcustomer") + "/columns.json");
-			this.oProductsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/customers.json");
-			this.getView().setModel(this.oProductsModel);
+			this.oCustomersModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/customers.json");
+			this.getView().setModel(this.oCustomersModel);
 		},
 
 		onValueHelpRequested: function() {
@@ -24,7 +24,7 @@ sap.ui.define([
 			this.getView().addDependent(this._oValueHelpDialog);
 
 			this._oValueHelpDialog.getTableAsync().then(function (oTable) {
-				oTable.setModel(this.oProductsModel);
+				oTable.setModel(this.oCustomersModel);
 				oTable.setModel(this.oColModel, "columns");
 
 				if (oTable.bindRows) {

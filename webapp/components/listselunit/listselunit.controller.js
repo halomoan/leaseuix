@@ -21,32 +21,32 @@ sap.ui.define([
 			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunits.json");
 			this.oSelectedUnits = new JSONModel({
 				"SelectedUnits" : [
-					// {
-					// 		"UnitId": "#01-02",
-					// 		"CoCode": "1000",
-					// 		"Category": "F&B",
-					// 		"MainCategory": "Shop",
-					// 		"Level": "#01-02",
-					// 		"ContractNo": "",
-					// 		"Size": 1249,
-					// 		"SizeUnit": "SF",
-					// 		"Name": "#01-02",
-					// 		"UnitPicUrl": "",
-					// 		"Available": true
-					// 	},
-					// 	{
-					// 		"UnitId": "#01-03",
-					// 		"CoCode": "1000",
-					// 		"Category": "F&B",
-					// 		"MainCategory": "Shop",
-					// 		"Level": "#01-03",
-					// 		"ContractNo": "",
-					// 		"Size": 229,
-					// 		"SizeUnit": "SF",
-					// 		"Name": "#01-03",
-					// 		"UnitPicUrl": "",
-					// 		"Available": true
-					// 	}
+					{
+							"UnitId": "#01-02",
+							"CoCode": "1000",
+							"Category": "F&B",
+							"MainCategory": "Shop",
+							"Level": "#01-02",
+							"ContractNo": "",
+							"Size": 1249,
+							"SizeUnit": "SF",
+							"Name": "#01-02",
+							"UnitPicUrl": "",
+							"Available": true
+						},
+						{
+							"UnitId": "#01-03",
+							"CoCode": "1000",
+							"Category": "F&B",
+							"MainCategory": "Shop",
+							"Level": "#01-03",
+							"ContractNo": "",
+							"Size": 229,
+							"SizeUnit": "SF",
+							"Name": "#01-03",
+							"UnitPicUrl": "",
+							"Available": true
+						}
 				],
 				"TotalSize": 0,
 				"SizeUnit": "M2",
@@ -130,7 +130,6 @@ sap.ui.define([
 				this._oValueHelpDialog.update();
 			}.bind(this));
 
-			//this._oValueHelpDialog.setTokens(this._oMultiInput.getTokens());
 			this._oValueHelpDialog.setTokens(this._getListTokens());
 			this._oValueHelpDialog.open();
 		},
@@ -148,10 +147,13 @@ sap.ui.define([
 				aTokens.map(function(token){
 					var sKey = token.getKey();	
 					var oUnit = oThis._getUnitByKey(sKey);
-					oThis.oSelectedUnits.getProperty("/SelectedUnits").push(oUnit);
-					iTotalUnits++;
-					iTotalSize += oUnit.Size;
-					sSizeUnit = oUnit.SizeUnit;
+					
+					if(oUnit) {
+						oThis.oSelectedUnits.getProperty("/SelectedUnits").push(oUnit);
+						iTotalUnits++;
+						iTotalSize += oUnit.Size;
+						sSizeUnit = oUnit.SizeUnit;
+					}
 				});
 				
 				oThis.oSelectedUnits.setProperty("/TotalUnits",iTotalUnits);

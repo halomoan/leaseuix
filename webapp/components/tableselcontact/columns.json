@@ -12,6 +12,10 @@
 		{
 			"label": "Address",
 			"template": "Address"
+		},
+		{
+			"label": "Email",
+			"template": "Email"
 		}
 	]
 }
