@@ -2,46 +2,35 @@
 	controllerName="refx.leaseuix.components.gridcondition.gridcondition"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:grid="sap.ui.layout.cssgrid"
 	xmlns:f="sap.f"
-	xmlns:core="sap.ui.core"
-	xmlns:t="sap.tnt">
-	<ToggleButton
-		id="revealGrid"
-		text="Reveal Grid"
-		press="onRevealGrid"
-		class="sapUiSmallMargin" />
-	<Panel width="100%">
-		<headerToolbar>
-			<Toolbar height="3rem">
-				<Title text="Recommended designs for content, used in the GridList" />
-			</Toolbar>
-		</headerToolbar>
+	xmlns:card="sap.f.cards"
+	displayBlock="true"
+	height="100%">
+	<ScrollContainer height="100%" width="100%" vertical="true">
+		<HBox renderType="Bare">
+			<Button text="Add" press=".addCard"></Button>
+			<f:GridContainer
+				id="grid1"
+				class="sapUiSmallMargin"
+				width="100%"
+				snapToRow="true"
+				items="{ path: '/' }">
+				<f:layout>
+					<f:GridContainerSettings rowSize="84px" columnSize="84px" gap="8px" />
+				</f:layout>
+				<f:layoutXS>
+					<f:GridContainerSettings rowSize="70px" columnSize="70px" gap="8px" />
+				</f:layoutXS>
 
-		<f:GridList id="gridList1" headerText="GridList, using GridBoxLayout - Toolbar Designs (boxWidth 15rem)">
-			<f:customLayout>
-				<grid:GridBoxLayout boxWidth="15rem" />
-			</f:customLayout>
-
-			<f:GridListItem>
-				<VBox height="100%" justifyContent="SpaceBetween">
-					<layoutData>
-						<FlexItemData growFactor="1" shrinkFactor="0" /><!-- Don't shrink below minimum size. Fill space if available. -->
-					</layoutData>
-
-					<VBox class="sapUiSmallMargin">
-						<Title text="Title" wrapping="true" />
-						<Label text="Subtitle" wrapping="true" class="sapUiTinyMarginBottom" />
-						<Text text="A great description with useful information about this project. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy." wrapping="true" />
-					</VBox>
-					<OverflowToolbar design="Solid" class="sapContrast">
-						<ToolbarSpacer />
-						<Button text="Edit" type="Transparent" />
-						<Button icon="sap-icon://sort" type="Transparent" />
-						<Button icon="sap-icon://group-2" type="Transparent" />
-					</OverflowToolbar>
-				</VBox>
-			</f:GridListItem>
-		</f:GridList>
-	</Panel>
+				<f:Card>
+					<f:layoutData>
+						<f:GridContainerItemLayoutData minRows="{rows}" columns="{columns}" />
+					</f:layoutData>
+					<f:header>
+						<card:Header title="{title}" />
+					</f:header>
+				</f:Card>
+			</f:GridContainer>
+		</HBox>
+	</ScrollContainer>
 </mvc:View>
