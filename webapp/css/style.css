@@ -4,13 +4,20 @@
 }
 
 .customCSS .grey {
-	color: #A6ACAF;
+	color: #808080;
 }
 
 .customCSS .gold {
 	color: #ff9900;
 }
 
+.customCSS .italic {
+	font-style: italic;
+}
+
+.customCSS .fontSize1_5 {
+	font-size : 1.5rem;
+}
 
 .customCSS .iconSize2 {
 	font-size : 2rem;

@@ -1,23 +1,49 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<List
-	
-		mode="MultiSelect"
-		headerText="Inverted Info State"
-		items="{
-			path: '/names'
-		}">
-		<items>
-			<StandardListItem
-				title="{title}"
-				description="{desc}"
-				icon="{icon}"
-				iconInset="false"
-				highlight="{highlight}"
-				info="{info}"
-				infoState="{highlight}"
-				infoStateInverted="true" />
-		</items>
-	</List>
+	<List	class="customCSS"
+		mode=""
+				showSeparators="None"
+				items="{
+					path: 'cond'
+				}">
+				<CustomListItem highlight="{highlight}">
+					<HBox alignItems="Center" justifyContent="SpaceBetween">
+						<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+							<Title level="H3" text="{condpurpose}" />
+							<Label level="H4" text="{ path: 'fromDate', type:'sap.ui.model.type.Date', 
+											formatOptions:{ 
+											 source : 
+											  { pattern: 'yyyy-MM-dd' },
+											 pattern: 'MMM dd, yyyy' }} to { path: 'toDate', type:'sap.ui.model.type.Date', 
+											formatOptions:{ 
+											 source : 
+											  { pattern: 'yyyy-MM-dd' },
+											 pattern: 'MMM dd, yyyy' }}" design="Bold" />
+							<Text level="H4" text="Sales Rule: {salesrule}" />
+							<Text level="H4" text="Frequency: {freq} {frequnit}" />
+							
+						</VBox>
+						<VBox class="sapUiSmallMargin" alignItems="End">
+						<ObjectStatus
+									class="fontSize1_5"
+									text="{ parts: ['amount','curr'],
+		    								type: 'sap.ui.model.type.Currency',
+		    								formatOptions: {
+		    									showMeasure: true
+		    							  }}"
+									state="Success" />
+						<ObjectStatus
+							text="{formula}"
+							state="Warning" />
+							<ObjectStatus text="{= ${expired} ? 'Expired': ''}" state="Error"/>
+						<HBox visible="{new}" class="sapUiSmallMarginTop"> 
+							<Link text="Edit" press="onEdit(${id})" /> 
+							<Text text="|" class="sapUiTinyMarginBeginEnd"/> 
+							<Link text="Delete" press="onDelete(${id})" />
+							</HBox>	
+						</VBox>
+					</HBox>
+				</CustomListItem>
+			</List>
 </core:FragmentDefinition>

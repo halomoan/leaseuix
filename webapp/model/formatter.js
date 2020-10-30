@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/format/NumberFormat"], function (NumberFormat) {
+sap.ui.define(["sap/ui/core/format/NumberFormat","sap/ui/core/format/DateFormat"], function (NumberFormat,DateFormat) {
 	"use strict";
 	return {
 		TGFRStatus :  function (bStatus) {
@@ -21,6 +21,10 @@ sap.ui.define(["sap/ui/core/format/NumberFormat"], function (NumberFormat) {
         
 			return oFloatNumberFormat.format(iNumber);
 			
+		},
+		ddMMyyyy: function(date) {
+			var oDateFormat = DateFormat.getDateTimeInstance({pattern: "dd/MMM/yyyy HH:mm"});
+			return oDateFormat.format(date);
 		}
 	};
 });
