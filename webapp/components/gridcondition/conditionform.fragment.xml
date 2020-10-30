@@ -1,0 +1,9 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog id="conditionDialog" title="Hello {/employee/name}">
+	<beginButton>
+	<Button text="Ok" press=".closeDialog"/>
+	</beginButton>
+	</Dialog>
+</core:FragmentDefinition>

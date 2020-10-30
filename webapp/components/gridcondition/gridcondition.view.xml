@@ -33,7 +33,7 @@
 					</f:header>
 					<f:content>
 						
-					<core:Fragment id="fr1" fragmentName="refx.leaseuix.fragments.listcondition" type="XML" />
+					<core:Fragment id="fr1" fragmentName="refx.leaseuix.components.gridcondition.listcondition" type="XML" />
 				
 					</f:content>
 				</f:Card>

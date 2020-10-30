@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	'sap/ui/model/json/JSONModel',
+	"sap/ui/core/Fragment",
 	"refx/leaseuix/model/formatter"
-], function (Controller,JSONModel,formatter) {
+], function (Controller,JSONModel,Fragment,formatter) {
 	"use strict";
 	
 	return Controller.extend("refx.leaseuix.components.gridcondition.gridcondition", {
@@ -12,17 +13,8 @@ sap.ui.define([
 		},
 		initData: function () {
 
-			this.byId("grid1").setModel(new JSONModel([
-				{ id: "L101", title: "Base Rent", rows: 4, columns: 5, cond: 
-					[ 
-						{ id: '1', type:'L101', condpurposeid: 'XX', condpurpose: 'Actual Rent', formulaid: 'XX', formula:'Resid./Usable Space in SF', salesruleid: '20', salesrule: '10%', freq: '1', frequnit:'Monthly', highlight:'Warning' , expired: false, fromDate: '2020-01-01',toDate: '2020-10-30','amount': 5.8,'curr': 'SGD', new: true},
-						{ id: '1', type:'L101', condpurposeid: 'XX', condpurpose: 'Actual Rent', formulaid: 'XX', formula:'Resid./Usable Space in SF', salesruleid: '20', salesrule: '10%', freq: '1', frequnit:'Monthly', highlight:'Success' , expired: true, fromDate: '2020-01-01',toDate: '2020-10-30','amount': 5.8,'curr': 'SGD', new: false},
-						{ id: '1', type:'L101', condpurposeid: 'XX', condpurpose: 'Actual Rent', formulaid: 'XX', formula:'Resid./Usable Space in SF', salesruleid: '20', salesrule: '10%', freq: '1', frequnit:'Monthly', highlight:'Error' , expired: true, fromDate: '2020-01-01',toDate: '2020-10-30','amount': 5.8,'curr': 'SGD', new: false},
-						
-					] },
-				{ id: "L102", title: "Service Charge 2x3", subtitle:'Condition: L102', rows: 3, columns: 3, cond: [ { id: '1', name: 'Rudy'}] },
-			
-			]));
+			this.oConditionModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/conditions.json");
+			this.byId("grid1").setModel(this.oConditionModel);
 		},
 		
 		addCard: function(){
@@ -43,8 +35,38 @@ sap.ui.define([
 		},
 		
 		onEdit: function(id){
-			console.log(id);	
+			console.log(id);
+			this.onOpenDialog();
+			
 		},
+		onDelete: function(id) {
+			
+		},
+		
+		
+		onOpenDialog: function () {
+			var oView = this.getView();
+		
+		
+			if (!this.byId("conditionDialog")) {
+		
+			 Fragment.load({
+			  id: oView.getId(),
+			  name: "refx.leaseuix.components.gridcondition.conditionform",
+			  controller: this
+			}).then(function (oDialog) {
+			    oView.addDependent(oDialog);
+			    oDialog.open();
+			   });
+			 } else {
+			     this.byId("conditionDialog").open();
+	    	}
+    	},
+ 
+	    closeDialog: function () {
+	        this.byId("openDialog").close();
+	    },
+
 		_isCardExist: function(sKey) {
 				var oData = this.byId("grid1").getModel().getData();
 				
