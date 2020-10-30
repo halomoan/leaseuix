@@ -1,0 +1,23 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<List
+	
+		mode="MultiSelect"
+		headerText="Inverted Info State"
+		items="{
+			path: '/names'
+		}">
+		<items>
+			<StandardListItem
+				title="{title}"
+				description="{desc}"
+				icon="{icon}"
+				iconInset="false"
+				highlight="{highlight}"
+				info="{info}"
+				infoState="{highlight}"
+				infoStateInverted="true" />
+		</items>
+	</List>
+</core:FragmentDefinition>
