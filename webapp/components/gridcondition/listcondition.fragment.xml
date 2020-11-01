@@ -38,9 +38,9 @@
 							state="Warning" />
 							<ObjectStatus text="{= ${expired} ? 'Expired': ''}" state="Error"/>
 						<HBox visible="{new}" class="sapUiSmallMarginTop"> 
-							<Link text="Edit" press="onEdit(${id})" /> 
+							<Link text="Edit" press="onEdit" />
 							<Text text="|" class="sapUiTinyMarginBeginEnd"/> 
-							<Link text="Delete" press="onDelete(${id})" />
+							<Link text="Delete" press="onDelete" />
 							</HBox>	
 						</VBox>
 					</HBox>

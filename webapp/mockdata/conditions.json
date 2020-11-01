@@ -4,7 +4,7 @@
 		"rows": 4,
 		"columns": 5,
 		"cond": [{
-				"id": "1",
+				"id": "0",
 				"type": "L101",
 				"condpurposeid": "XX",
 				"condpurpose": "Actual Rent",
@@ -30,7 +30,7 @@
 				"formula": "Resid./Usable Space in SF",
 				"salesruleid": "20",
 				"salesrule": "10%",
-				"freq": "1",
+				"freq": "2",
 				"frequnit": "Monthly",
 				"highlight": "Success",
 				"expired": true,
@@ -38,9 +38,9 @@
 				"toDate": "2020-10-30",
 				"amount": 5.8,
 				"curr": "SGD",
-				"new": false
+				"new": true
 			}, {
-				"id": "1",
+				"id": "2",
 				"type": "L101",
 				"condpurposeid": "XX",
 				"condpurpose": "Actual Rent",
@@ -56,7 +56,7 @@
 				"toDate": "2020-10-30",
 				"amount": 5.8,
 				"curr": "SGD",
-				"new": false
+				"new": true
 			}
 
 		]

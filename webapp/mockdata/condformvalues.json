@@ -1,0 +1,24 @@
+{
+	"frequnits": [
+		{
+			"id": "Monthly",
+			"text": "Monthly"
+		},
+		{
+			"id": "Yearly",
+			"text": "Yearly"
+			
+		}
+		],
+	"condpurposes": [
+		{
+			"id": "XX",
+			"text" : "Actual Rent"
+		},
+		{
+			"id": "YY",
+			"text" : "Statistical Rent"
+		}
+		
+		]	
+}
