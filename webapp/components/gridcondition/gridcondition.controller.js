@@ -8,8 +8,10 @@ sap.ui.define([
 	"sap/ui/core/dnd/DropPosition",
 	"sap/ui/core/dnd/DropLayout",
 	"sap/f/dnd/GridDropInfo",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
 	"refx/leaseuix/model/formatter"
-], function (Controller,JSONModel,Fragment,MessageBox,DragInfo,DropInfo,DropPosition,DropLayout,GridDropInfo,formatter) {
+], function (Controller,JSONModel,Fragment,MessageBox,DragInfo,DropInfo,DropPosition,DropLayout,GridDropInfo,Filter,FilterOperator,formatter) {
 	"use strict";
 	
 	return Controller.extend("refx.leaseuix.components.gridcondition.gridcondition", {
@@ -74,7 +76,6 @@ sap.ui.define([
 			        if (sButton === MessageBox.Action.OK) {
 			        	
 						var oItem = oData.splice(idx,1);
-						console.log(oItem[0]);
 						oModel.refresh();
 						
 						
@@ -92,6 +93,29 @@ sap.ui.define([
 			});
 			
 		},
+		
+		onSearch: function (oEvent) {
+			// add filter for search
+			var aFilters = [];
+			var sQuery = oEvent.getSource().getValue();
+			if (sQuery && sQuery.length > 0) {
+			
+				var filter = new Filter({
+				    filters: [
+				      new Filter("id", FilterOperator.Contains, sQuery),
+				      new Filter("title", FilterOperator.Contains, sQuery),
+				    ],
+				    and: false,
+				  });
+				aFilters.push(filter);  
+			}
+
+			// update list binding
+			var oList = this.byId("list1");
+			var oBinding = oList.getBinding("items");
+			oBinding.filter(aFilters, "Application");
+		},
+		
 		onItemEdit: function(oEvent){
 			var sPath = oEvent.getSource().getBindingContext().getPath();
 			var oModel = oEvent.getSource().getModel();
@@ -242,9 +266,7 @@ sap.ui.define([
 		},
 		
 		_onDropIndicatorSize: function (oDraggedControl) {
-			console.log(oDraggedControl);
-				
-
+			
 			if (oDraggedControl.isA("sap.m.StandardListItem")) {
 				var oBindingContext = oDraggedControl.getBindingContext("condformvalues"),
 				oData = oBindingContext.getModel().getProperty(oBindingContext.getPath());
@@ -267,29 +289,38 @@ sap.ui.define([
 				oDragContainer = oDragged.getParent(),
 				oDropContainer = oInfo.getSource().getParent();
 
-			if (oDragged.isA("sap.m.StandardListItem")){
-				var oDragModel = oDragContainer.getModel("condformvalues"),
-				oDropModel = oDropContainer.getModel(),
-				oDragModelData = oDragModel.getData().condlist,
-				oDropModelData = oDropModel.getData();
-
-				
+			var oDragModel,oDragModelData,oDropModel,oDropModelData;
 			
-			} else {
-				var oDragModel = oDragContainer.getModel(),
-				oDropModel = oDropContainer.getModel("condformvalues"),
-				oDragModelData = oDragModel.getData(),
-				oDropModelData = oDropModel.getData().condlist;
-
+			
+			if (oDragged.isA("sap.m.StandardListItem")){
+				oDragModel = oDragContainer.getModel("condformvalues");
+				oDragModelData = oDragModel.getData().condlist;
 				
-			}	
+			} else {	
+				oDragModel = oDragContainer.getModel();
+				oDragModelData = oDragModel.getData();
+				
+			}
+			
+			if (oDropped && oDropped.isA("sap.m.StandardListItem")){
+				oDropModel = oDropContainer.getModel("condformvalues");
+				oDropModelData = oDropModel.getData().condlist;
+				
+			} else {	
+				oDropModel = oDropContainer.getModel();
+				oDropModelData = oDropModel.getData();
+				
+			}
+			
+			
 			var iDragPosition = oDragContainer.indexOfItem(oDragged),
 				iDropPosition = oDropContainer.indexOfItem(oDropped);
-				//console.log(oDragModel);
 				
 
 			// remove the item
 			var oItem = oDragModelData[iDragPosition];
+			
+			
 			oDragModelData.splice(iDragPosition, 1);
 
 			if (oDragModel === oDropModel && iDragPosition < iDropPosition) {
@@ -312,7 +343,11 @@ sap.ui.define([
 					oDropModel.setData(oDropModelData,"condformvalues");
 				}
 			} else {
-				oDropModel.setData(oDropModelData);
+				if (oDropped && oDropped.isA("sap.m.StandardListItem")){
+					oDropModel.setData(oDropModelData,"condformvalues");
+				} else{
+					oDropModel.setData(oDropModelData);
+				}
 			}
 
 			this.byId("grid1").focusItem(iDropPosition);
