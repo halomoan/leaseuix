@@ -315,11 +315,17 @@ sap.ui.define([
 			
 			var iDragPosition = oDragContainer.indexOfItem(oDragged),
 				iDropPosition = oDropContainer.indexOfItem(oDropped);
-				
+			
+			
 
 			// remove the item
 			var oItem = oDragModelData[iDragPosition];
 			
+			
+			if (oDragModel !== oDropModel && this._isCardExist(oItem.id)){
+				MessageBox.error("Duplicate Condition Type detected !");
+				return false;
+			}	
 			
 			oDragModelData.splice(iDragPosition, 1);
 
@@ -336,8 +342,12 @@ sap.ui.define([
 
 			if (oDragModel !== oDropModel) {
 				if (oDragged.isA("sap.m.StandardListItem")){
+					
+				
 					oDragModel.setData(oDragModelData,"condformvalues");
-					oDropModel.setData(oDropModelData);
+					oDropModel.setData(oDropModelData);	
+					
+					
 				} else{
 					oDragModel.setData(oDragModelData,"");
 					oDropModel.setData(oDropModelData,"condformvalues");

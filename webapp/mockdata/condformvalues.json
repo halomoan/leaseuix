@@ -24,6 +24,81 @@
 			  "cond": [
 		
 				]
+			},
+			{ "id" : "L104",
+			  "title" : "Other Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			},
+			{ "id" : "L115",
+			  "title" : "Deposit Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			}
+			,
+			{ "id" : "L116",
+			  "title" : "SD Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			},
+			{ "id" : "L101",
+			  "title" : "Base Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			  
+			},
+			{ "id" : "L102",
+			  "title" : "Service Charge Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			},
+			{ "id" : "L103",
+			  "title" : "A&P Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			},
+			{ "id" : "L104",
+			  "title" : "Other Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			},
+			{ "id" : "L115",
+			  "title" : "Deposit Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			}
+			,
+			{ "id" : "L116",
+			  "title" : "SD Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
 			}
 		],
 	"frequnits": [

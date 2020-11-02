@@ -2,17 +2,38 @@
 	xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:card="sap.f.cards" displayBlock="true" height="100%">
 	<ScrollContainer height="100%" width="100%" vertical="true" class="customCSS">
 		<HBox renderType="Bare">
-			<List id="list1" class="sapUiSmallMargin" width="400px" items="{ path: 'condformvalues>/condlist' }">
+		<VBox >
+			<!--<HBox justifyContent="SpaceBetween" width="300px" wrap="Wrap">-->
+			<!--<Button text="Standard Rent Wizard"></Button>-->
+			<!--<Button text="Staged Rent Wizard"></Button>	<Button text="Standard Rent Wizard"></Button>-->
+			<!--<Button text="Staged Rent Wizard"></Button>-->
+			
+			<MenuButton text="Click To Select A Wizard" type="Accept">
+				<menu>
+					<Menu itemSelected="onMenuAction">
+						<MenuItem text="Standard Rent Wizard" icon="sap-icon://activate" />
+						<MenuItem text="Staged Rent Wizard" icon="sap-icon://horizontal-waterfall-chart" />
+					</Menu>
+				</menu>
+			</MenuButton>
+		
+			<List id="list1" class="" width="300px" items="{ path: 'condformvalues>/condlist' }"
+			growingScrollToLoad="true"
+			>
 				<StandardListItem title="{condformvalues>id} - {condformvalues>title}"/>
 				<headerToolbar>
 					<OverflowToolbar>
-						<Title text="Pick A Condition" level="H2"/>
+						<Title text="Or Pick A Condition" level="H2"/>
 						<ToolbarSpacer/>
 						<SearchField liveChange=".onSearch" width="100%"/>
 					</OverflowToolbar>
 				</headerToolbar>
 			</List>
-			<f:GridContainer id="grid1" class="sapUiSmallMargin" width="100%" snapToRow="true" items="{ path: '/' }">
+		
+		</VBox>		
+	
+		
+			<f:GridContainer id="grid1" class="sapUiTinyMargin" width="100%" snapToRow="true" items="{ path: '/' }">
 				<f:layout>
 					<f:GridContainerSettings rowSize="84px" columnSize="84px" gap="8px"/>
 				</f:layout>
