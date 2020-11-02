@@ -7,10 +7,15 @@
 	xmlns:card="sap.f.cards"
 	displayBlock="true"
 	height="100%">
-	<ScrollContainer height="100%" width="100%" vertical="true">
+	<ScrollContainer height="100%" width="100%" vertical="true" class="customCSS">
 		<HBox renderType="Bare">
-			<Button text="Add" press=".addCard"></Button>
-			<Button text="Find ID" press=".findID"></Button>
+			<List
+				id="list1"
+				class="sapUiSmallMargin"
+				width="400px"
+				items="{ path: 'condformvalues>/condlist' }">
+					<StandardListItem title="{condformvalues>title}" />
+			</List>
 			<f:GridContainer
 				id="grid1"
 				class="sapUiSmallMargin"
@@ -29,7 +34,27 @@
 						<f:GridContainerItemLayoutData minRows="{rows}" columns="{columns}" />
 					</f:layoutData>
 					<f:header>
-						<card:Header title="{title}" subtitle="{i18n>Condition} : {id}" iconSrc="sap-icon://capital-projects"/>
+						
+						<!--<Button text="Add"></Button>-->
+						<Toolbar class="sapUiSmallMargin" id="toolbar1" >
+								<core:Icon
+							src="sap-icon://capital-projects"
+							class="iconSize2_5"
+							color="green" >
+						</core:Icon>
+						<VBox>
+						<Label text="{title}" design="Bold"></Label>
+						<Label text="{i18n>Condition} : {id}"></Label>
+						</VBox>
+						
+			
+						<ToolbarSpacer/>
+						<Link text="Delete" press="onDelete"/>
+						<Label text="|" width="5px"></Label>
+						<Link text="Add Item" press="onItemAdd"/>
+						
+						</Toolbar>
+						<!--<card:Header title="{title}" subtitle="{i18n>Condition} : {id}" iconSrc="sap-icon://capital-projects"/>-->
 					</f:header>
 					<f:content>
 						

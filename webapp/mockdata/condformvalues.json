@@ -1,4 +1,31 @@
 {
+	"condlist" : [
+			{ "id" : "L101",
+			  "title" : "Base Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			  
+			},
+			{ "id" : "L102",
+			  "title" : "Service Charge Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			},
+			{ "id" : "L103",
+			  "title" : "A&P Rent",
+			  "rows": 4,
+			  "columns": 5,
+			  "cond": [
+		
+				]
+			}
+		],
 	"frequnits": [
 		{
 			"id": "Monthly",
@@ -20,5 +47,43 @@
 			"text" : "Statistical Rent"
 		}
 		
-		]	
+		],
+	"salesrules": [
+		{
+			"id": "20",
+			"text" : "10%"
+		},
+		{
+			"id": "30",
+			"text" : "20%"
+		}
+		],
+	"formulas" : [
+		{ "id": "XX",
+		  "text": "Resid./Usable Space in SF"
+		},
+		{ "id": "YY",
+		  "text": "Resid./Usable Space in SM"
+		}
+		],
+	"conditem" :{
+				"id": "0",
+				"type": "",
+				"condpurposeid": "",
+				"condpurpose": "",
+				"formulaid": "",
+				"formula": "",
+				"salesruleid": "",
+				"salesrule": "",
+				"freq": "",
+				"frequnit": "",
+				"highlight": "",
+				"expired": false,
+				"fromDate": "",
+				"toDate": "",
+				"amount": "",
+				"curr": "",
+				"new": true	
+	},
+	"currency" : "SGD"	
 }
