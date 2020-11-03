@@ -142,8 +142,8 @@
 			"frequnit": "Monthly",
 			"highlight": "",
 			"expired": false,
-			"fromDate": "",
-			"toDate": "",
+			"fromDate": "20120101",
+			"toDate": "20120131",
 			"amount": "",
 			"curr": "",
 			"new": true
