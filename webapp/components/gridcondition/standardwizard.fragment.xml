@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
+	<Dialog id="stdWizardDialog" contentWidth="500px" contentHeight="720px" title="Standard Wizard">
+		<NavContainer id="navCon">
+			<Page id="stdForm1" class="sapUiResponsivePadding--header" showHeader="false">
+			</Page>
+			<Page id="stdForm2" class="sapUiResponsivePadding--header" showHeader="false">
+			</Page>
+			
+		</NavContainer>
+	</Dialog>
+</core:FragmentDefinition>
