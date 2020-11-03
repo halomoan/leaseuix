@@ -1,11 +1,124 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
 	<Dialog id="stdWizardDialog" contentWidth="500px" contentHeight="720px" title="Standard Wizard">
-		<NavContainer id="navCon">
-			<Page id="stdForm1" class="sapUiResponsivePadding--header" showHeader="false">
+		<NavContainer id="navStdWzd">
+			<Page id="stdForm1" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
+				<content>
+					<VBox fitContainer="true">
+						<f:SimpleForm id="stdwzd_form1" editable="false" layout="ResponsiveGridLayout" title="{condformvalues>/stdWizard/0/title}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
+						labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+						singleContainerFullSize="false">
+						<f:content>
+							<HBox justifyContent="SpaceBetween">
+							<VBox>
+							<Label text="From"/>
+							<DatePicker id="stdwzd_fromDate" required="true"
+								value="{path: 'condformvalues>/stdWizard/0/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+								fieldGroupIds="fgCondDates" change="fromDateChanged">
+								<layoutData>
+									<l:GridData span="XL1 L2 M2 S5"/>
+								</layoutData>
+							</DatePicker>
+							</VBox>
+							<VBox>
+							<Label text="To"/>
+							<DatePicker id="stdwzd_toDate" required="true"
+								value="{path: 'condformvalues>/stdWizard/0/cond/0/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+								fieldGroupIds="fgCondDates" change="toDateChanged">
+								<layoutData>
+									<l:GridData span="XL1 L2 M2 S5"/>
+								</layoutData>
+							</DatePicker>
+							</VBox>
+							</HBox>
+							
+							<Label text="Purpose"/>
+								<ComboBox value="{condformvalues>/stdWizard/0/cond/0/condpurpose}" selectedKey="{condformvalues>/stdWizard/0/cond/0/condpurposeid}" items="{
+											path: 'condformvalues>/condpurposes'
+									}"
+									>
+											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
+									<layoutData>
+										<l:GridData span="XL1 L2 M2 S6" />
+									</layoutData>
+								</ComboBox>
+								<HBox justifyContent="SpaceBetween">
+									<VBox>
+								<Label text="Sales Rule"/>
+								<ComboBox value="{condformvalues>/stdWizard/0/cond/0/salesrule}" selectedKey="{condformvalues>/stdWizard/0/cond/0/salesruleid}" items="{
+											path: 'condformvalues>/salesrules'
+									}"
+									>
+											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
+									<layoutData>
+										<l:GridData span="XL1 L2 M2 S6" />
+									</layoutData>
+								</ComboBox>
+								</VBox>
+								<VBox>
+								<Label text="Frequency"/>
+								<HBox>
+								<Input value="{condformvalues>/stdWizard/0/cond/0/freq}" width="3rem" maxLength="2">
+									
+									</Input>
+									<ComboBox selectedKey="{condformvalues>/stdWizard/0/cond/0/frequnit}" items="{
+											path: 'condformvalues>/frequnits'
+									}" width="10.5rem">
+											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
+								</ComboBox>
+							</HBox>
+						</VBox>
+						</HBox>
+						
+						<Label text="Rate"/>
+						<Input id="stdwzd_amount" required="true" description="{condformvalues>/currency}" value="{ parts: [{path: 'condformvalues>/stdWizard/0/cond/0/amount'}, {path: 'condformvalues>/currency'}] ,
+							type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false } }"></Input>	
+						<Label text="Formula"></Label>
+						<ComboBox value="{condformvalues>/stdWizard/0/cond/0/formula}" selectedKey="{condformvalues>/stdWizard/0/cond/0/formulaid}" items="{
+											path: 'condformvalues>/formulas'
+									}"
+									>
+											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
+									<!--<layoutData>-->
+									<!--	<l:GridData span="XL1 L2 M2 S6" />-->
+									<!--</layoutData>-->
+								</ComboBox>
+							
+						
+						</f:content>
+					</f:SimpleForm>
+					<Button
+					text="To 2"
+					press="onStdWzdNext">
+					<layoutData>
+						<FlexItemData growFactor="1" />
+					</layoutData>
+					<customData>
+						<core:CustomData
+							key="target"
+							value="stdForm2" />
+					</customData>
+				</Button>
+				</VBox>
+				</content>
 			</Page>
-			<Page id="stdForm2" class="sapUiResponsivePadding--header" showHeader="false">
+			<Page id="stdForm2" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
+				<Button
+					text="To 1"
+					press="onStdWzdNext">
+					<layoutData>
+						<FlexItemData growFactor="1" />
+					</layoutData>
+					<customData>
+						<core:CustomData
+							key="target"
+							value="stdForm1" />
+					</customData>
+				</Button>
 			</Page>
 			
 		</NavContainer>
+		<beginButton>
+			<Button text="OK" press=".closeStdWizard"/>
+		</beginButton>
 	</Dialog>
 </core:FragmentDefinition>

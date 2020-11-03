@@ -1,114 +1,177 @@
 {
-	"condlist" : [
-			{ "id" : "L101",
-			  "title" : "Base Rent",
-			  "rows": 4,
-			  "columns": 5,
-			  "cond": [
-		
-				]
-			  
-			},
-			{ "id" : "L102",
-			  "title" : "Service Charge Rent",
-			  "rows": 4,
-			  "columns": 5,
-			  "cond": [
-		
-				]
-			},
-			{ "id" : "L103",
-			  "title" : "A&P Rent",
-			  "rows": 4,
-			  "columns": 5,
-			  "cond": [
-		
-				]
-			},
-			{ "id" : "L104",
-			  "title" : "Other Rent",
-			  "rows": 4,
-			  "columns": 5,
-			  "cond": [
-		
-				]
-			},
-			{ "id" : "L115",
-			  "title" : "Deposit Rent",
-			  "rows": 4,
-			  "columns": 5,
-			  "cond": [
-		
-				]
-			}
-			,
-			{ "id" : "L116",
-			  "title" : "Security Deposit",
-			  "rows": 4,
-			  "columns": 5,
-			  "cond": [
-		
-				]
-			}
-		],
-	"frequnits": [
-		{
-			"id": "Monthly",
-			"text": "Monthly"
-		},
-		{
-			"id": "Yearly",
-			"text": "Yearly"
-			
-		}
-		],
-	"condpurposes": [
-		{
+	"condlist": [{
+		"id": "L101",
+		"title": "Base Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [
+
+		]
+
+	}, {
+		"id": "L102",
+		"title": "Service Charge Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [
+
+		]
+	}, {
+		"id": "L103",
+		"title": "A&P Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [
+
+		]
+	}, {
+		"id": "L104",
+		"title": "Other Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [
+
+		]
+	}, {
+		"id": "L115",
+		"title": "Deposit Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [
+
+		]
+	}, {
+		"id": "L116",
+		"title": "Security Deposit",
+		"rows": 4,
+		"columns": 5,
+		"cond": [
+
+		]
+	}],
+	"frequnits": [{
+		"id": "Monthly",
+		"text": "Monthly"
+	}, {
+		"id": "Yearly",
+		"text": "Yearly"
+
+	}],
+	"condpurposes": [{
 			"id": "XX",
-			"text" : "Actual Rent"
-		},
-		{
+			"text": "Actual Rent"
+		}, {
 			"id": "YY",
-			"text" : "Statistical Rent"
+			"text": "Statistical Rent"
 		}
+
+	],
+	"salesrules": [{
+		"id": "20",
+		"text": "10%"
+	}, {
+		"id": "30",
+		"text": "20%"
+	}],
+	"formulas": [{
+		"id": "XX",
+		"text": "Resid./Usable Space in SF"
+	}, {
+		"id": "YY",
+		"text": "Resid./Usable Space in SM"
+	}],
+	"conditem": {
+		"id": "0",
 		
-		],
-	"salesrules": [
-		{
-			"id": "20",
-			"text" : "10%"
-		},
-		{
-			"id": "30",
-			"text" : "20%"
-		}
-		],
-	"formulas" : [
-		{ "id": "XX",
-		  "text": "Resid./Usable Space in SF"
-		},
-		{ "id": "YY",
-		  "text": "Resid./Usable Space in SM"
-		}
-		],
-	"conditem" :{
-				"id": "0",
-				"type": "",
-				"condpurposeid": "XX",
-				"condpurpose": "",
-				"formulaid": "XX",
-				"formula": "",
-				"salesruleid": "20",
-				"salesrule": "",
-				"freq": "1",
-				"frequnit": "Monthly",
-				"highlight": "",
-				"expired": false,
-				"fromDate": "",
-				"toDate": "",
-				"amount": "",
-				"curr": "",
-				"new": true	
+		"condpurposeid": "XX",
+		"condpurpose": "",
+		"formulaid": "XX",
+		"formula": "",
+		"salesruleid": "20",
+		"salesrule": "",
+		"freq": "1",
+		"frequnit": "Monthly",
+		"highlight": "",
+		"expired": false,
+		"fromDate": "",
+		"toDate": "",
+		"amount": "",
+		"curr": "",
+		"new": true
 	},
-	"currency" : "SGD"	
+	"currency": "SGD",
+	"stdWizard": [{
+		"id": "L101",
+		"title": "Base Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [{
+			"id": "0",
+			
+			"condpurposeid": "XX",
+			"condpurpose": "",
+			"formulaid": "XX",
+			"formula": "",
+			"salesruleid": "20",
+			"salesrule": "",
+			"freq": "1",
+			"frequnit": "Monthly",
+			"highlight": "",
+			"expired": false,
+			"fromDate": "20110101",
+			"toDate": "20110131",
+			"amount": "",
+			"curr": "",
+			"new": true
+		}]
+	}, {
+		"id": "L102",
+		"title": "Service Charge Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [{
+			"id": "0",
+			
+			"condpurposeid": "XX",
+			"condpurpose": "",
+			"formulaid": "XX",
+			"formula": "",
+			"salesruleid": "20",
+			"salesrule": "",
+			"freq": "1",
+			"frequnit": "Monthly",
+			"highlight": "",
+			"expired": false,
+			"fromDate": "",
+			"toDate": "",
+			"amount": "",
+			"curr": "",
+			"new": true
+		}]
+	}, {
+		"id": "L103",
+		"title": "A&P Rent",
+		"rows": 4,
+		"columns": 5,
+		"cond": [{
+			"id": "0",
+			
+			"condpurposeid": "XX",
+			"condpurpose": "",
+			"formulaid": "XX",
+			"formula": "",
+			"salesruleid": "20",
+			"salesrule": "",
+			"freq": "1",
+			"frequnit": "Monthly",
+			"highlight": "",
+			"expired": false,
+			"fromDate": "",
+			"toDate": "",
+			"amount": "",
+			"curr": "",
+			"new": true
+		} ]
+	} ]
+
 }

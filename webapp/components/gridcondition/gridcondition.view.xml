@@ -11,8 +11,8 @@
 			<MenuButton text="Click To Select A Wizard" type="Accept">
 				<menu>
 					<Menu itemSelected="onMenuAction">
-						<MenuItem text="Standard Rent Wizard" icon="sap-icon://activate" />
-						<MenuItem text="Staged Rent Wizard" icon="sap-icon://horizontal-waterfall-chart" />
+						<MenuItem id="wzd1" text="Standard Rent Wizard" icon="sap-icon://activate" />
+						<MenuItem id="wzd2" text="Staged Rent Wizard" icon="sap-icon://horizontal-waterfall-chart" />
 					</Menu>
 				</menu>
 			</MenuButton>

@@ -3,6 +3,7 @@ sap.ui.define([
 	'sap/ui/model/json/JSONModel',
 	"sap/ui/core/Fragment",
 	"sap/m/MessageBox",
+	"sap/m/MessageToast",
 	"sap/ui/core/dnd/DragInfo",
 	"sap/ui/core/dnd/DropInfo",
 	"sap/ui/core/dnd/DropPosition",
@@ -11,7 +12,7 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"refx/leaseuix/model/formatter"
-], function (Controller,JSONModel,Fragment,MessageBox,DragInfo,DropInfo,DropPosition,DropLayout,GridDropInfo,Filter,FilterOperator,formatter) {
+], function (Controller,JSONModel,Fragment,MessageBox,MessageToast,DragInfo,DropInfo,DropPosition,DropLayout,GridDropInfo,Filter,FilterOperator,formatter) {
 	"use strict";
 	
 	return Controller.extend("refx.leaseuix.components.gridcondition.gridcondition", {
@@ -60,6 +61,37 @@ sap.ui.define([
 		// 	console.log(oData);
 		
 		// },
+		
+		onMenuAction: function(oEvent) {
+			var oItem = oEvent.getParameter("item"),
+						sItemPath = "";
+
+				while (oItem instanceof sap.m.MenuItem) {
+					
+					var sId = oItem.getId();
+					sId = sId.substring(sId.length - 4, sId.length);
+					switch(sId) {
+						case "wzd1" : this.openStdWizardFrom();
+							break;
+						case "wzd2" : this.openStdWizardFrom();
+							break;	
+					}
+					
+					oItem = oItem.getParent();
+				}
+
+				
+		},
+		
+		onStdWzdNext: function(oEvent){
+			var navCon = this.byId("navStdWzd");
+			var target = oEvent.getSource().data("target");
+			if (target) {
+				navCon.to(this.byId(target), "slide");
+			} else {
+				navCon.back();
+			}
+		},
 		onDelete: function(oEvent){
 			var sPath = oEvent.getSource().getBindingContext().getPath();
 			var oModel = oEvent.getSource().getModel();
@@ -205,6 +237,22 @@ sap.ui.define([
 			});
 		},
 		
+		openStdWizardFrom: function() {
+			var oView = this.getView();	
+			if (!this.byId("stdWizardDialog")) {
+		
+			 Fragment.load({
+			   id: oView.getId(),
+			  name: "refx.leaseuix.components.gridcondition.standardWizard",
+			  controller: this
+			}).then(function (oDialog) {
+			    oView.addDependent(oDialog);
+			    oDialog.open();
+			   });
+			 } else {
+			     this.byId("stdWizardDialog").open();
+	    	}
+		},
 		openConditionForm: function () {
 			var oView = this.getView();
 			
@@ -237,6 +285,10 @@ sap.ui.define([
 	    	
 	    },
 	    
+	    closeStdWizard: function() {
+	    	this.byId("stdWizardDialog").close();
+	    },
+	    
 	    closeDialog: function () {
 	    	var oStatus = this._validForm();
 	    	
@@ -244,7 +296,7 @@ sap.ui.define([
 		    	this.byId("grid1").getModel().refresh();
 		        this.byId("conditionDialog").close();
 	    	} else{
-	    		sap.m.MessageToast.show(oStatus.msg);
+	    		MessageToast.show(oStatus.msg);
 	    	}
 	    },
 	    
