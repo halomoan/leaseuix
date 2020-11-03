@@ -28,36 +28,38 @@ sap.ui.define([
 			this.oFormDataModel =  new JSONModel({"formdata" : {},"formheader" : {} });
 			this.getView().setModel(this.oFormDataModel);
 			this.getView().setModel(this.oConditionValuesModel,"condformvalues");
+			
+			this._DateSort = 1;
 		},
 		
-		addCard: function(){
-			//var oData = this.byId("grid1").getModel().getData();
+		// addCard: function(){
+		// 	//var oData = this.byId("grid1").getModel().getData();
 			
-			var oCondition = { 
-					"id": "L102",
-					"title": "Service Charge Rent",
-					"rows": 4,
-					"columns": 5,
-					"cond": []
+		// 	var oCondition = { 
+		// 			"id": "L102",
+		// 			"title": "Service Charge Rent",
+		// 			"rows": 4,
+		// 			"columns": 5,
+		// 			"cond": []
 				
-			};
+		// 	};
 			
 			
-			if (!this._isCardExist(oCondition.id)) {
-				var oData = this.byId("grid1").getModel().getData();
-				oData.push(	oCondition);
-				this.byId("grid1").getModel().setProperty("/",oData);
-			}else{
+		// 	if (!this._isCardExist(oCondition.id)) {
+		// 		var oData = this.byId("grid1").getModel().getData();
+		// 		oData.push(	oCondition);
+		// 		this.byId("grid1").getModel().setProperty("/",oData);
+		// 	}else{
 				
-			}
-		},
-		findID: function(){
-			var oView = this.getView();
-			var oData = oView.byId("grid1").getModel();
+		// 	}
+		// },
+		// findID: function(){
+		// 	var oView = this.getView();
+		// 	var oData = oView.byId("grid1").getModel();
 			
-			console.log(oData);
+		// 	console.log(oData);
 		
-		},
+		// },
 		onDelete: function(oEvent){
 			var sPath = oEvent.getSource().getBindingContext().getPath();
 			var oModel = oEvent.getSource().getModel();
@@ -139,6 +141,7 @@ sap.ui.define([
 			
 			var oVModel = this.getView().getModel("condformvalues");
 			var oNewItem = {...oVModel.getData().conditem};
+			
 			
 			var sPath = oEvent.getSource().getBindingContext().getPath();
 			var oModel = oEvent.getSource().getModel();
@@ -223,6 +226,8 @@ sap.ui.define([
     	},
  
 		cancelDialog: function () {
+				var oData = this.getView().getModel().getProperty("/formdata");
+				
 				for(var key in this._formDataOri){
 					oData[key] = this._formDataOri[key];
 				}
@@ -233,18 +238,20 @@ sap.ui.define([
 	    },
 	    
 	    closeDialog: function () {
-	    	if(this._validForm()) {
+	    	var oStatus = this._validForm();
+	    	
+	    	if(!oStatus.hasError) {
 		    	this.byId("grid1").getModel().refresh();
 		        this.byId("conditionDialog").close();
 	    	} else{
-	    		sap.m.MessageToast.show("There is error detected");
+	    		sap.m.MessageToast.show(oStatus.msg);
 	    	}
 	    },
 	    
 	     _validForm: function(){
 	   		var oData = this.getView().getModel().getProperty("/formdata");
 	   		var fragId = this.getView().getId();
-	   		var bHasError = false;
+	   		var oStatus = { "hasError" : false, "msg": "" };
 	   		
 	   		// var oControl = sap.ui.core.Fragment.byId(fragId, "form1");
 	   		
@@ -260,26 +267,79 @@ sap.ui.define([
 	   			if (sType === "Currency"){
 	   				if (oControl.getValue() <= 0) {
 			   			oControl.setValueState(sap.ui.core.ValueState.Error);
-			   			bHasError = true;
+			   			oStatus.hasError = true;
 			   		} else {
 			   			oControl.setValueState(sap.ui.core.ValueState.None);
 			   		}
 	   			}else{
 		   			if (oControl.getValue() === "") {
 			   			oControl.setValueState(sap.ui.core.ValueState.Error);
-			   			bHasError = true;
+			   			oStatus.hasError = true;
 			   		} else {
 			   			oControl.setValueState(sap.ui.core.ValueState.None);
 			   		}	
 	   			}
-	   
 	   			
 	   		});
 	   		
-	   		return !bHasError;
+	   		if (oData.fromDate > oData.toDate) {
+	   			oStatus.hasError = true;
+	   			oStatus.msg = "From Date cannot be later than To Date";
+	   			
+	   			sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.Error);
+	   			
+	   		} else {
+	   			sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.None);
+	   		}
+	   		
+	   		var oHeaderData =  this.getView().getModel().getProperty("/formheader");
+	   		oHeaderData.cond.forEach(function(cond){
+	   			
+	   			if (cond.id != oData.id){
+	   				
+	   				var bOverlap = ( parseInt(oData.fromDate) >= parseInt(cond.fromDate) ) && ( parseInt(oData.fromDate) <= parseInt(cond.toDate) ) || 
+	   								( parseInt(cond.fromDate) >= parseInt(oData.fromDate) ) && ( parseInt(cond.fromDate) <= parseInt(oData.toDate) );
+	   				
+	   				
+	   				if (bOverlap) {
+	   					oStatus.hasError = true;
+	   					oStatus.msg = "Selected Date Range is Overlapping with Existing Condition";
+	   					
+	   					sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.Error);
+	   					sap.ui.core.Fragment.byId(fragId, "toDate").setValueState(sap.ui.core.ValueState.Error);
+	   				} else{
+	   					sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.None);
+	   					sap.ui.core.Fragment.byId(fragId, "toDate").setValueState(sap.ui.core.ValueState.None);
+	   				}
+	   			
+	   			}
+	   		})
+
+	   		return oStatus;
 	   		
 	   },
 	   
+	   onDateSort: function(oEvent){
+	   			var sPath = oEvent.getSource().getBindingContext().getPath();
+	   			var oData = oEvent.getSource().getModel().getProperty(sPath);
+	   		
+	   			var aData = oData.cond;
+	   			
+	   			this._DateSort =  -1 * this._DateSort; 
+		   		aData.sort((a,b)=>
+		   		
+		   			( parseInt(a.fromDate) > parseInt(b.fromDate) ) ? 1 * this._DateSort : -1 * this._DateSort 
+		   		);
+		   		
+		   		
+		   		
+		   		// if (this._DateSort > 0) {
+		   		// 	oEvent.getSource().setTooltip("Sort By Date Ascending");
+		   		// } else {
+		   		// 	oEvent.getSource().setTooltip("Sort by Date Descending");
+		   		// }
+		   		oEvent.getSource().getModel().refresh();
+	   },
 	    
 	   // onCondFormChange: function(oEvent){
 	   // 	var sControlType = oEvent.getSource().getMetadata().getName();

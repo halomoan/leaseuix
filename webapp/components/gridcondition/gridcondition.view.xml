@@ -45,7 +45,7 @@
 						<f:GridContainerItemLayoutData minRows="{rows}" columns="{columns}"/>
 					</f:layoutData>
 					<f:header>
-						<!--<Button text="Add"></Button>-->
+				
 						<Toolbar class="sapUiSmallMargin" id="toolbar1">
 							<core:Icon src="sap-icon://capital-projects" class="iconSize2_5" color="green"></core:Icon>
 							<VBox>
@@ -56,6 +56,7 @@
 							<Link text="Delete" press="onDelete"/>
 							<Label text="|" width="5px"></Label>
 							<Link text="Add Item" press="onItemAdd"/>
+							<Button type="Transparent" tooltip="Toggle Sort By Date" icon="sap-icon://sort" press=".onDateSort"/>
 						</Toolbar>
 						<!--<card:Header title="{title}" subtitle="{i18n>Condition} : {id}" iconSrc="sap-icon://capital-projects"/>-->
 					</f:header>

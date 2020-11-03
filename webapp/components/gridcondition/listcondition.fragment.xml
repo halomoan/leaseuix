@@ -14,11 +14,11 @@
 							<Label level="H4" text="{ path: 'fromDate', type:'sap.ui.model.type.Date', 
 											formatOptions:{ 
 											 source : 
-											  { pattern: 'yyyy-MM-dd' },
+											  { pattern: 'yyyyMMdd' },
 											 pattern: 'MMM dd, yyyy' }} to { path: 'toDate', type:'sap.ui.model.type.Date', 
 											formatOptions:{ 
 											 source : 
-											  { pattern: 'yyyy-MM-dd' },
+											  { pattern: 'yyyyMMdd' },
 											 pattern: 'MMM dd, yyyy' }}" design="Bold" />
 							<Text level="H4" text="Sales Rule: {salesrule}" />
 							<Text level="H4" text="Frequency: {freq} {frequnit}" />
