@@ -26,3 +26,8 @@
 .customCSS .iconSize2_5 {
 	font-size : 2.5rem;
 }
+
+.sapMMenuBtn {
+	max-width: none ;
+	width: 100%;
+}

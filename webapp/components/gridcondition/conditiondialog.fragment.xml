@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
 	<Dialog id="conditionDialog" contentWidth="500px" contentHeight="720px" title="Condition Form">
 		<NavContainer id="navCon">
-			<Page id="page1" class="sapUiResponsivePadding--header" showHeader="false">
+			<Page id="formPage1" class="sapUiResponsivePadding--header" showHeader="false">
 				<VBox class="sapUiSmallMargin">
 					<f:SimpleForm id="form1" editable="false" layout="ResponsiveGridLayout" title="{/formheader/title}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
 						labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
@@ -10,9 +10,9 @@
 							<HBox justifyContent="SpaceBetween">
 							<VBox>
 							<Label text="From"/>
-							<DatePicker id="fromDate"
+							<DatePicker id="fromDate" required="true"
 								value="{path: '/formdata/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyy-MM-dd' }, pattern: 'MMM dd, yyyy' }}"
-								fieldGroupIds="fgCondDates" change="handleValidFromChange">
+								fieldGroupIds="fgCondDates" change="fromDateChanged">
 								<layoutData>
 									<l:GridData span="XL1 L2 M2 S5"/>
 								</layoutData>
@@ -20,9 +20,9 @@
 							</VBox>
 							<VBox>
 							<Label text="To"/>
-							<DatePicker id="toDate"
+							<DatePicker id="toDate" required="true"
 								value="{path: '/formdata/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyy-MM-dd' }, pattern: 'MMM dd, yyyy' }}"
-								fieldGroupIds="fgCondDates" change="handleValidFromChange">
+								fieldGroupIds="fgCondDates" change="toDateChanged">
 								<layoutData>
 									<l:GridData span="XL1 L2 M2 S5"/>
 								</layoutData>
@@ -69,7 +69,8 @@
 						</HBox>
 						
 						<Label text="Rate"/>
-						<Input description="{condformvalues>/currency}" value="{ parts: [{path: '/formdata/amount'}, {path: 'condformvalues>/currency'}] ,type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false }}"></Input>	
+						<Input id="amount" required="true" description="{condformvalues>/currency}" value="{ parts: [{path: '/formdata/amount'}, {path: 'condformvalues>/currency'}] ,
+							type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false } }"></Input>	
 						<Label text="Formula"></Label>
 						<ComboBox value="{/formdata/formula}" selectedKey="{/formdata/formulaid}" items="{
 											path: 'condformvalues>/formulas'
@@ -93,5 +94,8 @@
 		<beginButton>
 			<Button text="Ok" press=".closeDialog"/>
 		</beginButton>
+		<endButton>
+			<Button text="Cancel" press=".cancelDialog"/>
+		</endButton>
 	</Dialog>
 </core:FragmentDefinition>

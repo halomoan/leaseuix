@@ -205,11 +205,12 @@ sap.ui.define([
 		openConditionForm: function () {
 			var oView = this.getView();
 			
+			this._formDataOri = {...oView.getModel().getProperty("/formdata")};
 		
 			if (!this.byId("conditionDialog")) {
 		
 			 Fragment.load({
-			  id: oView.getId(),
+			   id: oView.getId(),
 			  name: "refx.leaseuix.components.gridcondition.conditiondialog",
 			  controller: this
 			}).then(function (oDialog) {
@@ -221,10 +222,64 @@ sap.ui.define([
 	    	}
     	},
  
-	    closeDialog: function () {
-	    	this.byId("grid1").getModel().refresh();
-	        this.byId("conditionDialog").close();
+		cancelDialog: function () {
+				for(var key in this._formDataOri){
+					oData[key] = this._formDataOri[key];
+				}
+	    		
+		    	this.byId("grid1").getModel().refresh();
+		        this.byId("conditionDialog").close();
+	    	
 	    },
+	    
+	    closeDialog: function () {
+	    	if(this._validForm()) {
+		    	this.byId("grid1").getModel().refresh();
+		        this.byId("conditionDialog").close();
+	    	} else{
+	    		sap.m.MessageToast.show("There is error detected");
+	    	}
+	    },
+	    
+	     _validForm: function(){
+	   		var oData = this.getView().getModel().getProperty("/formdata");
+	   		var fragId = this.getView().getId();
+	   		var bHasError = false;
+	   		
+	   		// var oControl = sap.ui.core.Fragment.byId(fragId, "form1");
+	   		
+	   		// console.log(oControl.getRequireFields());
+	   		 var requiredInputs = ['fromDate', 'toDate', 'amount'];
+	   		
+	   		requiredInputs.forEach(function (control) {
+	   			var oControl = sap.ui.core.Fragment.byId(fragId, control);
+	   			
+	   			var sType = oControl.getBinding("value").getType().getName();
+	   			
+	   			
+	   			if (sType === "Currency"){
+	   				if (oControl.getValue() <= 0) {
+			   			oControl.setValueState(sap.ui.core.ValueState.Error);
+			   			bHasError = true;
+			   		} else {
+			   			oControl.setValueState(sap.ui.core.ValueState.None);
+			   		}
+	   			}else{
+		   			if (oControl.getValue() === "") {
+			   			oControl.setValueState(sap.ui.core.ValueState.Error);
+			   			bHasError = true;
+			   		} else {
+			   			oControl.setValueState(sap.ui.core.ValueState.None);
+			   		}	
+	   			}
+	   
+	   			
+	   		});
+	   		
+	   		return !bHasError;
+	   		
+	   },
+	   
 	    
 	   // onCondFormChange: function(oEvent){
 	   // 	var sControlType = oEvent.getSource().getMetadata().getName();
