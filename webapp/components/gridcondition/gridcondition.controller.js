@@ -25,14 +25,20 @@ sap.ui.define([
 			this._attachDragAndDrop();
 		},
 		initData: function () {
-
+			var viewData = {
+								"stdwzd" : { "showOK": false }, 
+								"stgwzd" : { "showError" : false},
+								"formdata" : {},"formheader" : {}
+							};	
+			this.getView().setModel(new JSONModel(viewData));
+			
 			this.oConditionValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/condformvalues.json");
 			this.oConditionModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/conditions.json");
 			this.byId("grid1").setModel(this.oConditionModel);
-			this.oFormDataModel =  new JSONModel({"formdata" : {},"formheader" : {} });
-			this.getView().setModel(this.oFormDataModel);
-			this.oStdWzdDataModel =  new JSONModel({"stdwzd" : { "showOK": false } });
-			this.getView().setModel(this.oStdWzdDataModel);
+			// this.oFormDataModel =  new JSONModel({"formdata" : {},"formheader" : {} });
+			// this.getView().setModel(this.oFormDataModel);
+			
+			
 			this.getView().setModel(this.oConditionValuesModel,"condformvalues");
 			
 			this._DateSort = 1;
@@ -243,6 +249,15 @@ sap.ui.define([
 			navCon.to(this.byId("stdForm0"),"show");
 		},
 		openstgWizardForm: function(){
+			
+			const max = this.getView().getModel("condformvalues").getProperty("/maxstaggered");
+			var aStgItems = [];
+			for(var i = 1; i <= max; i++){
+				aStgItems.push({"id": i, "text": i});
+			}
+			
+			this.getView().getModel().setProperty("/stgwzd/stgItems",aStgItems);
+			
 			this.showFormDialogFragment(this.getView(),this._formFragments,"staggeredwizard");
 			var navCon = this.byId("navStgWzd");
 			navCon.to(this.byId("stdForm0"),"show");
@@ -331,13 +346,14 @@ sap.ui.define([
 	    	const oControl =  oEvent.getSource();
 	    	const val = oControl.getValue();
 	    	const max = this.getView().getModel("condformvalues").getProperty("/maxstaggered");
-	    	
+	    	console.log(val);
 	    	if ( val < 1 || val > max) {
 	    		oControl.setValueState(sap.ui.core.ValueState.Error);
+	    		this.getView().getModel().setProperty("/stgwzd/showError",true);
 	    	} else {
 	    		oControl.setValueState(sap.ui.core.ValueState.None);
+	    		this.getView().getModel().setProperty("/stgwzd/showError",false);
 	    	}
-	    	console.log(oEvent.getSource().getValue());	
 	    },
 	     _validForm: function(){
 	   		var oData = this.getView().getModel().getProperty("/formdata");

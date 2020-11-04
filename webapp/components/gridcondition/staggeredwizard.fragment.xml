@@ -8,9 +8,19 @@
 						columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 						<f:content>
 						<Label text="No of Staggered"></Label>
-						<Input value="{ path : 'condformvalues>/noofstaggered' , type : 'sap.ui.model.type.Integer' }" liveChange="validNoStaggered"></Input>
-						<Text text="Max. Staggered allowed is {condformvalues>/maxstaggered}" class="customCSS red"></Text>
-						<FormattedText htmlText="&lt;div class='customCSS red'&gt; Max. Staggered allowed is {condformvalues>/maxstaggered} &lt;div&gt;"/>
+						<!--<Input value="{ path : 'condformvalues>/noofstaggered' , type : 'sap.ui.model.type.Integer' }" liveChange="validNoStaggered"></Input>-->
+						<ComboBox items="{path: '/stgwzd/stgItems', sorter: { path: 'text' }}" change="validNoStaggered" selectedKey="1" >
+							<items>
+							<core:Item  key="{id}" text="{text}"/>
+							</items>
+						</ComboBox>
+						<ObjectStatus
+							class="sapUiSmallMarginBottom"
+							text="Max. Staggered allowed is {condformvalues>/maxstaggered}"
+							icon="sap-icon://alert"
+							state="Error" 
+							visible="{/stgwzd/showError}"/>
+		
 						</f:content>
 					</f:SimpleForm>
 					
