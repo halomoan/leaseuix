@@ -3,12 +3,8 @@
 	<ScrollContainer height="100%" width="100%" vertical="true" class="customCSS">
 		<HBox renderType="Bare">
 		<VBox >
-			<!--<HBox justifyContent="SpaceBetween" width="300px" wrap="Wrap">-->
-			<!--<Button text="Standard Rent Wizard"></Button>-->
-			<!--<Button text="Staged Rent Wizard"></Button>	<Button text="Standard Rent Wizard"></Button>-->
-			<!--<Button text="Staged Rent Wizard"></Button>-->
+			
 			<HBox justifyContent="SpaceBetween">
-			<!--<Label text="Wizard" class="customCSS fontSize1_5" vAlign="Bottom"></Label>-->
 			<Title text="Use Wizard" class="sapUiTinyMarginTop customCSS fontSize1_5"></Title>
 			<MenuButton text="Click To Select" type="Accept">
 				<menu>
@@ -20,8 +16,7 @@
 			</MenuButton>
 			</HBox>
 			<List id="list1" class="" width="300px" items="{ path: 'condformvalues>/condlist' }"
-			growingScrollToLoad="true"
-			>
+				growingScrollToLoad="true">
 				<StandardListItem title="{condformvalues>id} - {condformvalues>title}"/>
 				<headerToolbar>
 					<OverflowToolbar>

@@ -27,7 +27,7 @@ sap.ui.define([
 		initData: function () {
 			var viewData = {
 								"stdwzd" : { "showOK": false }, 
-								"stgwzd" : { "showError" : false},
+								"stgwzd" : { "showOK": false,"showError" : false,"index": 0,"max": 1, "conds": []},
 								"formdata" : {},"formheader" : {}
 							};	
 			this.getView().setModel(new JSONModel(viewData));
@@ -260,7 +260,7 @@ sap.ui.define([
 			
 			this.showFormDialogFragment(this.getView(),this._formFragments,"staggeredwizard");
 			var navCon = this.byId("navStgWzd");
-			navCon.to(this.byId("stdForm0"),"show");
+			navCon.to(this.byId("stgForm0"),"show");
 		},
 		openConditionForm: function () {
 			var oView = this.getView();
@@ -281,9 +281,44 @@ sap.ui.define([
 	    	
 	    },
 	    onStgWzdNext: function(oEvent){
-	    	var navCon = this.byId("navStdWzd");
+	    	var oView = this.getView();
+	    	var navCon = this.byId("navStgWzd");
 	    	var target = oEvent.getSource().data("target");
-	    	
+	    	if (target) {
+	    		
+	    		var index = oView.getModel().getProperty("/stgwzd/index");
+	    		var max = oView.getModel().getProperty("/stgwzd/max");
+	    			
+	    		if (target === "stgForm1"){
+	    		
+	    			if (index < max) {
+		    			
+		    			var aConditions = oView.getModel().getProperty("/stgwzd/conds");
+		    			
+		    			//var oFormData = oView.getModel().getProperty("/formdata");
+		    			var oCondition = aConditions[index];
+		    			
+		    			if (oCondition){
+		    				oView.getModel().setProperty("/formdata",oCondition);
+		    			} else {
+		    				oCondition = { ...oView.getModel("condformvalues").getProperty("/condition")};
+		    				aConditions[index] =  oCondition;
+		    			}
+		    			oView.getModel().setProperty("/stgwzd/index",(index + 1));
+		    			console.log(aConditions,oCondition,index);
+		    			
+	    			}
+	    			navCon.to(this.byId(target), "slide");
+	    		}  else if (target === "back"){
+	    			if (index - 1 > 0) {
+	    			}
+	    		}
+	    		
+	    		
+	    		
+	    	} else{
+	    		navCon.back();	
+	    	}
 	    },
 	    
 	    onStdWzdNext: function(oEvent){
@@ -346,7 +381,7 @@ sap.ui.define([
 	    	const oControl =  oEvent.getSource();
 	    	const val = oControl.getValue();
 	    	const max = this.getView().getModel("condformvalues").getProperty("/maxstaggered");
-	    	console.log(val);
+	    	
 	    	if ( val < 1 || val > max) {
 	    		oControl.setValueState(sap.ui.core.ValueState.Error);
 	    		this.getView().getModel().setProperty("/stgwzd/showError",true);
