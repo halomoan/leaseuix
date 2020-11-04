@@ -88,20 +88,7 @@ sap.ui.define([
 				
 		},
 		
-		onStdWzdNext: function(oEvent){
-			var navCon = this.byId("navStdWzd");
-			var target = oEvent.getSource().data("target");
-			if (target) {
-				if (target === "stdForm2") {
-					this.getView().getModel().setProperty("/stdwzd/showOK",true);
-				} else {
-					this.getView().getModel().setProperty("/stdwzd/showOK",false);
-				}
-				navCon.to(this.byId(target), "slide");
-			} else {
-				navCon.back();
-			}
-		},
+	
 		onDelete: function(oEvent){
 			var sPath = oEvent.getSource().getBindingContext().getPath();
 			var oModel = oEvent.getSource().getModel();
@@ -250,6 +237,8 @@ sap.ui.define([
 		openStdWizardFrom: function() {
 			
 			this.showFormDialogFragment(this.getView(),this._formFragments,"standardwizard");
+			var navCon = this.byId("navStdWzd");
+			navCon.to(this.byId("stdForm0"),"show");
 		},
 		openConditionForm: function () {
 			var oView = this.getView();
@@ -269,7 +258,27 @@ sap.ui.define([
 		        this.byId("conditionDialog").close();
 	    	
 	    },
-	    
+	    onStdWzdNext: function(oEvent){
+			var navCon = this.byId("navStdWzd");
+			var oModel = this.getView().getModel("condformvalues");
+			var oData = oModel.getProperty("/stdWizard");
+			
+			
+			var target = oEvent.getSource().data("target");
+			if (target) {
+				var idx = parseInt(target.charAt(target.length-1));
+				
+				if (idx === (oData.length - 1)) {
+					
+					this.getView().getModel().setProperty("/stdwzd/showOK",true);
+				} else {
+					this.getView().getModel().setProperty("/stdwzd/showOK",false);
+				}
+				navCon.to(this.byId(target), "slide");
+			} else {
+				navCon.back();
+			}
+		},
 	    closeStdWizard: function() {
 	    	this.byId("stdWizardDialog").close();
 	    },
