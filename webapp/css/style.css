@@ -3,6 +3,9 @@
 	color: green;
 }
 
+.customCSS .red {
+	color: red;
+}
 .customCSS .grey {
 	color: #808080;
 }
@@ -26,4 +29,3 @@
 .customCSS .iconSize2_5 {
 	font-size : 2.5rem;
 }
-

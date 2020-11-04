@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
-	<Dialog id="stdWizardDialog" contentWidth="500px" contentHeight="600px" title="Standard Wizard">
+	<Dialog id="stdWizardDialog" contentWidth="500px" contentHeight="600px" title="Standard Wizard" icon="sap-icon://activate">
 		<NavContainer id="navStdWzd">
 			<Page id="stdForm0" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>

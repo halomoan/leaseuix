@@ -75,10 +75,12 @@ sap.ui.define([
 					
 					var sId = oItem.getId();
 					sId = sId.substring(sId.length - 4, sId.length);
+					
+					console.log(sId);
 					switch(sId) {
 						case "wzd1" : this.openStdWizardFrom();
 							break;
-						case "wzd2" : this.openStdWizardFrom();
+						case "wzd2" : this.openstgWizardForm();
 							break;	
 					}
 					
@@ -229,7 +231,7 @@ sap.ui.define([
 			        //     console.log('A');
 			        // } else if (sButton === "Custom Button") {
 			        //   console.log('B');
-			        // }
+			        // .}
 			    }
 			});
 		},
@@ -238,6 +240,11 @@ sap.ui.define([
 			
 			this.showFormDialogFragment(this.getView(),this._formFragments,"standardwizard");
 			var navCon = this.byId("navStdWzd");
+			navCon.to(this.byId("stdForm0"),"show");
+		},
+		openstgWizardForm: function(){
+			this.showFormDialogFragment(this.getView(),this._formFragments,"staggeredwizard");
+			var navCon = this.byId("navStgWzd");
 			navCon.to(this.byId("stdForm0"),"show");
 		},
 		openConditionForm: function () {
@@ -254,10 +261,16 @@ sap.ui.define([
 					oData[key] = this._formDataOri[key];
 				}
 	    		
-		    	this.byId("grid1").getModel().refresh();
+		    	//this.byId("grid1").getModel().refresh();
 		        this.byId("conditionDialog").close();
 	    	
 	    },
+	    onStgWzdNext: function(oEvent){
+	    	var navCon = this.byId("navStdWzd");
+	    	var target = oEvent.getSource().data("target");
+	    	
+	    },
+	    
 	    onStdWzdNext: function(oEvent){
 			var navCon = this.byId("navStdWzd");
 			var oModel = this.getView().getModel("condformvalues");
@@ -292,8 +305,15 @@ sap.ui.define([
 	    	
 	    	this.byId("stdWizardDialog").close();
 	    },
+	    closeStgWizard: function() {
+	    	this.byId("stgWizardDialog").close();
+	    },
 	    cancelStdWizard: function() {
 	    	this.byId("stdWizardDialog").close();
+	    },
+	    
+	    cancelStgWizard: function() {
+	    	this.byId("stgWizardDialog").close();
 	    },
 	    
 	    closeDialog: function () {
@@ -307,6 +327,18 @@ sap.ui.define([
 	    	}
 	    },
 	    
+	    validNoStaggered: function(oEvent){
+	    	const oControl =  oEvent.getSource();
+	    	const val = oControl.getValue();
+	    	const max = this.getView().getModel("condformvalues").getProperty("/maxstaggered");
+	    	
+	    	if ( val < 1 || val > max) {
+	    		oControl.setValueState(sap.ui.core.ValueState.Error);
+	    	} else {
+	    		oControl.setValueState(sap.ui.core.ValueState.None);
+	    	}
+	    	console.log(oEvent.getSource().getValue());	
+	    },
 	     _validForm: function(){
 	   		var oData = this.getView().getModel().getProperty("/formdata");
 	   		var fragId = this.getView().getId();
