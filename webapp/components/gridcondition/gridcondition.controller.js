@@ -1,5 +1,6 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	// "sap/ui/core/mvc/Controller",
+	"refx/leaseuix/controller/BaseController",
 	'sap/ui/model/json/JSONModel',
 	"sap/ui/core/Fragment",
 	"sap/m/MessageBox",
@@ -12,11 +13,13 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"refx/leaseuix/model/formatter"
-], function (Controller,JSONModel,Fragment,MessageBox,MessageToast,DragInfo,DropInfo,DropPosition,DropLayout,GridDropInfo,Filter,FilterOperator,formatter) {
+], function (BaseController,JSONModel,Fragment,MessageBox,MessageToast,DragInfo,DropInfo,DropPosition,DropLayout,GridDropInfo,Filter,FilterOperator,formatter) {
 	"use strict";
 	
-	return Controller.extend("refx.leaseuix.components.gridcondition.gridcondition", {
+	return BaseController.extend("refx.leaseuix.components.gridcondition.gridcondition", {
 		formatter: formatter,
+		_formFragments: {},
+		
 		onInit: function () {
 			this.initData();
 			this._attachDragAndDrop();
@@ -28,6 +31,8 @@ sap.ui.define([
 			this.byId("grid1").setModel(this.oConditionModel);
 			this.oFormDataModel =  new JSONModel({"formdata" : {},"formheader" : {} });
 			this.getView().setModel(this.oFormDataModel);
+			this.oStdWzdDataModel =  new JSONModel({"stdwzd" : { "showOK": false } });
+			this.getView().setModel(this.oStdWzdDataModel);
 			this.getView().setModel(this.oConditionValuesModel,"condformvalues");
 			
 			this._DateSort = 1;
@@ -87,6 +92,11 @@ sap.ui.define([
 			var navCon = this.byId("navStdWzd");
 			var target = oEvent.getSource().data("target");
 			if (target) {
+				if (target === "stdForm2") {
+					this.getView().getModel().setProperty("/stdwzd/showOK",true);
+				} else {
+					this.getView().getModel().setProperty("/stdwzd/showOK",false);
+				}
 				navCon.to(this.byId(target), "slide");
 			} else {
 				navCon.back();
@@ -238,39 +248,14 @@ sap.ui.define([
 		},
 		
 		openStdWizardFrom: function() {
-			var oView = this.getView();	
-			if (!this.byId("stdWizardDialog")) {
-		
-			 Fragment.load({
-			   id: oView.getId(),
-			  name: "refx.leaseuix.components.gridcondition.standardWizard",
-			  controller: this
-			}).then(function (oDialog) {
-			    oView.addDependent(oDialog);
-			    oDialog.open();
-			   });
-			 } else {
-			     this.byId("stdWizardDialog").open();
-	    	}
+			
+			this.showFormDialogFragment(this.getView(),this._formFragments,"standardwizard");
 		},
 		openConditionForm: function () {
 			var oView = this.getView();
 			
 			this._formDataOri = {...oView.getModel().getProperty("/formdata")};
-		
-			if (!this.byId("conditionDialog")) {
-		
-			 Fragment.load({
-			   id: oView.getId(),
-			  name: "refx.leaseuix.components.gridcondition.conditiondialog",
-			  controller: this
-			}).then(function (oDialog) {
-			    oView.addDependent(oDialog);
-			    oDialog.open();
-			   });
-			 } else {
-			     this.byId("conditionDialog").open();
-	    	}
+			this.showFormDialogFragment(this.getView(),this._formFragments,"conditionDialog");
     	},
  
 		cancelDialog: function () {
@@ -286,6 +271,9 @@ sap.ui.define([
 	    },
 	    
 	    closeStdWizard: function() {
+	    	this.byId("stdWizardDialog").close();
+	    },
+	    cancelStdWizard: function() {
 	    	this.byId("stdWizardDialog").close();
 	    },
 	    
@@ -349,10 +337,8 @@ sap.ui.define([
 	   			
 	   			if (cond.id != oData.id){
 	   				
-	   				var bOverlap = ( parseInt(oData.fromDate) >= parseInt(cond.fromDate) ) && ( parseInt(oData.fromDate) <= parseInt(cond.toDate) ) || 
-	   								( parseInt(cond.fromDate) >= parseInt(oData.fromDate) ) && ( parseInt(cond.fromDate) <= parseInt(oData.toDate) );
-	   				
-	   				
+	   				var bOverlap = ( oData.fromDate >= cond.fromDate ) && ( oData.fromDate <= cond.toDate ) || 
+	   				 				( cond.fromDate >= oData.fromDate ) && ( cond.fromDate <= oData.toDate );
 	   				if (bOverlap) {
 	   					oStatus.hasError = true;
 	   					oStatus.msg = "Selected Date Range is Overlapping with Existing Condition";
@@ -537,14 +523,13 @@ sap.ui.define([
 				    return n.id;
 				}));
 				
-				// if (index >=0){
-				// 	return oData[index];
-				// } else {
-				// 	return false;
-				// }
-				
 				return (index >= 0);
 				
+		},
+		onExit : function () {
+			
+			this.removeFragment(this._formFragments);
+			
 		},
 	});
 });

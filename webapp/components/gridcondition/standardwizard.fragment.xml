@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
 	<Dialog id="stdWizardDialog" contentWidth="500px" contentHeight="720px" title="Standard Wizard">
 		<NavContainer id="navStdWzd">
-			<Page id="stdForm1" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
+			<Page id="stdForm0" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>
 					<VBox fitContainer="true">
 						<f:SimpleForm id="stdwzd_form0" editable="false" layout="ResponsiveGridLayout" title="{condformvalues>/stdWizard/0/title}" labelSpanXL="3"
@@ -78,19 +78,24 @@
 								</ComboBox>
 							</f:content>
 						</f:SimpleForm>
-						<Button text="To 2" press="onStdWzdNext">
-							<layoutData>
-								<FlexItemData growFactor="1"/>
-							</layoutData>
-							<customData>
-								<core:CustomData key="target" value="stdForm2"/>
-							</customData>
-						</Button>
+						<OverflowToolbar class="sapUiSmallMargin customCSS" style="Clear">
+							<Label text="Step: 1 / 3" class="fontSize1_5 green" design="Bold"></Label>
+							<ToolbarSpacer/>
+							<Button text="Next &gt;&gt;" press="onStdWzdNext" type="Accept">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+								<customData>
+									<core:CustomData key="target" value="stdForm1"/>
+								</customData>
+							</Button>
+						</OverflowToolbar>
 					</VBox>
 				</content>
 			</Page>
-			<Page id="stdForm2" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
+			<Page id="stdForm1" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>
+					<VBox fitContainer="true">
 					<f:SimpleForm id="stdwzd_form1" editable="false" layout="ResponsiveGridLayout" title="{condformvalues>/stdWizard/1/title}" labelSpanXL="3"
 						labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
 						columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
@@ -165,19 +170,35 @@
 							</ComboBox>
 						</f:content>
 					</f:SimpleForm>
-					<Button text="To 1" press="onStdWzdNext">
-						<layoutData>
-							<FlexItemData growFactor="1"/>
-						</layoutData>
-						<customData>
-							<core:CustomData key="target" value="stdForm1"/>
-						</customData>
-					</Button>
+						<OverflowToolbar class="sapUiSmallMargin customCSS" style="Clear">
+							<Label text="Step: 2 / 3" class="fontSize1_5 green" design="Bold"></Label>
+							<ToolbarSpacer/>
+							<Button text="&lt;&lt; Prev" press="onStdWzdNext" type="Accept">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+								<customData>
+									<core:CustomData key="target" value="stdForm0"/>
+								</customData>
+							</Button>
+							<Button text="Next &gt;&gt;" press="onStdWzdNext" type="Accept">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+								<customData>
+									<core:CustomData key="target" value="stdForm2"/>
+								</customData>
+							</Button>
+						</OverflowToolbar>
+					</VBox>	
 				</content>
 			</Page>
 		</NavContainer>
 		<beginButton>
-			<Button text="OK" press=".closeStdWizard"/>
+			<Button text="OK" press="closeStdWizard" visible="{/stdwzd/showOK}"/>
 		</beginButton>
+		<endButton>
+			<Button text="Cancel" press="cancelStdWizard"/>
+		</endButton>
 	</Dialog>
 </core:FragmentDefinition>
