@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
-	<Dialog id="stdWizardDialog" contentWidth="500px" contentHeight="720px" title="Standard Wizard">
+	<Dialog id="stdWizardDialog" contentWidth="500px" contentHeight="600px" title="Standard Wizard">
 		<NavContainer id="navStdWzd">
 			<Page id="stdForm0" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>
@@ -268,6 +268,8 @@
 								items="{ path: 'condformvalues>/formulas' }">
 								<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
 							</ComboBox>
+							
+							<CheckBox text="Not Applicable" selected="{condformvalues>/stdWizard/2/dontapply}"></CheckBox>
 						</f:content>
 					</f:SimpleForm>
 						<OverflowToolbar class="sapUiSmallMargin customCSS" style="Clear">

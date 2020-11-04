@@ -280,6 +280,16 @@ sap.ui.define([
 			}
 		},
 	    closeStdWizard: function() {
+	    	
+	    	var oModel = this.getView().getModel("condformvalues");
+	    	//var oData = [...oModel.getProperty("/stdWizard")];
+	    	
+	    	var oData =  oModel.getProperty("/stdWizard").filter(item => !item.dontapply);
+	    	
+	    	this.byId("grid1").getModel().setProperty("/",oData);
+	    	//	this.byId("grid1").getModel().refresh();
+	    	
+	    	
 	    	this.byId("stdWizardDialog").close();
 	    },
 	    cancelStdWizard: function() {

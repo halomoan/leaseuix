@@ -7,8 +7,10 @@
 			<!--<Button text="Standard Rent Wizard"></Button>-->
 			<!--<Button text="Staged Rent Wizard"></Button>	<Button text="Standard Rent Wizard"></Button>-->
 			<!--<Button text="Staged Rent Wizard"></Button>-->
-			
-			<MenuButton text="Click To Select A Wizard" type="Accept">
+			<HBox justifyContent="SpaceBetween">
+			<!--<Label text="Wizard" class="customCSS fontSize1_5" vAlign="Bottom"></Label>-->
+			<Title text="Use Wizard" class="sapUiTinyMarginTop customCSS fontSize1_5"></Title>
+			<MenuButton text="Click To Select" type="Accept">
 				<menu>
 					<Menu itemSelected="onMenuAction">
 						<MenuItem id="wzd1" text="Standard Rent Wizard" icon="sap-icon://activate" />
@@ -16,7 +18,7 @@
 					</Menu>
 				</menu>
 			</MenuButton>
-		
+			</HBox>
 			<List id="list1" class="" width="300px" items="{ path: 'condformvalues>/condlist' }"
 			growingScrollToLoad="true"
 			>
