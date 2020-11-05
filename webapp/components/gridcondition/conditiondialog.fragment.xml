@@ -5,12 +5,13 @@
 				<!--<VBox class="sapUiSmallMargin">-->
 					<f:SimpleForm id="form1" editable="false" layout="ResponsiveGridLayout" title="{/formdata/title}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
 						labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
-						singleContainerFullSize="false">
+						singleContainerFullSize="false"
+						>
 						<f:content>
 							<HBox justifyContent="SpaceBetween">
 							<VBox>
 							<Label text="From"/>
-							<DatePicker id="fromDate" required="true"
+							<DatePicker name="fromDate" required="true"
 								value="{path: '/formdata/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
 								fieldGroupIds="fgCondDates" change="fromDateChanged">
 								<layoutData>
@@ -20,7 +21,7 @@
 							</VBox>
 							<VBox>
 							<Label text="To"/>
-							<DatePicker id="toDate" required="true"
+							<DatePicker name="toDate" required="true"
 								value="{path: '/formdata/cond/0/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
 								fieldGroupIds="fgCondDates" change="toDateChanged">
 								<layoutData>
@@ -31,7 +32,7 @@
 							</HBox>
 							
 							<Label text="Purpose"/>
-								<ComboBox value="{/formdata/cond/0/condpurpose}" selectedKey="{/formdata/cond/0/condpurposeid}" items="{
+								<ComboBox required="true" name="condpurpose" value="{/formdata/cond/0/condpurpose}" selectedKey="{/formdata/cond/0/condpurposeid}" items="{
 											path: 'condformvalues>/condpurposes'
 									}"
 									>

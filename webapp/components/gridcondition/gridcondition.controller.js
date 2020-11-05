@@ -172,7 +172,7 @@ sap.ui.define([
 
 			var oCondition = {};
 			Object.keys(oCondGroup).forEach(key => {
-				oCondition[key] = oHeader[key];
+				oCondition[key] = oCondGroup[key];
 			});
 			oCondition["cond"] = [oData];
 
@@ -195,24 +195,15 @@ sap.ui.define([
 			var iIndex = oCondGroup.cond.length - 1;
 
 			if (iIndex >= 0) {
-				switch (oCondGroup.cond[iIndex].highlight) {
-					case "Success":
-						oNewItem.highlight = "Error";
-						break;
-					case "Error":
-						oNewItem.highlight = "Warning";
-						break;
-					case "Warning":
-						oNewItem.highlight = "Success";
-						break;
-				};
+			
 				oNewItem.id = oCondGroup.cond[iIndex].id + 1;
 				oNewItem.curr = oCondGroup.cond[iIndex].curr;
 			} else {
-				oNewItem.highlight = "Error";
+			
 				oNewItem.curr = oVModel.getData().currency;
 
 			}
+			
 
 			oCondGroup.cond.push(oNewItem);
 
@@ -228,6 +219,32 @@ sap.ui.define([
 			this.openConditionForm();
 
 		},
+		
+		_getHightlight: function(sFromDate,sToDate) {
+			var oFromDate = new Date(this.formatter.yyyy_MM_dd(sFromDate));
+			var oToDate = new Date(this.formatter.yyyy_MM_dd(sToDate));
+			var oNow = new Date();
+			
+			console.log(oNow, oFromDate, oToDate,oNow >= oFromDate, oNow <= oToDate);
+			
+			if (oNow >= oFromDate && oNow <= oToDate) {
+				
+				const diffTime = oToDate - oNow;
+				const diffDays = Math.ceil(diffTime / 86400000); 
+				if (diffDays <= 30) {
+					return "Warning";
+				} else {
+					return "Success";
+				}
+			} else if (oNow < oFromDate) {
+				return "Success";
+			} else if (oNow > oToDate) {
+				return "Error";
+			} else {
+				return "None";
+			}
+		},
+		
 		onItemDelete: function(oEvent) {
 
 			var sPath = oEvent.getSource().getBindingContext().getPath();
@@ -253,7 +270,15 @@ sap.ui.define([
 				}
 			});
 		},
-
+		// onValidateFieldGroup: function(oEvent) {
+		
+		// 	$('input[aria-required=true]').each(function(){
+		// 		console.log(this.id);	
+		// 	});
+		
+			
+				
+		// },
 		openStdWizardFrom: function() {
 
 			this.showFormDialogFragment(this.getView(), this._formFragments, "standardwizard");
@@ -274,6 +299,7 @@ sap.ui.define([
 
 			oView.getModel().setProperty("/stgwzd/stgItems", aStgItems);
 			oView.getModel().setProperty("/stgwzd/index", 0);
+			oView.getModel().setProperty("/stgwzd/showOK", false);
 			oView.getModel().setProperty("/stgwzd/conds", []);
 
 			this.showFormDialogFragment(this.getView(), this._formFragments, "staggeredwizard");
@@ -317,14 +343,20 @@ sap.ui.define([
 
 						if (!oCondition) {
 							
-							var oTemplateCond = oView.getModel("condformvalues").getProperty("/condition");
+							
+							if (aConditions.length === 0) {
+								var oTemplateCond = oView.getModel("condformvalues").getProperty("/condition");
+								oCondition = JSON.parse(JSON.stringify(oTemplateCond));
+							} else{
+								oCondition = JSON.parse(JSON.stringify(aConditions[index - 2]));
+							}
 
-							oCondition = JSON.parse(JSON.stringify(oTemplateCond));
-
-							aConditions[index - 1] = oCondition;
+							//aConditions[index - 1] = oCondition;
+							aConditions.push(oCondition);
 							
 							this._stgWzdDefaultValue(aConditions,index - 1);
 							oView.getModel().setProperty("/stgwzd/conds", aConditions);
+						
 						}
 						oView.getModel().setProperty("/formdata", oCondition);
 
@@ -350,7 +382,7 @@ sap.ui.define([
 
 				oView.getModel().setProperty("/stgwzd/showNext", (index < max));
 				oView.getModel().setProperty("/stgwzd/showPrev", (index > 1));
-				oView.getModel().setProperty("/stgwzd/showOK", (index == max));
+				oView.getModel().setProperty("/stgwzd/showOK", (index == max && index > 0));
 
 			} else {
 				navCon.back();
@@ -362,12 +394,7 @@ sap.ui.define([
 			
 			if (index > 0) {
 				
-				
-				
-				for (let key of Object.keys(aConditions[index])) {
-					aConditions[index][key] = aConditions[index - 1][key];  
-				}
-				var sToDate = aConditions[index- 1].cond[0].toDate;
+				var sToDate = aConditions[index - 1].cond[0].toDate;
 				
 				var oDate = new Date(this.formatter.yyyy_MM_dd(sToDate));
 				oDate.setDate(oDate.getDate() + 1);
@@ -375,8 +402,10 @@ sap.ui.define([
 				oDate.setDate(oDate.getDate() + 29);
 				aConditions[index].cond[0].toDate = this.formatter.yyyyMMdd(oDate);
 				
+				
 			
 			}
+			
 		},
 		onStdWzdNext: function(oEvent) {
 			var navCon = this.byId("navStdWzd");
@@ -399,16 +428,33 @@ sap.ui.define([
 			}
 		},
 		closeStdWizard: function() {
-
+			//Standard Wizard
 			var oModel = this.getView().getModel("condformvalues");
 
 			var oData = oModel.getProperty("/stdWizard").filter(item => !item.dontapply);
 
 			this.byId("grid1").getModel().setProperty("/", oData);
+			
+			
 
 			this.byId("stdWizardDialog").close();
 		},
 		closeStgWizard: function() {
+			//Staggered Wizard
+			var aConditions = this.getView().getModel().getProperty("/stgwzd/conds");
+			console.log(aConditions);
+			//var oData = aConditions[0];
+			var oData = JSON.parse(JSON.stringify(aConditions[0]));
+			
+			oData.cond[0].highlight = this._getHightlight(oData.cond[0].fromDate,oData.cond[0].toDate);
+			for(var i = 1; i < aConditions.length; i++){
+				aConditions[i].cond[0].highlight = this._getHightlight(aConditions[i].cond[0].fromDate,aConditions[i].cond[0].toDate);
+				oData.cond.push(aConditions[i].cond[0]);	
+			}
+			
+			
+			this.byId("grid1").getModel().setProperty("/", [oData]);
+			
 			this.byId("stgWizardDialog").close();
 		},
 		cancelStdWizard: function() {
@@ -452,6 +498,24 @@ sap.ui.define([
 				"hasError": false,
 				"msg": ""
 			};
+			var sFromDate,sToDate;
+			
+			
+			$('input[aria-required=true]').each(function(){
+				//var oControl(this.id);
+				var oControl = sap.ui.getCore().byId(this.id.replace(/-inner/g,''));
+				if (oControl instanceof sap.m.DatePicker){
+					
+					if (oControl.getName() === "fromDate"){
+						sFromDate = oControl.getValue();
+					};
+				} else {
+					console.log('YES');
+				}
+				//console.log(oControl);
+			});
+			
+			return false;
 
 			var requiredInputs = ['fromDate', 'toDate', 'amount'];
 
@@ -478,6 +542,9 @@ sap.ui.define([
 
 			});
 
+			
+			
+			
 			if (oData.fromDate > oData.toDate) {
 				oStatus.hasError = true;
 				oStatus.msg = "From Date cannot be later than To Date";
@@ -509,6 +576,7 @@ sap.ui.define([
 				}
 			})
 
+			oData.highlight = this._getHightlight(oData.fromDate,oData.toDate);
 			return oStatus;
 
 		},
