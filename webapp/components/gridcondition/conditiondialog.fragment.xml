@@ -1,95 +1,15 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
+<core:FragmentDefinition xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core">
 	<Dialog id="conditionDialog" contentWidth="500px" contentHeight="720px" title="Condition Form">
 		<NavContainer id="navCon">
 			<Page id="formPage1" class="sapUiResponsivePadding--header" showHeader="false">
-				<!--<VBox class="sapUiSmallMargin">-->
-					<f:SimpleForm id="form1" editable="false" layout="ResponsiveGridLayout" title="{/formdata/title}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
-						labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
-						singleContainerFullSize="false"
-						>
-						<f:content>
-							<HBox justifyContent="SpaceBetween">
-							<VBox>
-							<Label text="From"/>
-							<DatePicker name="fromDate" required="true"
-								value="{path: '/formdata/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
-								fieldGroupIds="fgCondDates" change="fromDateChanged">
-								<layoutData>
-									<l:GridData span="XL1 L2 M2 S5"/>
-								</layoutData>
-							</DatePicker>
-							</VBox>
-							<VBox>
-							<Label text="To"/>
-							<DatePicker name="toDate" required="true"
-								value="{path: '/formdata/cond/0/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
-								fieldGroupIds="fgCondDates" change="toDateChanged">
-								<layoutData>
-									<l:GridData span="XL1 L2 M2 S5"/>
-								</layoutData>
-							</DatePicker>
-							</VBox>
-							</HBox>
-							
-							<Label text="Purpose"/>
-								<ComboBox required="true" name="condpurpose" value="{/formdata/cond/0/condpurpose}" selectedKey="{/formdata/cond/0/condpurposeid}" items="{
-											path: 'condformvalues>/condpurposes'
-									}"
-									>
-											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
-									<layoutData>
-										<l:GridData span="XL1 L2 M2 S6" />
-									</layoutData>
-								</ComboBox>
-								<HBox justifyContent="SpaceBetween">
-									<VBox>
-								<Label text="Sales Rule"/>
-								<ComboBox value="{/formdata/cond/0/salesrule}" selectedKey="{/formdata/cond/0/salesruleid}" items="{
-											path: 'condformvalues>/salesrules'
-									}"
-									>
-											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
-									<layoutData>
-										<l:GridData span="XL1 L2 M2 S6" />
-									</layoutData>
-								</ComboBox>
-								</VBox>
-								<VBox>
-								<Label text="Frequency"/>
-								<HBox>
-								<Input value="{/formdata/cond/0/freq}" width="3rem" maxLength="2">
-									
-									</Input>
-									<ComboBox selectedKey="{/formdata/cond/0/frequnit}" items="{
-											path: 'condformvalues>/frequnits'
-									}" width="10.5rem">
-											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
-								</ComboBox>
-							</HBox>
-						</VBox>
-						</HBox>
-						
-						<Label text="Rate"/>
-						<Input id="amount" required="true" description="{condformvalues>/currency}" value="{ parts: [{path: '/formdata/cond/0/amount'}, {path: 'condformvalues>/currency'}] ,
-							type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false } }"></Input>	
-						<Label text="Formula"></Label>
-						<ComboBox value="{/formdata/cond/0/formula}" selectedKey="{/formdata/cond/0/formulaid}" items="{
-											path: 'condformvalues>/formulas'
-									}"
-									>
-											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
-									<!--<layoutData>-->
-									<!--	<l:GridData span="XL1 L2 M2 S6" />-->
-									<!--</layoutData>-->
-								</ComboBox>
-							
-						
-						</f:content>
-					</f:SimpleForm>
-				<!--</VBox>-->
+				<content>
+					<core:Fragment id="form0" fragmentName="refx.leaseuix.components.gridcondition.normalform" type="XML" />
+				</content>
 			</Page>
 			<Page id="page2" class="sapUiResponsivePadding--header" showNavButton="true" navButtonPress="onNavBack">
-				<content></content>
+				<content>
+					
+				</content>
 			</Page>
 		</NavContainer>
 		<beginButton>

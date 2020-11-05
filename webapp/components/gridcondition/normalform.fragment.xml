@@ -1,0 +1,83 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
+	<f:SimpleForm id="form1" editable="false" layout="ResponsiveGridLayout" title="{/formdata/title}" labelSpanXL="3" labelSpanL="3"
+		labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+		columnsL="1" columnsM="1" singleContainerFullSize="false">
+		<f:content>
+			<FlexBox alignItems="Start" justifyContent="SpaceBetween">
+				<VBox>
+					<Label text="From" labelFor="fromDate"/>
+					<DatePicker id="fromDate" required="true"
+						value="{path: '/formdata/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+						fieldGroupIds="fgCondDates" change="fromDateChanged">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S5"/>
+						</layoutData>
+					</DatePicker>
+				</VBox>
+				<VBox>
+					<Label text="To" labelFor="toDate"/>
+					<DatePicker id="toDate"
+						value="{path: '/formdata/cond/0/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+						fieldGroupIds="fgCondDates" change="toDateChanged">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S5"/>
+						</layoutData>
+					</DatePicker>
+				</VBox>
+			</FlexBox>
+			<FlexBox alignItems="Start" justifyContent="SpaceBetween">
+				<VBox>
+					<Label text="Purpose" labelFor="condpurpose"/>
+					<ComboBox required="true" id="condpurpose" value="{/formdata/cond/0/condpurpose}" selectedKey="{/formdata/cond/0/condpurposeid}"
+						items="{ path: 'condformvalues>/condpurposes' }">
+						<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S6"/>
+						</layoutData>
+					</ComboBox>
+				</VBox>
+			</FlexBox>
+			<FlexBox alignItems="Start" justifyContent="SpaceBetween">
+				<VBox>
+					<Label text="Sales Rule"/>
+					<ComboBox value="{/formdata/cond/0/salesrule}" selectedKey="{/formdata/cond/0/salesruleid}" items="{ path: 'condformvalues>/salesrules' }">
+						<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S6"/>
+						</layoutData>
+					</ComboBox>
+				</VBox>
+				<VBox>
+					<Label text="Frequency" labelFor="freq"/>
+					<HBox>
+						<Input id="freq" value="{/formdata/cond/0/freq}" width="3rem" maxLength="2"></Input>
+						<ComboBox selectedKey="{/formdata/cond/0/frequnit}" items="{ path: 'condformvalues>/frequnits' }" width="10.5rem">
+							<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
+						</ComboBox>
+					</HBox>
+				</VBox>
+			</FlexBox>
+			<FlexBox alignItems="Start">
+				<VBox>
+					<Label text="Rate" labelFor="amount"/>
+					<Input width="12rem" id="amount" required="true" description="{condformvalues>/currency}"
+						value="{ parts: [{path: '/formdata/cond/0/amount'}, {path: 'condformvalues>/currency'}] , type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false } }"></Input>
+					<layoutData>
+						<FlexItemData growFactor="1"/>
+					</layoutData>
+				</VBox>
+				<VBox>
+					<Label text="Formula" labelFor="formula"></Label>
+					<ComboBox width="100%" id="formula" value="{/formdata/cond/0/formula}" selectedKey="{/formdata/cond/0/formulaid}"
+						items="{ path: 'condformvalues>/formulas' }">
+						<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
+					</ComboBox>
+					<layoutData>
+						<FlexItemData growFactor="3"/>
+					</layoutData>
+				</VBox>
+			</FlexBox>
+			<!--<FlexBox alignItems="Start" justifyContent="SpaceBetween"></FlexBox>-->
+		</f:content>
+	</f:SimpleForm>
+</core:FragmentDefinition>

@@ -402,8 +402,6 @@ sap.ui.define([
 				oDate.setDate(oDate.getDate() + 29);
 				aConditions[index].cond[0].toDate = this.formatter.yyyyMMdd(oDate);
 				
-				
-			
 			}
 			
 		},
@@ -468,7 +466,7 @@ sap.ui.define([
 		},
 
 		closeDialog: function() {
-			var oStatus = this._validForm();
+			var oStatus = this._validForm(0);
 
 			if (!oStatus.hasError) {
 				this.byId("grid1").getModel().refresh();
@@ -491,36 +489,20 @@ sap.ui.define([
 				this.getView().getModel().setProperty("/stgwzd/showError", false);
 			}
 		},
-		_validForm: function() {
+		_validForm: function(formIndex) {
 			var oData = this.getView().getModel().getProperty("/formdata").cond[0];
 			var fragId = this.getView().getId();
 			var oStatus = {
 				"hasError": false,
 				"msg": ""
 			};
-			var sFromDate,sToDate;
 			
-			
-			$('input[aria-required=true]').each(function(){
-				//var oControl(this.id);
-				var oControl = sap.ui.getCore().byId(this.id.replace(/-inner/g,''));
-				if (oControl instanceof sap.m.DatePicker){
-					
-					if (oControl.getName() === "fromDate"){
-						sFromDate = oControl.getValue();
-					};
-				} else {
-					console.log('YES');
-				}
-				//console.log(oControl);
-			});
-			
-			return false;
-
+			var formId = "form" + formIndex + "--";
+		
 			var requiredInputs = ['fromDate', 'toDate', 'amount'];
 
 			requiredInputs.forEach(function(control) {
-				var oControl = sap.ui.core.Fragment.byId(fragId, control);
+				var oControl = sap.ui.core.Fragment.byId(fragId, formId + control);
 
 				var sType = oControl.getBinding("value").getType().getName();
 
@@ -549,10 +531,10 @@ sap.ui.define([
 				oStatus.hasError = true;
 				oStatus.msg = "From Date cannot be later than To Date";
 
-				sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.Error);
+				sap.ui.core.Fragment.byId(fragId, formId + "fromDate").setValueState(sap.ui.core.ValueState.Error);
 
 			} else {
-				sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.None);
+				sap.ui.core.Fragment.byId(fragId, formId + "fromDate").setValueState(sap.ui.core.ValueState.None);
 			}
 
 			var oHeaderData = this.getView().getModel().getProperty("/condgroup");
@@ -566,11 +548,11 @@ sap.ui.define([
 						oStatus.hasError = true;
 						oStatus.msg = "Selected Date Range is Overlapping with Existing Condition";
 
-						sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.Error);
-						sap.ui.core.Fragment.byId(fragId, "toDate").setValueState(sap.ui.core.ValueState.Error);
+						sap.ui.core.Fragment.byId(fragId, formId + "fromDate").setValueState(sap.ui.core.ValueState.Error);
+						sap.ui.core.Fragment.byId(fragId, formId + "toDate").setValueState(sap.ui.core.ValueState.Error);
 					} else {
-						sap.ui.core.Fragment.byId(fragId, "fromDate").setValueState(sap.ui.core.ValueState.None);
-						sap.ui.core.Fragment.byId(fragId, "toDate").setValueState(sap.ui.core.ValueState.None);
+						sap.ui.core.Fragment.byId(fragId, formId + "fromDate").setValueState(sap.ui.core.ValueState.None);
+						sap.ui.core.Fragment.byId(fragId, formId + "toDate").setValueState(sap.ui.core.ValueState.None);
 					}
 
 				}
