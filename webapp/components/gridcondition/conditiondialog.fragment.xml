@@ -3,7 +3,7 @@
 		<NavContainer id="navCon">
 			<Page id="formPage1" class="sapUiResponsivePadding--header" showHeader="false">
 				<!--<VBox class="sapUiSmallMargin">-->
-					<f:SimpleForm id="form1" editable="false" layout="ResponsiveGridLayout" title="{/formheader/title}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
+					<f:SimpleForm id="form1" editable="false" layout="ResponsiveGridLayout" title="{/formdata/title}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
 						labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
 						singleContainerFullSize="false">
 						<f:content>
@@ -11,7 +11,7 @@
 							<VBox>
 							<Label text="From"/>
 							<DatePicker id="fromDate" required="true"
-								value="{path: '/formdata/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+								value="{path: '/formdata/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
 								fieldGroupIds="fgCondDates" change="fromDateChanged">
 								<layoutData>
 									<l:GridData span="XL1 L2 M2 S5"/>
@@ -21,7 +21,7 @@
 							<VBox>
 							<Label text="To"/>
 							<DatePicker id="toDate" required="true"
-								value="{path: '/formdata/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+								value="{path: '/formdata/cond/0/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
 								fieldGroupIds="fgCondDates" change="toDateChanged">
 								<layoutData>
 									<l:GridData span="XL1 L2 M2 S5"/>
@@ -31,7 +31,7 @@
 							</HBox>
 							
 							<Label text="Purpose"/>
-								<ComboBox value="{/formdata/condpurpose}" selectedKey="{/formdata/condpurposeid}" items="{
+								<ComboBox value="{/formdata/cond/0/condpurpose}" selectedKey="{/formdata/cond/0/condpurposeid}" items="{
 											path: 'condformvalues>/condpurposes'
 									}"
 									>
@@ -43,7 +43,7 @@
 								<HBox justifyContent="SpaceBetween">
 									<VBox>
 								<Label text="Sales Rule"/>
-								<ComboBox value="{/formdata/salesrule}" selectedKey="{/formdata/salesruleid}" items="{
+								<ComboBox value="{/formdata/cond/0/salesrule}" selectedKey="{/formdata/cond/0/salesruleid}" items="{
 											path: 'condformvalues>/salesrules'
 									}"
 									>
@@ -56,10 +56,10 @@
 								<VBox>
 								<Label text="Frequency"/>
 								<HBox>
-								<Input value="{/formdata/freq}" width="3rem" maxLength="2">
+								<Input value="{/formdata/cond/0/freq}" width="3rem" maxLength="2">
 									
 									</Input>
-									<ComboBox selectedKey="{/formdata/frequnit}" items="{
+									<ComboBox selectedKey="{/formdata/cond/0/frequnit}" items="{
 											path: 'condformvalues>/frequnits'
 									}" width="10.5rem">
 											<core:Item key="{condformvalues>id}" text="{condformvalues>text}" />
@@ -69,10 +69,10 @@
 						</HBox>
 						
 						<Label text="Rate"/>
-						<Input id="amount" required="true" description="{condformvalues>/currency}" value="{ parts: [{path: '/formdata/amount'}, {path: 'condformvalues>/currency'}] ,
+						<Input id="amount" required="true" description="{condformvalues>/currency}" value="{ parts: [{path: '/formdata/cond/0/amount'}, {path: 'condformvalues>/currency'}] ,
 							type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false } }"></Input>	
 						<Label text="Formula"></Label>
-						<ComboBox value="{/formdata/formula}" selectedKey="{/formdata/formulaid}" items="{
+						<ComboBox value="{/formdata/cond/0/formula}" selectedKey="{/formdata/cond/0/formulaid}" items="{
 											path: 'condformvalues>/formulas'
 									}"
 									>
