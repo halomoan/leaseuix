@@ -58,11 +58,14 @@
 
 	}],
 	"condpurposes": [{
-			"id": "XX",
+			"id": "A",
 			"text": "Actual Rent"
 		}, {
-			"id": "YY",
-			"text": "Statistical Rent"
+			"id": "B",
+			"text": "One-Time Actual Rent"
+		}, {
+			"id": "I",
+			"text": "Statistical"
 		}
 
 	],
@@ -74,11 +77,14 @@
 		"text": "20%"
 	}],
 	"formulas": [{
-		"id": "XX",
+		"id": "B",
 		"text": "Resid./Usable Space in SF"
 	}, {
-		"id": "YY",
-		"text": "Resid./Usable Space in SM"
+		"id": "A",
+		"text": "Fixed Amount"
+	}, {
+		"id": "U",
+		"text": "Sales-Based Rent"
 	}],
 	"currency": "SGD",
 	"maxstaggered" : 4,
@@ -91,9 +97,9 @@
 		"dontapply": false,
 		"cond": [{
 			"id": "0",
-			"condpurposeid": "XX",
+			"condpurposeid": "A",
 			"condpurpose": "",
-			"formulaid": "XX",
+			"formulaid": "B",
 			"formula": "",
 			"salesruleid": "20",
 			"salesrule": "",
@@ -110,9 +116,9 @@
 	},
 	"conditem": {
 		"id": "0",
-		"condpurposeid": "XX",
+		"condpurposeid": "A",
 		"condpurpose": "",
-		"formulaid": "XX",
+		"formulaid": "B",
 		"formula": "",
 		"salesruleid": "20",
 		"salesrule": "",
@@ -135,9 +141,9 @@
 		"cond": [{
 			"id": "0",
 
-			"condpurposeid": "XX",
+			"condpurposeid": "A",
 			"condpurpose": "",
-			"formulaid": "XX",
+			"formulaid": "B",
 			"formula": "",
 			"salesruleid": "20",
 			"salesrule": "",
@@ -160,7 +166,7 @@
 		"cond": [{
 			"id": "0",
 
-			"condpurposeid": "XX",
+			"condpurposeid": "A",
 			"condpurpose": "",
 			"formulaid": "XX",
 			"formula": "",
@@ -185,7 +191,7 @@
 		"cond": [{
 			"id": "0",
 
-			"condpurposeid": "XX",
+			"condpurposeid": "A",
 			"condpurpose": "",
 			"formulaid": "XX",
 			"formula": "",
@@ -201,105 +207,6 @@
 			"curr": "",
 			"new": true
 		}]
-	}],
-
-	"stgWizard": [{
-			"id": "L101",
-			"title": "Base Rent",
-			"rows": 4,
-			"columns": 5,
-			"dontapply": false,
-			"cond": [{
-				"id": "0",
-				"condpurposeid": "XX",
-				"condpurpose": "",
-				"formulaid": "XX",
-				"formula": "",
-				"salesruleid": "20",
-				"salesrule": "",
-				"freq": "1",
-				"frequnit": "Monthly",
-				"highlight": "Success",
-				"expired": false,
-				"fromDate": "20110101",
-				"toDate": "20110131",
-				"amount": "",
-				"curr": "",
-				"new": true
-			}]
-		}, {
-			"id": "L101",
-			"title": "Base Rent",
-			"rows": 4,
-			"columns": 5,
-			"dontapply": false,
-			"cond": [{
-				"id": "0",
-				"condpurposeid": "XX",
-				"condpurpose": "",
-				"formulaid": "XX",
-				"formula": "",
-				"salesruleid": "20",
-				"salesrule": "",
-				"freq": "1",
-				"frequnit": "Monthly",
-				"highlight": "Success",
-				"expired": false,
-				"fromDate": "20110101",
-				"toDate": "20110131",
-				"amount": "",
-				"curr": "",
-				"new": true
-			}]
-		}, {
-			"id": "L101",
-			"title": "Base Rent",
-			"rows": 4,
-			"columns": 5,
-			"dontapply": false,
-			"cond": [{
-				"id": "0",
-				"condpurposeid": "XX",
-				"condpurpose": "",
-				"formulaid": "XX",
-				"formula": "",
-				"salesruleid": "20",
-				"salesrule": "",
-				"freq": "1",
-				"frequnit": "Monthly",
-				"highlight": "Success",
-				"expired": false,
-				"fromDate": "20110101",
-				"toDate": "20110131",
-				"amount": "",
-				"curr": "",
-				"new": true
-			}]
-		}, {
-			"id": "L101",
-			"title": "Base Rent",
-			"rows": 4,
-			"columns": 5,
-			"dontapply": false,
-			"cond": [{
-				"id": "0",
-				"condpurposeid": "XX",
-				"condpurpose": "",
-				"formulaid": "XX",
-				"formula": "",
-				"salesruleid": "20",
-				"salesrule": "",
-				"freq": "1",
-				"frequnit": "Monthly",
-				"highlight": "Success",
-				"expired": false,
-				"fromDate": "20110101",
-				"toDate": "20110131",
-				"amount": "",
-				"curr": "",
-				"new": true
-			}]
-		}
-	]
+	}]
 
 }

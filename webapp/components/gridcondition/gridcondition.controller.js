@@ -313,16 +313,17 @@ sap.ui.define([
 					index = index + 1;
 					if (index <= max) {
 
-						//var oFormData = oView.getModel().getProperty("/formdata");
 						var oCondition = aConditions[index - 1];
 
 						if (!oCondition) {
-							console.log('Create');
+							
 							var oTemplateCond = oView.getModel("condformvalues").getProperty("/condition");
 
 							oCondition = JSON.parse(JSON.stringify(oTemplateCond));
 
 							aConditions[index - 1] = oCondition;
+							
+							this._stgWzdDefaultValue(aConditions,index - 1);
 							oView.getModel().setProperty("/stgwzd/conds", aConditions);
 						}
 						oView.getModel().setProperty("/formdata", oCondition);
@@ -349,12 +350,34 @@ sap.ui.define([
 
 				oView.getModel().setProperty("/stgwzd/showNext", (index < max));
 				oView.getModel().setProperty("/stgwzd/showPrev", (index > 1));
+				oView.getModel().setProperty("/stgwzd/showOK", (index == max));
 
 			} else {
 				navCon.back();
 			}
 		},
 
+		_stgWzdDefaultValue: function(aConditions,index) {
+			
+			
+			if (index > 0) {
+				
+				
+				
+				for (let key of Object.keys(aConditions[index])) {
+					aConditions[index][key] = aConditions[index - 1][key];  
+				}
+				var sToDate = aConditions[index- 1].cond[0].toDate;
+				
+				var oDate = new Date(this.formatter.yyyy_MM_dd(sToDate));
+				oDate.setDate(oDate.getDate() + 1);
+				aConditions[index].cond[0].fromDate = this.formatter.yyyyMMdd(oDate);
+				oDate.setDate(oDate.getDate() + 29);
+				aConditions[index].cond[0].toDate = this.formatter.yyyyMMdd(oDate);
+				
+			
+			}
+		},
 		onStdWzdNext: function(oEvent) {
 			var navCon = this.byId("navStdWzd");
 			var oModel = this.getView().getModel("condformvalues");
@@ -468,8 +491,8 @@ sap.ui.define([
 			var oHeaderData = this.getView().getModel().getProperty("/condgroup");
 			oHeaderData.cond.forEach(function(cond) {
 
-				if (cond.id != oData.id) {
-
+				if (cond.id != oData.id && cond.condpurposeid != oData.condpurposeid) {
+	
 					var bOverlap = (oData.fromDate >= cond.fromDate) && (oData.fromDate <= cond.toDate) ||
 						(cond.fromDate >= oData.fromDate) && (cond.fromDate <= oData.toDate);
 					if (bOverlap) {

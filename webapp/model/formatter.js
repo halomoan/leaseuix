@@ -25,6 +25,15 @@ sap.ui.define(["sap/ui/core/format/NumberFormat","sap/ui/core/format/DateFormat"
 		ddMMyyyy: function(date) {
 			var oDateFormat = DateFormat.getDateTimeInstance({pattern: "dd/MMM/yyyy HH:mm"});
 			return oDateFormat.format(date);
+		},
+		yyyyMMdd: function(date) {
+			var oDateFormat = DateFormat.getDateTimeInstance({pattern: "yyyyMMdd"});
+			return oDateFormat.format(date);
+		},
+		
+		yyyy_MM_dd: function(yyyMMdd) {
+			return yyyMMdd.substring(0,4) + "-" + yyyMMdd.substring(4,6) + "-" + yyyMMdd.substring(6,8)
 		}
+		
 	};
 });
