@@ -3,7 +3,7 @@
 		<NavContainer id="navStgWzd">
 			<Page id="stgForm0" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>
-					<f:SimpleForm id="stgwzd_form0" editable="false" layout="ResponsiveGridLayout" title="{condformvalues>/condition/title}" labelSpanXL="3"
+					<f:SimpleForm id="stgwzd_form0" editable="false" layout="ResponsiveGridLayout" title="Number Of Staggered" labelSpanXL="3"
 						labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
 						columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 						<f:content>
@@ -40,7 +40,7 @@
 			<Page id="stgForm1" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>
 					<VBox fitContainer="true">
-					<f:SimpleForm id="stgwzd_form1" editable="false" layout="ResponsiveGridLayout" title="{condformvalues>/condition/title} - {/stgwzd/index}" labelSpanXL="3"
+					<f:SimpleForm id="stgwzd_form1" editable="false" layout="ResponsiveGridLayout" title="{/form/title} - {/stgwzd/index}" labelSpanXL="3"
 						labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
 						columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 						<f:content>

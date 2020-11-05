@@ -249,6 +249,7 @@ sap.ui.define([
 			navCon.to(this.byId("stdForm0"),"show");
 		},
 		openstgWizardForm: function(){
+			var oView = this.getView();
 			
 			const max = this.getView().getModel("condformvalues").getProperty("/maxstaggered");
 			var aStgItems = [];
@@ -256,7 +257,9 @@ sap.ui.define([
 				aStgItems.push({"id": i, "text": i});
 			}
 			
-			this.getView().getModel().setProperty("/stgwzd/stgItems",aStgItems);
+			oView.getModel().setProperty("/stgwzd/stgItems",aStgItems);
+			oView.getModel().setProperty("/stgwzd/index",0);
+			oView.getModel().setProperty("/stgwzd/conds",[]);
 			
 			this.showFormDialogFragment(this.getView(),this._formFragments,"staggeredwizard");
 			var navCon = this.byId("navStgWzd");
@@ -288,29 +291,45 @@ sap.ui.define([
 	    		
 	    		var index = oView.getModel().getProperty("/stgwzd/index");
 	    		var max = oView.getModel().getProperty("/stgwzd/max");
-	    			
-	    		if (target === "stgForm1"){
+	    		var aConditions = oView.getModel().getProperty("/stgwzd/conds");
 	    		
-	    			if (index < max) {
+	    		
+	    		if (target === "stgForm1"){
+	    			index = index + 1;	
+	    			if (index <= max) {
 		    			
-		    			var aConditions = oView.getModel().getProperty("/stgwzd/conds");
+		    			
 		    			
 		    			//var oFormData = oView.getModel().getProperty("/formdata");
-		    			var oCondition = aConditions[index];
+		    			var oCondition = aConditions[index - 1];
 		    			
 		    			if (oCondition){
 		    				oView.getModel().setProperty("/formdata",oCondition);
 		    			} else {
 		    				oCondition = { ...oView.getModel("condformvalues").getProperty("/condition")};
-		    				aConditions[index] =  oCondition;
+		    				aConditions[index - 1] =  oCondition;
+		    				oView.getModel().setProperty("/formdata",oCondition);
+		    				oView.getModel().setProperty("/stgwzd/conds",aConditions);
 		    			}
-		    			oView.getModel().setProperty("/stgwzd/index",(index + 1));
+		    			oView.getModel().setProperty("/stgwzd/index",index);
+		    			oView.getModel().refresh();
 		    			console.log(aConditions,oCondition,index);
 		    			
 	    			}
-	    			navCon.to(this.byId(target), "slide");
+	    			if (index === 1){
+	    				navCon.to(this.byId(target), "slide");
+	    			}
 	    		}  else if (target === "back"){
-	    			if (index - 1 > 0) {
+	    			index = index - 1;	
+	    			if (index > 0) {
+	    				var oCondition = aConditions[index - 1];
+	    				if (oCondition){
+	    					oView.getModel().setProperty("/formdata",oCondition);
+	    					
+	    				}
+	    				oView.getModel().setProperty("/stgwzd/index",index);
+	    				
+	    				console.log(aConditions,oCondition,index);
 	    			}
 	    		}
 	    		
