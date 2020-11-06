@@ -225,8 +225,6 @@ sap.ui.define([
 			var oToDate = new Date(this.formatter.yyyy_MM_dd(sToDate));
 			var oNow = new Date();
 			
-			console.log(oNow, oFromDate, oToDate,oNow >= oFromDate, oNow <= oToDate);
-			
 			if (oNow >= oFromDate && oNow <= oToDate) {
 				
 				const diffTime = oToDate - oNow;
@@ -287,7 +285,8 @@ sap.ui.define([
 		},
 		openstgWizardForm: function() {
 			var oView = this.getView();
-
+			
+			var oTemplateCond = {...oView.getModel("condformvalues").getProperty("/condition")};
 			const max = this.getView().getModel("condformvalues").getProperty("/maxstaggered");
 			var aStgItems = [];
 			for (var i = 1; i <= max; i++) {
@@ -298,6 +297,7 @@ sap.ui.define([
 			}
 
 			oView.getModel().setProperty("/stgwzd/stgItems", aStgItems);
+			oView.getModel().setProperty("/condgroup", oTemplateCond);
 			oView.getModel().setProperty("/stgwzd/index", 0);
 			oView.getModel().setProperty("/stgwzd/showOK", false);
 			oView.getModel().setProperty("/stgwzd/conds", []);
@@ -326,18 +326,36 @@ sap.ui.define([
 
 		},
 		onStgWzdNext: function(oEvent) {
+			
+			//Staggered Wizard
+			
 			var oView = this.getView();
 			var navCon = this.byId("navStgWzd");
 			var target = oEvent.getSource().data("target");
+			
 			if (target) {
 
 				var index = oView.getModel().getProperty("/stgwzd/index");
 				var max = oView.getModel().getProperty("/stgwzd/max");
 				var aConditions = oView.getModel().getProperty("/stgwzd/conds");
 
+				var oCondGroup = this.getView().getModel().getProperty("/condgroup");
+
+				if (index != 0) {
+						var oStatus = this._validForm("stgForm");
+						if (oStatus.hasError){
+							MessageToast.show(oStatus.msg);
+							return;
+						} 
+				}
+					
 				if (target === "stgForm1") {
+				
+					
+					
 					index = index + 1;
-					if (index <= max) {
+					
+					if (index <= max ) {
 
 						var oCondition = aConditions[index - 1];
 
@@ -356,16 +374,20 @@ sap.ui.define([
 							
 							this._stgWzdDefaultValue(aConditions,index - 1);
 							oView.getModel().setProperty("/stgwzd/conds", aConditions);
-						
 						}
 						oView.getModel().setProperty("/formdata", oCondition);
-
 						oView.getModel().setProperty("/stgwzd/index", index);
+						oCondition.cond[0].id = index;
+						oCondGroup.cond[index - 1] = oCondition.cond[0];
+						this.getView().getModel().setProperty("/condgroup",oCondGroup);
 
-					}
-					if (index === 1) {
+					} 
+					
+					
+					if (index === 1 ) {
 
 						navCon.to(this.byId(target), "slide");
+				
 					}
 				} else if (target === "back") {
 					index = index - 1;
@@ -439,21 +461,21 @@ sap.ui.define([
 		},
 		closeStgWizard: function() {
 			//Staggered Wizard
-			var aConditions = this.getView().getModel().getProperty("/stgwzd/conds");
-			console.log(aConditions);
-			//var oData = aConditions[0];
-			var oData = JSON.parse(JSON.stringify(aConditions[0]));
-			
-			oData.cond[0].highlight = this._getHightlight(oData.cond[0].fromDate,oData.cond[0].toDate);
-			for(var i = 1; i < aConditions.length; i++){
-				aConditions[i].cond[0].highlight = this._getHightlight(aConditions[i].cond[0].fromDate,aConditions[i].cond[0].toDate);
-				oData.cond.push(aConditions[i].cond[0]);	
+			if (!this._validForm("stgForm").hasError) {
+				var aConditions = this.getView().getModel().getProperty("/stgwzd/conds");
+				var oData = JSON.parse(JSON.stringify(aConditions[0]));
+				
+				oData.cond[0].highlight = this._getHightlight(oData.cond[0].fromDate,oData.cond[0].toDate);
+				for(var i = 1; i < aConditions.length; i++){
+					aConditions[i].cond[0].highlight = this._getHightlight(aConditions[i].cond[0].fromDate,aConditions[i].cond[0].toDate);
+					oData.cond.push(aConditions[i].cond[0]);	
+				}
+				
+				this.byId("grid1").getModel().setProperty("/", [oData]);
+				this.byId("stgWizardDialog").close();
 			}
 			
 			
-			this.byId("grid1").getModel().setProperty("/", [oData]);
-			
-			this.byId("stgWizardDialog").close();
 		},
 		cancelStdWizard: function() {
 
@@ -466,7 +488,7 @@ sap.ui.define([
 		},
 
 		closeDialog: function() {
-			var oStatus = this._validForm(0);
+			var oStatus = this._validForm("form0");
 
 			if (!oStatus.hasError) {
 				this.byId("grid1").getModel().refresh();
@@ -489,7 +511,7 @@ sap.ui.define([
 				this.getView().getModel().setProperty("/stgwzd/showError", false);
 			}
 		},
-		_validForm: function(formIndex) {
+		_validForm: function(fragname) {
 			var oData = this.getView().getModel().getProperty("/formdata").cond[0];
 			var fragId = this.getView().getId();
 			var oStatus = {
@@ -497,19 +519,20 @@ sap.ui.define([
 				"msg": ""
 			};
 			
-			var formId = "form" + formIndex + "--";
+			var formId = fragname + "--";
 		
-			var requiredInputs = ['fromDate', 'toDate', 'amount'];
+			var requiredInputs = ['fromDate', 'toDate', 'condpurpose','amount'];
 
 			requiredInputs.forEach(function(control) {
 				var oControl = sap.ui.core.Fragment.byId(fragId, formId + control);
+				
+				//var sType = oControl.getBinding("value").getType().getName();
 
-				var sType = oControl.getBinding("value").getType().getName();
-
-				if (sType === "Currency") {
+				if (control === "amount") {
 					if (oControl.getValue() <= 0) {
 						oControl.setValueState(sap.ui.core.ValueState.Error);
 						oStatus.hasError = true;
+						oStatus.msg = "Invalid Entry Detected";
 					} else {
 						oControl.setValueState(sap.ui.core.ValueState.None);
 					}
@@ -517,6 +540,7 @@ sap.ui.define([
 					if (oControl.getValue() === "") {
 						oControl.setValueState(sap.ui.core.ValueState.Error);
 						oStatus.hasError = true;
+						oStatus.msg = "Invalid Entry Detected";
 					} else {
 						oControl.setValueState(sap.ui.core.ValueState.None);
 					}
@@ -537,13 +561,16 @@ sap.ui.define([
 				sap.ui.core.Fragment.byId(fragId, formId + "fromDate").setValueState(sap.ui.core.ValueState.None);
 			}
 
-			var oHeaderData = this.getView().getModel().getProperty("/condgroup");
-			oHeaderData.cond.forEach(function(cond) {
+			var oCondGroup = this.getView().getModel().getProperty("/condgroup");
+			
+			
+			oCondGroup.cond.forEach(function(cond) {
+			
+				if (cond.id != oData.id && cond.condpurposeid === oData.condpurposeid) {
 
-				if (cond.id != oData.id && cond.condpurposeid != oData.condpurposeid) {
-	
 					var bOverlap = (oData.fromDate >= cond.fromDate) && (oData.fromDate <= cond.toDate) ||
 						(cond.fromDate >= oData.fromDate) && (cond.fromDate <= oData.toDate);
+					
 					if (bOverlap) {
 						oStatus.hasError = true;
 						oStatus.msg = "Selected Date Range is Overlapping with Existing Condition";

@@ -8,7 +8,7 @@
 						columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 						<f:content>
 						<Label text="No of Staggered"></Label>
-						<!--<Input value="{ path : 'condformvalues>/noofstaggered' , type : 'sap.ui.model.type.Integer' }" liveChange="validNoStaggered"></Input>-->
+						
 						<ComboBox items="{path: '/stgwzd/stgItems', sorter: { path: 'text' }}" change="validNoStaggered" selectedKey="{/stgwzd/max}" >
 							<items>
 							<core:Item  key="{id}" text="{text}"/>
@@ -40,80 +40,7 @@
 			<Page id="stgForm1" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>
 					<VBox fitContainer="true">
-					<f:SimpleForm id="stgwzd_form1" editable="false" layout="ResponsiveGridLayout" title="{/formdata/title} - {/stgwzd/index}" labelSpanXL="3"
-						labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
-						columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
-						<f:content>
-							<HBox justifyContent="SpaceBetween">
-								<VBox>
-									<Label text="From"/>
-									<DatePicker id="stgwzd_fromDate1" required="true"
-										value="{path: '/formdata/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
-										fieldGroupIds="fgCondDates" change="fromDateChanged">
-										<layoutData>
-											<l:GridData span="XL1 L2 M2 S5"/>
-										</layoutData>
-									</DatePicker>
-								</VBox>
-								<VBox>
-									<Label text="To"/>
-									<DatePicker id="stgwzd_toDate1" required="true"
-										value="{path: '/formdata/cond/0/toDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
-										fieldGroupIds="fgCondDates" change="toDateChanged">
-										<layoutData>
-											<l:GridData span="XL1 L2 M2 S5"/>
-										</layoutData>
-									</DatePicker>
-								</VBox>
-							</HBox>
-							<HBox justifyContent="SpaceBetween">
-								<VBox>
-									<Label text="Sales Rule"/>
-									<ComboBox value="{/formdata/cond/0/salesrule}" selectedKey="{/formdata/cond/0/salesruleid}"
-										items="{ path: 'condformvalues>/salesrules' }">
-										<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
-										<layoutData>
-											<l:GridData span="XL1 L2 M2 S6"/>
-										</layoutData>
-									</ComboBox>
-								</VBox>
-								<VBox>
-									<Label text="Purpose"/>
-									<ComboBox value="{/formdata/cond/0/condpurpose}" selectedKey="{/formdata/cond/0/condpurposeid}"
-										items="{ path: 'condformvalues>/condpurposes' }">
-										<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
-										<layoutData>
-											<l:GridData span="XL1 L2 M2 S6"/>
-										</layoutData>
-									</ComboBox>
-								</VBox>
-							</HBox>
-							<HBox justifyContent="SpaceBetween">
-								<VBox>
-									<Label text="Rate"/>
-									<Input id="stgwzd_amount1" required="true" description="{condformvalues>/currency}"
-										value="{ parts: [{path: '/formdata/cond/0/amount'}, {path: 'condformvalues>/currency'}] , type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false } }"></Input>
-									<layoutData>
-										<l:GridData span="XL1 L2 M2 S2"/>
-									</layoutData>
-								</VBox>
-								<VBox>
-									<Label text="Frequency"/>
-									<HBox>
-										<Input value="{/formdata/cond/0/freq}" width="3rem" maxLength="2"></Input>
-										<ComboBox selectedKey="{/formdata/cond/0/frequnit}" items="{ path: 'condformvalues>/frequnits' }" width="10.5rem">
-											<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
-										</ComboBox>
-									</HBox>
-								</VBox>
-							</HBox>
-							<Label text="Formula"></Label>
-							<ComboBox value="{/formdata/cond/0/formula}" selectedKey="{/formdata/cond/0/formulaid}"
-								items="{ path: 'condformvalues>/formulas' }">
-								<core:Item key="{condformvalues>id}" text="{condformvalues>text}"/>
-							</ComboBox>
-						</f:content>
-					</f:SimpleForm>
+						<core:Fragment id="stgForm" fragmentName="refx.leaseuix.components.gridcondition.normalform" type="XML" />
 						<OverflowToolbar class="sapUiSmallMargin customCSS" style="Clear">
 							<Label text="Step: {/stgwzd/index} / {/stgwzd/max}" class="fontSize1_5 green" design="Bold"></Label>
 							<ToolbarSpacer/>
