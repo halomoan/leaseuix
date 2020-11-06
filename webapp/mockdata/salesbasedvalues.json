@@ -1,0 +1,23 @@
+{
+	"salesrulelist": [{
+		"id": "1",
+		"title": "Reporting Rule"
+	}, {
+		"id": "2",
+		"title": "Sales Rule"
+	}, {
+		"id": "3",
+		"title": "Peak Sales Rule"
+	}],
+	"frequencies": [{
+		"id": "0",
+		"text": "Month(s)"
+	}, {
+		"id": "1",
+		"text": "Year(s)"
+	}, {
+		"id": "2",
+		"text": "Day(s)"
+	}]
+
+}

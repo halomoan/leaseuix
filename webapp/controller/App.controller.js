@@ -4,6 +4,13 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("refx.leaseuix.controller.App", {
+		
+		// onInit: function(){
+		// 	this.initData();
+		// },
+		// initData: function(){
+		// 	this.oREFXValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/refxvalues.json");
+		// },
 		getValue: function(oEvent){
 			
 			 var fragmentId = this.getView().createId("selectunit");

@@ -31,7 +31,8 @@ sap.ui.define([
 				return oFormFragment;
 			}
 		
-			oFormFragment = sap.ui.xmlfragment(oView.getId(), "refx.leaseuix.components.gridcondition." + sFragmentName,this);
+			//oFormFragment = sap.ui.xmlfragment(oView.getId(), "refx.leaseuix.components.gridcondition." + sFragmentName,this);
+			oFormFragment = sap.ui.xmlfragment(oView.getId(), sFragmentName,this);
 			oView.addDependent(oFormFragment);
 			
 			var myFragment = (_formFragments[sFragmentName] = oFormFragment);
@@ -42,11 +43,26 @@ sap.ui.define([
 			this.getFormFragment(oView, _formFragments,sFragmentName).open();
 		},
 		
-		showFormFragment : function (sFragmentName) {
-			var oPage = this.getView().byId("page");
-		
-			oPage.removeAllContent();
-			oPage.insertContent(this.getFormFragment(sFragmentName));
+		showFormFragment : function (oView,containerId,_formFragments,sFragmentName,bClearMode) {
+			var oContainer = this.getView().byId(containerId);
+			
+			
+			if (bClearMode){
+				if (oContainer instanceof sap.f.GridContainer ){
+					
+					oContainer.removeAllItems();
+				} else {
+					oContainer.removeAllContent();
+				}
+			}
+			
+			if (oContainer instanceof sap.f.GridContainer ){
+				oContainer.addItem(this.getFormFragment(oView,_formFragments,sFragmentName));
+			} else {
+				oContainer.insertContent(this.getFormFragment(oView,_formFragments,sFragmentName));
+			}
+			
+			
 		},
 		removeFragment: function(_formFragments){
 			for(var sPropertyName in _formFragments) {

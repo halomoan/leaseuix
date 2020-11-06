@@ -1,5 +1,4 @@
 sap.ui.define([
-	// "sap/ui/core/mvc/Controller",
 	"refx/leaseuix/controller/BaseController",
 	'sap/ui/model/json/JSONModel',
 	"sap/ui/core/Fragment",
@@ -52,34 +51,6 @@ sap.ui.define([
 
 			this._DateSort = 1;
 		},
-
-		// addCard: function(){
-		// 	//var oData = this.byId("grid1").getModel().getData();
-
-		// 	var oCondition = { 
-		// 			"id": "L102",
-		// 			"title": "Service Charge Rent",
-		// 			"rows": 4,
-		// 			"columns": 5,
-		// 			"cond": []
-
-		// 	};
-
-		// 	if (!this._isCardExist(oCondition.id)) {
-		// 		var oData = this.byId("grid1").getModel().getData();
-		// 		oData.push(	oCondition);
-		// 		this.byId("grid1").getModel().setProperty("/",oData);
-		// 	}else{
-
-		// 	}
-		// },
-		// findID: function(){
-		// 	var oView = this.getView();
-		// 	var oData = oView.byId("grid1").getModel();
-
-		// 	console.log(oData);
-
-		// },
 
 		onMenuAction: function(oEvent) {
 			var oItem = oEvent.getParameter("item"),
@@ -279,7 +250,7 @@ sap.ui.define([
 		// },
 		openStdWizardFrom: function() {
 
-			this.showFormDialogFragment(this.getView(), this._formFragments, "standardwizard");
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.standardwizard");
 			var navCon = this.byId("navStdWzd");
 			navCon.to(this.byId("stdForm0"), "show");
 		},
@@ -302,7 +273,7 @@ sap.ui.define([
 			oView.getModel().setProperty("/stgwzd/showOK", false);
 			oView.getModel().setProperty("/stgwzd/conds", []);
 
-			this.showFormDialogFragment(this.getView(), this._formFragments, "staggeredwizard");
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.staggeredwizard");
 			var navCon = this.byId("navStgWzd");
 			navCon.to(this.byId("stgForm0"), "show");
 		},
@@ -311,7 +282,7 @@ sap.ui.define([
 
 			this._formDataOri = {...oView.getModel().getProperty("/formdata")
 			};
-			this.showFormDialogFragment(this.getView(), this._formFragments, "conditionDialog");
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.conditionDialog");
 		},
 
 		cancelDialog: function() {

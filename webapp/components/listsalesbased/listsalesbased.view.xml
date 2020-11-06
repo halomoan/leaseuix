@@ -1,0 +1,36 @@
+<mvc:View controllerName="refx.leaseuix.components.listsalesbased.listsalesbased" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:f="sap.f" displayBlock="true" height="100%">
+	<ScrollContainer height="100%" width="100%" vertical="true" class="customCSS">
+		<HBox renderType="Bare">
+			<VBox >
+				<HBox justifyContent="SpaceBetween">
+					<Title text="Use Wizard" class="sapUiTinyMarginTop fontSize1_5"></Title>
+					<Button id="wzd1" text="" icon="sap-icon://activate" press="doWizard"/>
+				</HBox>
+				<List id="list1" class="" width="300px" items="{ path: 'salesrulevalues>/salesrulelist' }" growingScrollToLoad="true">
+					<StandardListItem title="{salesrulevalues>id} - {salesrulevalues>title}"/>
+					<headerToolbar>
+						<OverflowToolbar>
+							<Title text="Or Pick A Sales Rule" level="H2"/>
+							<ToolbarSpacer/>
+							<SearchField liveChange=".onSearch" width="100%"/>
+						</OverflowToolbar>
+					</headerToolbar>
+				</List>
+			</VBox>
+			<!--<f:GridContainer id="slrgrid1" class="sapUiTinyMargin" width="100%" snapToRow="true" items="{ path: '/' }">-->
+			<f:GridContainer id="slrgrid1" class="sapUiTinyMargin" width="100%" snapToRow="true">
+				<f:layout>
+					<f:GridContainerSettings rowSize="84px" columnSize="84px" gap="8px"/>
+				</f:layout>
+				<f:layoutXS>
+					<f:GridContainerSettings rowSize="70px" columnSize="70px" gap="8px"/>
+				</f:layoutXS>
+				<f:items>
+						<core:Fragment id="fr1" fragmentName="refx.leaseuix.components.listsalesbased.reportingrulecard" type="XML"/>
+					
+				</f:items>
+			</f:GridContainer>
+		</HBox>
+	</ScrollContainer>
+</mvc:View>
