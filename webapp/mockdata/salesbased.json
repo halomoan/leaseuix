@@ -1,24 +1,19 @@
-[{
-	"id": "1",
-	"title": "Reporting Rule",
-	"rows": 3,
-	"columns": 4,
-	"icon": "sap-icon://appointment-2",
-	"items": [{
-		"id": "0",
-		"freq": "1",
-		"frequnitid": 0,
-		"frequnit": "Month(s)",
-		"fromDate": "20201101",
-		"highlight": "Success",
-		"new": true
-	}, {
+{
+
+	"reportingrule": {
 		"id": "1",
-		"freq": "1",
-		"frequnitid": 0,
-		"frequnit": "Monthl(s)",
-		"fromDate": "20201101",
-		"highlight": "Success",
-		"new": true
-	}]
-}]
+		"title": "Reporting Rule",
+		"rows": 3,
+		"columns": 4,
+		"items": []
+	},
+	"salesrule": {
+		"id": "1",
+		"title": "Sales Rule",
+		"rows": 3,
+		"columns": 5,
+		"items": [
+		]
+	}
+
+}

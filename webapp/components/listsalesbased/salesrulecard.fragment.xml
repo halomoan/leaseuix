@@ -1,0 +1,77 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:card="sap.f.cards" xmlns:core="sap.ui.core">
+	<f:Card width="100%" class="sapUiTinyMarginBegin">
+		<f:layoutData>
+			<f:GridContainerItemLayoutData minRows="{/salesrule/rows}" columns="{/salesrule/columns}"/>
+		</f:layoutData>
+		<f:header>
+			<Toolbar class="sapUiSmallMargin">
+				<!--<core:Icon src="sap-icon://appointment-2" class="iconSize2_5" color="green"></core:Icon>-->
+				<VBox>
+					<Label text="{i18n>SalesRule}" design="Bold"></Label>
+					<Label text="{i18n>SalesGrading}"></Label>
+				</VBox>
+				<ToolbarSpacer/>
+				<!--<Link text="Delete" press="onDelete"/>-->
+				<!--<Label text="|" width="5px"></Label>-->
+				<Link text="Add Item" press="onSalesRuleAdd"/>
+				<Button type="Transparent" tooltip="Toggle Sort By Date" icon="sap-icon://sort" press=".onSalesRuleSort"/>
+			</Toolbar>
+		</f:header>
+		<f:content>
+			<List showSeparators="None" items="{/salesrule/items}" mode="Delete" delete="onSalesRuleDelete">
+				<CustomListItem highlight="Warning">
+					<HBox fitContainer="true" class="sapUiSmallMargin">
+						<core:Icon size="2rem" src="sap-icon://travel-expense-report" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" color="green"/>
+						<VBox class="sapUiSmallMarginBegin">
+							<ComboBox  class="sapUiSmallMarginBottom" width="240px" placeholder="Sales Grading" items="{ path: 'salesrulevalues>/salesgrade', sorter: { path: 'id' } }"
+								selectedKey="{gradetypeid}" value="{gradetype}" change="onGradeTypeChange">
+								<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
+							</ComboBox>
+							<HBox visible="{= ${gradetypeid} !== '01'}">
+								<VBox>
+									<Label text="Gross/Net"></Label>
+									<ComboBox width="120px" placeholder="Gross/Net" selectedKey="{nograding/gross_net}">
+										<core:Item key="Net" text="Net"/>
+										<core:Item key="Gross" text="Gross"/>
+									</ComboBox>
+								</VBox>
+								<VBox>
+									<Label text="Min.Sales"></Label>
+									<Input width="80px"
+										value="{ path: 'nograding/minsales',type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
+								</VBox>
+								<VBox>
+									<Label text="Max.Sales"></Label>
+									<Input width="80px"
+										value="{path: 'nograding/maxsales', type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
+								</VBox>
+							</HBox>
+							<HBox visible="{= ${gradetypeid} === '01'}">
+								<VBox>
+									<Label text="Sales From"></Label>
+									<Input width="80px"
+										value="{ path: 'grading/salesfrom',type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
+								</VBox>
+								<VBox>
+									<Label text="Sales To"></Label>
+									<Input width="80px"
+										value="{ path: 'grading/salesto',type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
+								</VBox>
+								<VBox>
+									<Label text="Rate"></Label>
+									<Input width="80px"
+										value="{ path: 'grading/rate',type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
+								</VBox>
+								<VBox>
+									<Label text="Min.Rate"></Label>
+									<Input width="80px"
+										value="{ path: 'grading/minrent',type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
+								</VBox>
+							</HBox>
+						</VBox>
+					</HBox>
+				</CustomListItem>
+			</List>
+		</f:content>
+	</f:Card>
+</core:FragmentDefinition>

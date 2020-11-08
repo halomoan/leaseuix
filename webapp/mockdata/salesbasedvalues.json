@@ -18,6 +18,54 @@
 	}, {
 		"id": "2",
 		"text": "Day(s)"
-	}]
+	}],
+	"salesgrade": [{
+		"id": "",
+		"text": "No Sales Grading Agreement"
+	},{
+		"id": "01",
+		"text": "Sales Grading Agreement"
+	}],
+	"repruleitem": {
+		"id": "0",
+		"sales": {
+			"freq": "1",
+			"frequnitid": "0",
+			"frequnit": "Month(s)",
+			"fromDate": "20200101"
+		},
+		"certified": {
+			"freq": "1",
+			"frequnitid": "0",
+			"frequnit": "Month(s)",
+			"fromDate": ""
+		},
+		"planned": {
+			"freq": "1",
+			"frequnitid": "0",
+			"frequnit": "Month(s)",
+			"fromDate": "20201010"
+		},
+		"highlight": "Success",
+		"new": true
+	},
+	"salesruleitem": {
+		"id": 0,
+		"gradetypeid": "",
+		"gradetype": "No Sales Grading Agreement",
+		"nograding": {
+			"gross_net": "Net",
+			"minsales": 0.00,
+			"maxsales": 0.00,
+			"rate": 0.00
+		},
+		"grading": {
+			"salesfrom": 0.00,
+			"salesto": 0.00,
+			"rate": 0.00,
+			"minrent": 0.00
+		},
+		"new": true
+	}
 
 }
