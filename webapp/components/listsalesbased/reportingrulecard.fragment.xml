@@ -14,52 +14,58 @@
 		</f:header>
 		<f:content>
 			<List showSeparators="None" items="{/reportingrule/items}" mode="Delete" delete="onRepRuleDelete">
-			<!--<List showSeparators="None" items="{/reportingrule/items}">-->
+				<!--<List showSeparators="None" items="{/reportingrule/items}">-->
 				<CustomListItem highlight="Warning">
 					<HBox fitContainer="true">
-						<core:Icon size="2rem" src="sap-icon://appointment-2" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" color="green"/>
-						<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-							<Title text="{i18n>Sales}"></Title>
-							<Label text="{i18n>StartFrom}" labelFor="fromDate"></Label>
-							<DatePicker
-								value="{path: 'sales/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"></DatePicker>
-							<Label text="Frequency" labelFor="freqNo"></Label>
-							<HBox>
-								<Input id="freqNo" width="80px" maxLength="2" value="{sales/freq}"></Input>
-								<ComboBox id="freqPeriod" placeholder="Frequency" items="{ path: 'salesrulevalues>/frequencies', sorter: { path: 'id' } }"
-									selectedKey="{sales/frequnitid}" value="{sales/frequnit}">
-									<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
-								</ComboBox>
-							</HBox>
+						<FlexBox direction="Column" alignItems="Center"
+				justifyContent="Start">
+							<core:Icon size="2rem" src="sap-icon://appointment-2" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" color="green"/>
+							<Label text="{i18n>ID} {id}"></Label>
+						</FlexBox>
+							
+							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginBottom">
+								<!--<Title text="{i18n>Sales}"></Title>-->
+								<Label text="{i18n>Sales} {i18n>StartFrom}" labelFor="fromDate"></Label>
+								<DatePicker
+									value="{path: 'sales/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"></DatePicker>
+								<Label text="Frequency" labelFor="freqNo"></Label>
+								<HBox>
+									<Input id="freqNo" width="80px" maxLength="2" value="{sales/freq}"></Input>
+									<ComboBox id="freqPeriod" placeholder="Frequency" items="{ path: 'salesrulevalues>/frequencies', sorter: { path: 'id' } }"
+										selectedKey="{sales/frequnitid}" value="{sales/frequnit}">
+										<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
+									</ComboBox>
+								</HBox>
+							</VBox>
+							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginBottom">
+								<!--<Title text="{i18n>Certified}"></Title>-->
+								<Label text="{i18n>Certified} {i18n>StartFrom}" labelFor="fromDate1"></Label>
+								<DatePicker id="fromDate1"
+									value="{path: 'certified/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"></DatePicker>
+								<Label text="Frequency" labelFor="freqNo1"></Label>
+								<HBox>
+									<Input id="freqNo1" width="80px" maxLength="2" value="{certified/freq}"></Input>
+									<ComboBox id="freqPeriod1" placeholder="Frequency" items="{ path: 'salesrulevalues>/frequencies', sorter: { path: 'id' } }"
+										selectedKey="{certified/frequnitid}" value="{certified/frequnit}">
+										<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
+									</ComboBox>
+								</HBox>
+							</VBox>
+							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginBottom">
+								<!--<Title text="{i18n>Planned}"></Title>-->
+								<Label text="{i18n>Planned} {i18n>StartFrom}" labelFor="fromDate2"></Label>
+								<DatePicker id="fromDate2"
+									value="{path: 'planned/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"></DatePicker>
+								<Label text="Frequency" labelFor="freqNo2"></Label>
+								<HBox>
+									<Input id="freqNo2" width="80px" maxLength="2" value="{planned/freq}"></Input>
+									<ComboBox id="freqPeriod2" placeholder="Frequency" items="{ path: 'salesrulevalues>/frequencies', sorter: { path: 'id' } }"
+										selectedKey="{planned/frequnitid}" value="{planned/frequnit}">
+										<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
+									</ComboBox>
+								</HBox>
 						</VBox>
-						<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-							<Title text="{i18n>Certified}"></Title>
-							<Label text="{i18n>StartFrom}" labelFor="fromDate1"></Label>
-							<DatePicker id="fromDate1"
-								value="{path: 'certified/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"></DatePicker>
-							<Label text="Frequency" labelFor="freqNo1"></Label>
-							<HBox>
-								<Input id="freqNo1" width="80px" maxLength="2" value="{certified/freq}"></Input>
-								<ComboBox id="freqPeriod1" placeholder="Frequency" items="{ path: 'salesrulevalues>/frequencies', sorter: { path: 'id' } }"
-									selectedKey="{certified/frequnitid}" value="{certified/frequnit}">
-									<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
-								</ComboBox>
-							</HBox>
-						</VBox>
-							<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-							<Title text="{i18n>Planned}"></Title>
-							<Label text="{i18n>StartFrom}" labelFor="fromDate2"></Label>
-							<DatePicker id="fromDate2"
-								value="{path: 'planned/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"></DatePicker>
-							<Label text="Frequency" labelFor="freqNo2"></Label>
-							<HBox>
-								<Input id="freqNo2" width="80px" maxLength="2" value="{planned/freq}"></Input>
-								<ComboBox id="freqPeriod2" placeholder="Frequency" items="{ path: 'salesrulevalues>/frequencies', sorter: { path: 'id' } }"
-									selectedKey="{planned/frequnitid}" value="{planned/frequnit}">
-									<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
-								</ComboBox>
-							</HBox>
-						</VBox>
+						
 						<!--<core:Icon size="1.2rem" press="onRepRuleDelete" src="sap-icon://delete" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" color="red"/>-->
 					</HBox>
 				</CustomListItem>

@@ -8,7 +8,7 @@
 				<!--<core:Icon src="sap-icon://appointment-2" class="iconSize2_5" color="green"></core:Icon>-->
 				<VBox>
 					<Label text="{i18n>SalesRule}" design="Bold"></Label>
-					<Label text="{i18n>SalesGrading}"></Label>
+					<!--<Label text="{i18n>SalesGrading} "></Label>-->
 				</VBox>
 				<ToolbarSpacer/>
 				<!--<Link text="Delete" press="onDelete"/>-->
@@ -20,10 +20,12 @@
 		<f:content>
 			<List showSeparators="None" items="{/salesrule/items}" mode="Delete" delete="onSalesRuleDelete">
 				<CustomListItem highlight="Warning">
-					<HBox fitContainer="true" class="sapUiSmallMargin">
+					<HBox fitContainer="true">
 						<core:Icon size="2rem" src="sap-icon://travel-expense-report" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" color="green"/>
-						<VBox class="sapUiSmallMarginBegin">
-							<ComboBox  class="sapUiSmallMarginBottom" width="240px" placeholder="Sales Grading" items="{ path: 'salesrulevalues>/salesgrade', sorter: { path: 'id' } }"
+						<VBox class="sapUiSmallMarginBegin sapUiSmallMarginBottom">
+							<Title text="{i18n>SalesID} : {id}"></Title>
+							<Label text="{i18n>SalesGrading} "></Label>
+							<ComboBox  width="240px" placeholder="Sales Grading" items="{ path: 'salesrulevalues>/salesgrade', sorter: { path: 'id' } }"
 								selectedKey="{gradetypeid}" value="{gradetype}" change="onGradeTypeChange">
 								<core:Item key="{salesrulevalues>id}" text="{salesrulevalues>text}"/>
 							</ComboBox>
@@ -58,9 +60,9 @@
 										value="{ path: 'grading/salesto',type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
 								</VBox>
 								<VBox>
-									<Label text="Rate"></Label>
+									<Label text="Rate %"></Label>
 									<Input width="80px"
-										value="{ path: 'grading/rate',type: 'sap.ui.model.type.Float',formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true} }"/>
+										value="{ path: 'grading/rate',type: 'sap.ui.model.type.Float', formatOptions: {minIntegerDigits: 1, maxIntegerDigits: 99, minFractionDigits: 2,maxFractionDigits: 99,groupingEnabled: true}}"/>
 								</VBox>
 								<VBox>
 									<Label text="Min.Rate"></Label>

@@ -22,6 +22,14 @@ sap.ui.define(["sap/ui/core/format/NumberFormat","sap/ui/core/format/DateFormat"
 			return oFloatNumberFormat.format(iNumber);
 			
 		},
+		PercentageFormat: function(iNumber){
+			var oPercentFormat = NumberFormat.getPercentInstance({
+                    maxFractionDigits: 0,
+                    minFractionDigits : 2,
+                    groupingEnabled: true
+                });
+			return oPercentFormat.format(iNumber);
+		},
 		ddMMyyyy: function(date) {
 			var oDateFormat = DateFormat.getDateTimeInstance({pattern: "dd/MMM/yyyy HH:mm"});
 			return oDateFormat.format(date);
