@@ -1,0 +1,53 @@
+{
+	"postingtmplt": [
+		{
+			"id": 10,
+			"text" : "With GST",
+			"payterm": "",
+			"paytermid": ""
+			
+		}	
+	
+	],
+	"frequencytmplt" : [
+		{
+			"id": 10,
+			"text" : "Monthly",
+			"freq": 1,
+			"frequnitid": 0,
+			"frequnit": "Months"
+			
+		}
+	],
+	
+	"frequnits": [
+		{
+			"id": 0,
+			"text": "Months"
+		},
+		{
+			"id": 1,
+			"text": "Years"
+		},
+		{
+			"id": 2,
+			"text": "Days"
+		}
+	],
+	
+	"payterms": [
+		{
+			"id": "",
+			"text" : "Baseline date on End of the month"
+		},
+		{
+			"id": "C14",
+			"text" : "Payment within 14 Days"
+		},
+		{
+			"id": "C16",
+			"text" : "Payment within 16 Days"
+		}
+		
+		]
+}
