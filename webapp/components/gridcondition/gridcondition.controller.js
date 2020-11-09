@@ -183,13 +183,24 @@ sap.ui.define([
 			if (iIndex >= 0) {
 
 				oNewItem.id = parseInt(oCondGroup.cond[iIndex].id) + 1;
+				
+				var iMaxId = 0; 
+				
+				for(var i = 0; i < oCondGroup.cond.length; i++){
+					if(oCondGroup.cond[i].id > iMaxId) {
+						iMaxId = oCondGroup.cond[i].id;
+					}	
+				}
+				oNewItem.id = iMaxId + 10;
+				
 				oNewItem.curr = oCondGroup.cond[iIndex].curr;
 			} else {
 
+				oNewItem.id = 10;
 				oNewItem.curr = oVModel.getData().currency;
 
 			}
-
+			
 			oCondGroup.cond.push(oNewItem);
 
 			var oCondition = {};
@@ -200,6 +211,7 @@ sap.ui.define([
 
 			this.getView().getModel().setProperty("/condgroup", oCondGroup);
 			this.getView().getModel().setProperty("/formdata", oCondition);
+			//this.getView().getModel().refresh();
 
 			this.openConditionForm();
 
@@ -497,7 +509,7 @@ sap.ui.define([
 
 			var formId = fragname + "--";
 
-			var requiredInputs = ['fromDate', 'toDate', 'condpurpose', 'amount'];
+			var requiredInputs = ['fromDate',  'condpurpose', 'amount'];
 
 			requiredInputs.forEach(function(control) {
 				var oControl = sap.ui.core.Fragment.byId(fragId, formId + control);
@@ -505,7 +517,7 @@ sap.ui.define([
 				//var sType = oControl.getBinding("value").getType().getName();
 				
 
-				if (control === "amount") {
+				if (control === "amount" && oData.techstatus.showrate) {
 					if (oControl.getValue() <= 0) {
 						oControl.setValueState(sap.ui.core.ValueState.Error);
 						oStatus.hasError = true;
@@ -514,7 +526,7 @@ sap.ui.define([
 						oControl.setValueState(sap.ui.core.ValueState.None);
 					}
 				} else {
-					if (oControl.getValue() === "" && control !== "toDate") {
+					if (oControl.getValue() === "") {
 						oControl.setValueState(sap.ui.core.ValueState.Error);
 						oStatus.hasError = true;
 						oStatus.msg = "Invalid Entry Detected";
@@ -524,6 +536,10 @@ sap.ui.define([
 				}
 
 			});
+			
+			if (oStatus.hasError){
+				return oStatus;
+			}
 			if (!oData.toDate || oData.toDate === ""){
 				oData.toDate = "99991231";
 			}
@@ -550,7 +566,7 @@ sap.ui.define([
 						(cond.fromDate >= oData.fromDate) && (cond.fromDate <= oData.toDate);
 						
 						
-						console.log(bOverlap,oData.fromDate,cond.fromDate,oData.toDate,cond.toDate);
+						//console.log(bOverlap,oData.fromDate,cond.fromDate,oData.toDate,cond.toDate);
 
 					if (bOverlap) {
 						oStatus.hasError = true;

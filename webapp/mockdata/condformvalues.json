@@ -149,9 +149,9 @@
 	"conditem": {
 		"id": "0",
 		"condpurposeid": "A",
-		"condpurpose": "",
+		"condpurpose": "Actual Rent",
 		"formulaid": "B",
-		"formula": "",
+		"formula":  "Resid./Usable Space in SF",
 		"salesruleid": "20",
 		"salesrule": "",
 		"freq": "1",
