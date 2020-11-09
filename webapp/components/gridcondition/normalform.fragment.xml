@@ -58,7 +58,7 @@
 				</VBox>
 			</FlexBox>
 			<FlexBox alignItems="Start">
-				<VBox>
+				<VBox visible="{/formdata/cond/0/techstatus/showrate}">
 					<Label text="Rate" labelFor="amount"/>
 					<Input width="12rem" id="amount" required="true" description="{condformvalues>/currency}"
 						value="{ parts: [{path: '/formdata/cond/0/amount'}, {path: 'condformvalues>/currency'}] , type: 'sap.ui.model.type.Currency',formatOptions: {showMeasure: false } }"></Input>

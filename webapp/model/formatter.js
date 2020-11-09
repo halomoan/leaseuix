@@ -40,7 +40,9 @@ sap.ui.define(["sap/ui/core/format/NumberFormat","sap/ui/core/format/DateFormat"
 		},
 		
 		yyyy_MM_dd: function(yyyMMdd) {
-			return yyyMMdd.substring(0,4) + "-" + yyyMMdd.substring(4,6) + "-" + yyyMMdd.substring(6,8)
+			if (yyyMMdd) {
+				return yyyMMdd.substring(0,4) + "-" + yyyMMdd.substring(4,6) + "-" + yyyMMdd.substring(6,8);
+			}
 		}
 		
 	};

@@ -35,7 +35,8 @@ sap.ui.define([
 			this.byId("slrcontainer").setModel(this.oSalesRuleModel);
 			// this.byId("slrcontainer").setModel(new JSONModel(viewData),"slsruleview");
 			
-			this._RepRuleDateSort = 1;
+			this._RepRuleSort = 1;
+			this._SalesRuleSort = 1;
 		},
 
 		doWizard: function() {
@@ -72,6 +73,13 @@ sap.ui.define([
 			var oItemTemplate = {...this.getView().getModel("salesrulevalues").getProperty("/repruleitem")
 			};
 
+			var iMaxId = 0;
+			for (var i = 0; i < oData.items.length; i++ ){
+				if (oData.items[i].id > iMaxId ) {
+					iMaxId = oData.items[i].id;
+				}	
+			}
+			oItemTemplate.id = iMaxId + 10;
 			oData.items.unshift(oItemTemplate);
 			oModel.refresh();
 
@@ -81,10 +89,11 @@ sap.ui.define([
 			var oModel = this.byId("slrcontainer").getModel();
 			var aData = oModel.getProperty("/reportingrule").items;
 
-			this._RepRuleDateSort = -1 * this._RepRuleDateSort;
+			this._RepRuleSort = -1 * this._RepRuleSort;
 			aData.sort((a, b) =>
 
-				(a.fromDate > b.fromDate) ? 1 * this._RepRuleDateSort : -1 * this._RepRuleDateSort
+				//(a.fromDate > b.fromDate) ? 1 * this._RepRuleSort : -1 * this._RepRuleSort
+				(a.id > b.id) ? 1 * this._RepRuleSort : -1 * this._RepRuleSort
 			);
 			oModel.refresh();
 		},
@@ -113,8 +122,6 @@ sap.ui.define([
 			var oCtx = oItem.getBindingContext();
 			var sPath = oCtx.getPath();
 
-			console.log(oList.getModel());
-
 			if (oCtx.getProperty("new")) {
 				var idx = sPath.split("/")[1];
 				var delidx = parseInt(sPath.substring(sPath.lastIndexOf('/') + 1), 10);
@@ -125,6 +132,19 @@ sap.ui.define([
 			} else {
 				MessageBox.information("This Item Cannot Be Deleted");
 			}
+		},
+		
+		onSalesRuleSort: function(oEvent){
+			var oModel = this.byId("slrcontainer").getModel();
+			var aData = oModel.getProperty("/salesrule").items;
+
+			this._SalesRuleSort = -1 * this._SalesRuleSort;
+			aData.sort((a, b) =>
+
+				//(a.fromDate > b.fromDate) ? 1 * this._SalesRuleSort : -1 * this._SalesRuleSort
+				(a.id > b.id) ? 1 * this._SalesRuleSort : -1 * this._SalesRuleSort
+			);
+			oModel.refresh();
 		},
 		
 		onGradeTypeChange: function(oEvent){

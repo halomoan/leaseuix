@@ -9,6 +9,7 @@
 				}">
 				<CustomListItem highlight="{highlight}">
 					<HBox alignItems="Center" justifyContent="SpaceBetween">
+						<Label text="{id}"></Label>
 						<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
 							<Title level="H3" text="{condpurpose}" />
 							<Label level="H4" text="{ path: 'fromDate', type:'sap.ui.model.type.Date', 
@@ -37,7 +38,7 @@
 							text="{formula}"
 							state="Warning" />
 							<ObjectStatus text="{= ${expired} ? 'Expired': ''}" state="Error"/>
-						<HBox visible="{new}" class="sapUiSmallMarginTop"> 
+						<HBox visible="{techstatus/new}" class="sapUiSmallMarginTop"> 
 							<Link text="Edit" press="onItemEdit" />
 							<Text text="|" class="sapUiTinyMarginBeginEnd"/> 
 							<Link text="Delete" press="onItemDelete" />

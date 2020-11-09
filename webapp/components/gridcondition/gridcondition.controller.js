@@ -153,21 +153,36 @@ sap.ui.define([
 			this.openConditionForm();
 
 		},
+		
+		_specialCond: function(oModel,sId,oItem) {
+			var oSalesBasedCond = oModel.getData().salesbasedcond;
+			
+			if (oSalesBasedCond.includes(sId)){
+				oItem.techstatus.showrate = false;
+			} else {
+				oItem.techstatus.showrate = true;
+			}
+			
+		},
 		onItemAdd: function(oEvent) {
 
 			var oVModel = this.getView().getModel("condformvalues");
-			var oNewItem = {...oVModel.getData().conditem
-			};
+			
+			var oNewItem = {...oVModel.getData().conditem};
 
 			var sPath = oEvent.getSource().getBindingContext().getPath();
 			var oModel = oEvent.getSource().getModel();
 			var oCondGroup = oModel.getProperty(sPath);
 
+
+			this._specialCond(oVModel,oCondGroup.id,oNewItem);
+
+			
 			var iIndex = oCondGroup.cond.length - 1;
 
 			if (iIndex >= 0) {
 
-				oNewItem.id = oCondGroup.cond[iIndex].id + 1;
+				oNewItem.id = parseInt(oCondGroup.cond[iIndex].id) + 1;
 				oNewItem.curr = oCondGroup.cond[iIndex].curr;
 			} else {
 
@@ -488,6 +503,7 @@ sap.ui.define([
 				var oControl = sap.ui.core.Fragment.byId(fragId, formId + control);
 
 				//var sType = oControl.getBinding("value").getType().getName();
+				
 
 				if (control === "amount") {
 					if (oControl.getValue() <= 0) {
@@ -498,7 +514,7 @@ sap.ui.define([
 						oControl.setValueState(sap.ui.core.ValueState.None);
 					}
 				} else {
-					if (oControl.getValue() === "") {
+					if (oControl.getValue() === "" && control !== "toDate") {
 						oControl.setValueState(sap.ui.core.ValueState.Error);
 						oStatus.hasError = true;
 						oStatus.msg = "Invalid Entry Detected";
@@ -508,6 +524,9 @@ sap.ui.define([
 				}
 
 			});
+			if (!oData.toDate || oData.toDate === ""){
+				oData.toDate = "99991231";
+			}
 
 			if (oData.fromDate > oData.toDate) {
 				oStatus.hasError = true;
@@ -525,8 +544,13 @@ sap.ui.define([
 
 				if (cond.id != oData.id && cond.condpurposeid === oData.condpurposeid) {
 
+					
+					
 					var bOverlap = (oData.fromDate >= cond.fromDate) && (oData.fromDate <= cond.toDate) ||
 						(cond.fromDate >= oData.fromDate) && (cond.fromDate <= oData.toDate);
+						
+						
+						console.log(bOverlap,oData.fromDate,cond.fromDate,oData.toDate,cond.toDate);
 
 					if (bOverlap) {
 						oStatus.hasError = true;
@@ -645,11 +669,12 @@ sap.ui.define([
 			if (oDropped && oDropped.isA("sap.m.StandardListItem")) {
 				oDropModel = oDropContainer.getModel("condformvalues");
 				oDropModelData = oDropModel.getData().condlist;
+			
 
 			} else {
 				oDropModel = oDropContainer.getModel();
 				oDropModelData = oDropModel.getData();
-
+			
 			}
 
 			var iDragPosition = oDragContainer.indexOfItem(oDragged),
@@ -662,7 +687,8 @@ sap.ui.define([
 				MessageBox.error("Duplicate Condition Type detected !");
 				return false;
 			}
-
+			
+			
 			oDragModelData.splice(iDragPosition, 1);
 
 			if (oDragModel === oDropModel && iDragPosition < iDropPosition) {

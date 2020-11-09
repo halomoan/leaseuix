@@ -16,9 +16,9 @@
 					<!--<Panel>-->
 					<!--	<mvc:XMLView viewName="refx.leaseuix.components.listselunit.listselunit" id="listselunit" async="true"></mvc:XMLView>-->
 					<!--</Panel>-->
-					<!--<Panel>-->
-					<!--	<mvc:XMLView viewName="refx.leaseuix.components.gridcondition.gridcondition" id="gridcondition" async="true"></mvc:XMLView>-->
-					<!--</Panel>-->
+					<Panel>
+						<mvc:XMLView viewName="refx.leaseuix.components.gridcondition.gridcondition" id="gridcondition" async="true"></mvc:XMLView>
+					</Panel>
 					<Panel>
 						<mvc:XMLView viewName="refx.leaseuix.components.listsalesbased.listsalesbased" id="listsalesbased" async="true"></mvc:XMLView>
 					</Panel>
