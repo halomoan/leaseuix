@@ -1,3 +1,23 @@
 {
+	"postingparam": [
+		{
+			"id": 10,
+			"text" : "With GST",
+			"payterm": "",
+			"paytermid": "",
+			"fromDate": ""
+		}	
 	
+	],
+	"frequencyparam" : [
+		{
+			"id": 10,
+			"text" : "Monthly",
+			"freq": 1,
+			"frequnitid": 0,
+			"frequnit": "Months",
+			"fromDate": ""
+			
+		}
+	]	
 }
