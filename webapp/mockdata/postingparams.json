@@ -1,12 +1,5 @@
 {
 	"postingparam": [
-		{
-			"id": 10,
-			"text" : "With GST",
-			"payterm": "",
-			"paytermid": "",
-			"fromDate": ""
-		}	
 	
 	],
 	"frequencyparam" : [

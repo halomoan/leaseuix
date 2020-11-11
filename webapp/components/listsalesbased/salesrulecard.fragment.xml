@@ -14,7 +14,7 @@
 				<!--<Link text="Delete" press="onDelete"/>-->
 				<!--<Label text="|" width="5px"></Label>-->
 				<Link text="Add Item" press="onSalesRuleAdd"/>
-				<Button type="Transparent" tooltip="Toggle Sort By Date" icon="sap-icon://sort" press=".onSalesRuleSort"/>
+				<Button type="Transparent" tooltip="Toggle Sort By ID" icon="sap-icon://sort" press=".onSalesRuleSort"/>
 			</Toolbar>
 		</f:header>
 		<f:content>

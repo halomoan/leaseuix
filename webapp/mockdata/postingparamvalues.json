@@ -29,5 +29,16 @@
 			"text" : "Payment within 16 Days"
 		}
 		
-		]
+		],
+	"postingtmplt": {
+			"id": "",
+			"text" : "With GST",
+			"payterm": "",
+			"paytermid": "",
+			"fromDate": "",
+			"taxtype": "MWST",
+			"taxgroup": "FULL",
+			"new" : true
+		}	
+		
 }
