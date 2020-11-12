@@ -13,14 +13,9 @@ sap.ui.define([
 		},
 		
 		getModel: function(sModelName){
-			switch(sModelName){
-				case "postingparamvalues":
-					
-					this.oPostingParamValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparamvalues.json");	
-					return this.oPostingParamValuesModel;
-						
-			}	
+			return this.getOwnerComponent().getModel(sModelName);
 		},
+		
 		
 		onNavBack: function () {
 			var oHistory, sPreviousHash;

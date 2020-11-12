@@ -1,16 +1,10 @@
 sap.ui.define([
-	"refx/leaseuix/controller/BaseController"
-], function(BaseController) {
+	'sap/ui/core/mvc/Controller'
+], function(Controller) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.controller.App", {
+	return Controller.extend("refx.leaseuix.controller.App", {
 		
-		// onInit: function(){
-		// 	this.initData();
-		// },
-		// initData: function(){
-		// 	this.oREFXValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/refxvalues.json");
-		// },
 		getValue: function(oEvent){
 			
 			 //var fragmentId = this.getView().createId("selectunit");
@@ -19,7 +13,9 @@ sap.ui.define([
 			 //	  //return oToken.getText();
 				//   return oToken.getKey();
 				// }).join(",");
-        	 console.log(sData);
+				
+			 var oModel = this.getOwnerComponent().getModel("postingParams"); 
+        	 console.log(oModel);
 		}
 	});
 });

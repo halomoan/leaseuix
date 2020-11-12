@@ -10,7 +10,12 @@ sap.ui.define([
 			var oModel = new JSONModel(Device);
 			oModel.setDefaultBindingMode("OneWay");
 			return oModel;
+		},
+		
+		postingParamModel: function(){
+			return new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparams.json");
 		}
+		
 
 	};
 });

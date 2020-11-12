@@ -19,7 +19,8 @@ sap.ui.define([
 			this.oPostingParamValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparamvalues.json");	
 			this.getView().setModel(this.oPostingParamValuesModel, "postingparamvalues");
 			
-			this.oPostingParamModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparams.json");
+			//this.oPostingParamModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparams.json");
+			this.oPostingParamModel = this.getModel("postingParams");
 			this.getView().setModel(this.oPostingParamModel);
 			
 			this._PostingSort = 1;
