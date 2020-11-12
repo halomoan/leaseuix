@@ -1,9 +1,9 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function(Controller) {
+	"refx/leaseuix/controller/BaseController"
+], function(BaseController) {
 	"use strict";
 
-	return Controller.extend("refx.leaseuix.controller.App", {
+	return BaseController.extend("refx.leaseuix.controller.App", {
 		
 		// onInit: function(){
 		// 	this.initData();
@@ -13,12 +13,12 @@ sap.ui.define([
 		// },
 		getValue: function(oEvent){
 			
-			 var fragmentId = this.getView().createId("selectunit");
-			 var aTokens = sap.ui.core.Fragment.byId(fragmentId, "rentalUnits").getTokens();
-			 var sData = aTokens.map(function(oToken) {
-			 	  //return oToken.getText();
-				  return oToken.getKey();
-				}).join(",");
+			 //var fragmentId = this.getView().createId("selectunit");
+			 //var aTokens = sap.ui.core.Fragment.byId(fragmentId, "rentalUnits").getTokens();
+			 //var sData = aTokens.map(function(oToken) {
+			 //	  //return oToken.getText();
+				//   return oToken.getKey();
+				// }).join(",");
         	 console.log(sData);
 		}
 	});

@@ -1,12 +1,12 @@
 sap.ui.define([
-	"refx/leaseuix/controller/BaseController",
-	'sap/ui/model/json/JSONModel',
-	"sap/m/MessageBox",
-	"refx/leaseuix/model/formatter"
+"refx/leaseuix/controller/BaseController",
+"sap/ui/model/json/JSONModel",
+"sap/m/MessageBox",
+"refx/leaseuix/model/formatter"
 ], function(BaseController,JSONModel,MessageBox,formatter) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.components.postingparam.controller.postingparam", {
+	return BaseController.extend("refx.leaseuix.components.postingparam.controller.frequencyparam", {
 
 		_formFragments: {},
 		formatter: formatter,
@@ -16,7 +16,8 @@ sap.ui.define([
 		},
 		
 		initData: function() {
-			this.oPostingParamValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparamvalues.json");	
+			//this.oPostingParamValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparamvalues.json");	
+			this.oPostingParamValuesModel = this.getModel("postingparamvalues");	
 			this.getView().setModel(this.oPostingParamValuesModel, "postingparamvalues");
 			
 			this.oPostingParamModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparams.json");
@@ -24,19 +25,22 @@ sap.ui.define([
 			
 			this._PostingSort = 1;
 		},
-		
-		onPostingAdd: function(){
-			var oNewItem = {...this.getView().getModel("postingparamvalues").getProperty("/postingtmplt")};
+	
+		onFrequencyAdd: function(){
+			var oNewItem = {...this.getView().getModel("postingparamvalues").getProperty("/frequencytmplt")};
 			var oModel = this.getView().getModel();
-			var oData = oModel.getProperty("/postingparam");
-			
+			var oData = oModel.getProperty("/frequencyparam");
+				
 			this._setDefaultValue(oNewItem);	
-			
 			oData.unshift(oNewItem);
 			oModel.refresh();
 		
 		},
-		onPostingDelete: function(oEvent){
+		
+		_setDefaultValue: function(oItem){
+			oItem.fromDate = this.formatter.yyyyMMdd(new Date());                                                
+		},
+		onFrequencyDelete: function(oEvent){
 			var oList = oEvent.getSource();
 			var oItem = oEvent.getParameter("listItem");
 			var oCtx = oItem.getBindingContext();
@@ -49,20 +53,17 @@ sap.ui.define([
 				var delidx = parseInt(sPath.substring(sPath.lastIndexOf('/') + 1), 10);
 				var oData = oList.getModel().getData();
 				
-				oData.postingparam.splice(delidx, 1);
+				oData.frequencyparam.splice(delidx, 1);
 				oList.getModel().refresh();
 				
 			} else {
 				MessageBox.information("This Item Cannot Be Deleted");
 			}
 		},
-		_setDefaultValue: function(oItem){
-			oItem.fromDate = this.formatter.yyyyMMdd(new Date());                                                
-		},
 		
-		onPostingSort: function(){
+		onFrequencySort: function(){
 			var oModel = this.getView().getModel();
-			var aData = oModel.getProperty("/postingparam");
+			var aData = oModel.getProperty("/frequencyparam");
 			
 			this._PostingSort = -1 * this._PostingSort;
 			

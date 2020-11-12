@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/routing/History",
-	"sap/ui/core/UIComponent"
-], function(Controller, History, UIComponent) {
+	"sap/ui/core/UIComponent",
+	"sap/ui/model/json/JSONModel"
+], function(Controller, History, UIComponent,JSONModel) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.nav.controller.BaseController", {
@@ -10,7 +11,17 @@ sap.ui.define([
 		getRouter : function () {
 			return UIComponent.getRouterFor(this);
 		},
-
+		
+		getModel: function(sModelName){
+			switch(sModelName){
+				case "postingparamvalues":
+					
+					this.oPostingParamValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparamvalues.json");	
+					return this.oPostingParamValuesModel;
+						
+			}	
+		},
+		
 		onNavBack: function () {
 			var oHistory, sPreviousHash;
 

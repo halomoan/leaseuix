@@ -30,6 +30,7 @@
 		}
 		
 		],
+
 	"postingtmplt": {
 			"id": "",
 			"text" : "With GST",
@@ -38,7 +39,16 @@
 			"fromDate": "",
 			"taxtype": "MWST",
 			"taxgroup": "FULL",
-			"new" : true
-		}	
-		
+			"new" : false
+		},	
+	"frequencytmplt": 	{
+			"id": 10,
+			"text" : "Monthly",
+			"freq": 1,
+			"frequnitid": 0,
+			"frequnit": "Months",
+			"fromDate": "",
+			"new": true
+			
+		}
 }

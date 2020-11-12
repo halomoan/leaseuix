@@ -30,13 +30,13 @@ sap.ui.define(["sap/ui/core/format/NumberFormat","sap/ui/core/format/DateFormat"
                 });
 			return oPercentFormat.format(iNumber);
 		},
-		ddMMyyyy: function(date) {
+		ddMMyyyy: function(oDate) {
 			var oDateFormat = DateFormat.getDateTimeInstance({pattern: "dd/MMM/yyyy HH:mm"});
-			return oDateFormat.format(date);
+			return oDateFormat.format(oDate);
 		},
-		yyyyMMdd: function(date) {
+		yyyyMMdd: function(oDate) {
 			var oDateFormat = DateFormat.getDateTimeInstance({pattern: "yyyyMMdd"});
-			return oDateFormat.format(date);
+			return oDateFormat.format(oDate);
 		},
 		
 		yyyy_MM_dd: function(yyyMMdd) {
