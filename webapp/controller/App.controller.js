@@ -14,8 +14,8 @@ sap.ui.define([
 				//   return oToken.getKey();
 				// }).join(",");
 				
-			 var oModel = this.getOwnerComponent().getModel("postingParams"); 
-        	 console.log(oModel);
+			 var oModel = this.getOwnerComponent().getModel("salesRules"); 
+        	 console.log(oModel.getData());
 		}
 	});
 });

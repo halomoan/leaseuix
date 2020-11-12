@@ -1,6 +1,6 @@
 sap.ui.define([
 	'sap/ui/comp/library',
-	'sap/ui/core/mvc/Controller',
+	"refx/leaseuix/controller/BaseController",
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/type/String',
 	'sap/m/ColumnListItem',
@@ -9,22 +9,25 @@ sap.ui.define([
 	'sap/m/Token',
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator'
-], function (compLibrary, Controller, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator) {
+], function (compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator) {
 	"use strict";
 
-	return Controller.extend("refx.leaseuix.components.tableselcontact.tableselcontact", {
+	return BaseController.extend("refx.leaseuix.components.tableselcontact.tableselcontact", {
 		onInit: function () {
 		
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/tableselcontact") + "/columns.json");
 			this.oCustomersModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/contacts.json");
 			this.getView().setModel(this.oCustomersModel);
+			
+			this.oSelectedContacts = this.getModel("selectedContacts");
 		},
 
 		onDelete: function(oEvent){
 			
 			
 			var oTable = this.getView().byId("Table1");
-			var aData = this.oCustomersModel.getData().SelectedCustomers;
+			//var aData = this.oCustomersModel.getData().SelectedCustomers;
+			var aData = this.oSelectedContacts.getData().SelectedCustomers;
 			var aIndices = oTable.getSelectedIndices();	
 			
 			for ( var i = aIndices.length-1; i >=0; --i) {
@@ -33,7 +36,8 @@ sap.ui.define([
 			}
 			
 			oTable.clearSelection();
-			this.oCustomersModel.setProperty('/SelectedCustomers',aData);
+			//this.oCustomersModel.setProperty('/SelectedCustomers',aData);
+			this.oSelectedContacts.setProperty('/SelectedCustomers',aData);
 			
 		},
 		
@@ -101,8 +105,9 @@ sap.ui.define([
 					
 				});
 				
-				this.oCustomersModel.setProperty("/SelectedCustomers",aCustomers);
-				
+				//this.oCustomersModel.setProperty("/SelectedCustomers",aCustomers);
+				this.oSelectedContacts.setProperty('/SelectedCustomers',aCustomers);
+				this.getView().setModel(this.oSelectedContacts);
 			}
 			this._oValueHelpDialog.close();
 		},
@@ -207,7 +212,9 @@ sap.ui.define([
 		
 		_getListTokens: function() {
 			var aTokens = [];
-			var aCustomers = this.getView().getModel().getProperty("/SelectedCustomers");
+			//var aCustomers = this.getView().getModel().getProperty("/SelectedCustomers");
+			var aCustomers = this.oSelectedContacts.getProperty("/SelectedCustomers");
+			
 			if (aCustomers) {
 				
 				aCustomers.map(function(customer){

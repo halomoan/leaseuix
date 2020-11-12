@@ -13,7 +13,16 @@ sap.ui.define([
 		},
 		
 		getModel: function(sModelName){
-			return this.getOwnerComponent().getModel(sModelName);
+			var oModel = this.getOwnerComponent().getModel(sModelName);
+			
+			if (!oModel) {
+				this.getOwnerComponent().createModel(sModelName);
+				return this.getOwnerComponent().getModel(sModelName);	
+			} else {
+				return oModel;
+			}
+			
+			
 		},
 		
 		

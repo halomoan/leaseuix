@@ -1,6 +1,6 @@
 sap.ui.define([
 	'sap/ui/comp/library',
-	'sap/ui/core/mvc/Controller',
+	"refx/leaseuix/controller/BaseController",
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/type/String',
 	'sap/m/ColumnListItem',
@@ -10,49 +10,16 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	"refx/leaseuix/model/formatter"
-], function (compLibrary, Controller, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator,formatter) {
+], function (compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator,formatter) {
 	"use strict";
 
-	return Controller.extend("refx.leaseuix.components.listselunit.listselunit", {
+	return BaseController.extend("refx.leaseuix.components.listselunit.listselunit", {
 		formatter: formatter,
 		onInit: function () {
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
-			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunits.json");
-			this.oSelectedUnits = new JSONModel({
-				"SelectedUnits" : [
-					{
-							"UnitId": "#01-02",
-							"CoCode": "1000",
-							"Category": "F&B",
-							"MainCategory": "Shop",
-							"Level": "#01-02",
-							"ContractNo": "",
-							"Size": 1249,
-							"SizeUnit": "SF",
-							"Name": "#01-02",
-							"UnitPicUrl": "",
-							"Available": true
-						},
-						{
-							"UnitId": "#01-03",
-							"CoCode": "1000",
-							"Category": "F&B",
-							"MainCategory": "Shop",
-							"Level": "#01-03",
-							"ContractNo": "",
-							"Size": 229,
-							"SizeUnit": "SF",
-							"Name": "#01-03",
-							"UnitPicUrl": "",
-							"Available": true
-						}
-				],
-				"TotalSize": 0,
-				"SizeUnit": "M2",
-				"TotalUnits": 0
-			});
-			
+			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
+			this.oSelectedUnits = this.getModel("rentalUnits");
 			this.getView().setModel(this.oSelectedUnits);
 		},
 

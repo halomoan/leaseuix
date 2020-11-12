@@ -1,6 +1,6 @@
 sap.ui.define([
 	'sap/ui/comp/library',
-	'sap/ui/core/mvc/Controller',
+	"refx/leaseuix/controller/BaseController",
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/type/String',
 	'sap/m/ColumnListItem',
@@ -9,14 +9,16 @@ sap.ui.define([
 	'sap/m/Token',
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator'
-], function (compLibrary, Controller, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator) {
+], function (compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator) {
 	"use strict";
 
-	return Controller.extend("refx.leaseuix.components.formselcustomer.formselcustomer", {
+	return BaseController.extend("refx.leaseuix.components.formselcustomer.formselcustomer", {
 		onInit: function () {
 		
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/formselcustomer") + "/columns.json");
 			this.oCustomersModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/customers.json");
+			
+			this.oSelectedCustomerModel = this.getModel("selectedCust");
 			this.getView().setModel(this.oCustomersModel);
 		},
 
@@ -77,10 +79,14 @@ sap.ui.define([
 				
 				var sKey = aTokens[0].getKey();	
 				var oCustomer = this._getCustomerByKey(sKey);
-				this.oCustomersModel.setProperty("/SelectedCustomer",oCustomer);
+				//this.oCustomersModel.setProperty("/SelectedCustomer",oCustomer);
+				this.oSelectedCustomerModel.setProperty("/SelectedCustomer",oCustomer);
+				
+				
 			}
 			
-			this.getView().setModel(this.oCustomersModel);
+			//this.getView().setModel(this.oCustomersModel);
+			this.getView().setModel(this.oSelectedCustomerModel);
 			
 			this._oValueHelpDialog.close();
 		},

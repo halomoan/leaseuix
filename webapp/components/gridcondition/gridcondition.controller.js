@@ -44,7 +44,7 @@ sap.ui.define([
 			this.getView().setModel(new JSONModel(viewData));
 
 			this.oConditionValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/condformvalues.json");
-			this.oConditionModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/conditions.json");
+			this.oConditionModel = this.getModel("conditions");
 			this.byId("grid1").setModel(this.oConditionModel);
 
 			this.getView().setModel(this.oConditionValuesModel, "condformvalues");

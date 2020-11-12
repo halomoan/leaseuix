@@ -31,9 +31,9 @@ sap.ui.define([
 
 		
 			
-			this.oSalesRuleModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/salesbased.json");
+			//this.oSalesRuleModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/salesbased.json");
+			this.oSalesRuleModel = this.getModel("salesRules");
 			this.byId("slrcontainer").setModel(this.oSalesRuleModel);
-			// this.byId("slrcontainer").setModel(new JSONModel(viewData),"slsruleview");
 			
 			this._RepRuleSort = 1;
 			this._SalesRuleSort = 1;

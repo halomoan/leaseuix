@@ -19,7 +19,8 @@ sap.ui.define([
 			//this._oMultiInput.setTokens(this._getDefaultTokens());
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
-			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunits.json");
+			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
+			//this.oRentalUnitsModel = this.getModel("rentalUnits");
 			this.getView().setModel(this.oRentalUnitsModel);
 		},
 

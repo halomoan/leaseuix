@@ -22,8 +22,22 @@ sap.ui.define([
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
-			//REFX Models
-			this.setModel(models.postingParamModel(),"postingParams");
+			
+			
+		},
+		
+		createModel: function(sModelName){
+			
+			switch(sModelName) {
+				
+				case "postingParams" : this.setModel(models.postingParamModel(),"postingParams"); break;	
+				case "rentalUnits" : this.setModel(models.rentalUnitModel(),"rentalUnits"); break;	
+				case "conditions" : this.setModel(models.conditionModel(),"conditions"); break;	
+				case "selectedCust" : this.setModel(models.selectedCustModel(),"selectedCust"); break;	
+				case "selectedContacts" : this.setModel(models.selectedContactModel(),"selectedContacts"); break;
+				case "salesRules" : this.setModel(models.salesRuleModel(),"salesRules"); break;
+			}
+			
 			
 		},
 		
