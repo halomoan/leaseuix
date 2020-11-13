@@ -7,21 +7,21 @@
 					<!--<Panel>-->
 					<!--	<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>-->
 					<!--</Panel>-->
-					<Panel>
-						<HBox>
-						<mvc:XMLView viewName="refx.leaseuix.components.formselcustomer.formselcustomer"   id="selectcustomer" async="true"></mvc:XMLView>
-						<mvc:XMLView viewName="refx.leaseuix.components.tableselcontact.tableselcontact"  id="tableselcontact" async="true"></mvc:XMLView>
-						</HBox>
-					</Panel>
-					<Panel>
-						<mvc:XMLView viewName="refx.leaseuix.components.listselunit.listselunit" id="listselunit" async="true"></mvc:XMLView>
-					</Panel>
-					<Panel>
-						<mvc:XMLView viewName="refx.leaseuix.components.gridcondition.gridcondition" id="gridcondition" async="true"></mvc:XMLView>
-					</Panel>
-					<Panel>
-						<mvc:XMLView viewName="refx.leaseuix.components.listsalesbased.listsalesbased" id="listsalesbased" async="true"></mvc:XMLView>
-					</Panel>
+					<!--<Panel>-->
+					<!--	<HBox>-->
+					<!--	<mvc:XMLView viewName="refx.leaseuix.components.formselcustomer.formselcustomer"   id="selectcustomer" async="true"></mvc:XMLView>-->
+					<!--	<mvc:XMLView viewName="refx.leaseuix.components.tableselcontact.tableselcontact"  id="tableselcontact" async="true"></mvc:XMLView>-->
+					<!--	</HBox>-->
+					<!--</Panel>-->
+					<!--<Panel>-->
+					<!--	<mvc:XMLView viewName="refx.leaseuix.components.listselunit.listselunit" id="listselunit" async="true"></mvc:XMLView>-->
+					<!--</Panel>-->
+					<!--<Panel>-->
+					<!--	<mvc:XMLView viewName="refx.leaseuix.components.gridcondition.gridcondition" id="gridcondition" async="true"></mvc:XMLView>-->
+					<!--</Panel>-->
+					<!--<Panel>-->
+					<!--	<mvc:XMLView viewName="refx.leaseuix.components.listsalesbased.listsalesbased" id="listsalesbased" async="true"></mvc:XMLView>-->
+					<!--</Panel>-->
 					
 					<!--<HBox >-->
 					<!--<Panel>-->
@@ -31,6 +31,9 @@
 					<!--	<mvc:XMLView viewName="refx.leaseuix.components.postingparam.view.frequencyparam" id="frequencyparam" async="true"></mvc:XMLView>-->
 					<!--</Panel>-->
 					<!--</HBox>-->
+					<Panel>
+						<mvc:XMLView viewName="refx.leaseuix.components.contractform.view.contractform" id="contractform" async="true"></mvc:XMLView>
+					</Panel>
 					<Panel>
 						<content>
 							<Button type="Accept" text="Accept" press="getValue"></Button>

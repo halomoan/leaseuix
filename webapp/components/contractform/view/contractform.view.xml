@@ -1,0 +1,54 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	controllerName="refx.leaseuix.components.contractform.controller.contractform" xmlns:html="http://www.w3.org/1999/xhtml">
+<VBox>
+		<Panel class="customCSS">
+				<VBox  renderType="Bare">
+					<Text text="{contractform>/RecnType} ({contractform>/RecnTypeId})" class="fontSize2 sapUiNoMarginBottom"/>
+					<Label text="{contractform>/Bukrs} / {contractform>/BukrsId}" class="sapUiNoMarginTop"/>
+				</VBox>
+		</Panel>
+		<f:SimpleForm 
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title=""
+			labelSpanXL="12"
+			labelSpanL="12"
+			labelSpanM="12"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false"  class="customCSS">
+			<f:content>
+				<Label text="{i18n>Contract}" />
+				<Text id="nameText" text="{contractform>/RecnNo}" />
+				<Label text="{i18n>Contract} {i18n>From}"/>
+				<DatePicker id="fromDate" required="true"
+						value="{path: '/formdata/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+						 change="fromDateChanged">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S4"/>
+						</layoutData>
+					</DatePicker>
+				<Label  text="{i18n>Contract} {i18n>To}">
+					<!--<layoutData>-->
+					<!--	<l:GridData span="XL1 L2 M2 S4" />-->
+					<!--</layoutData>-->
+				</Label>
+				<DatePicker id="toDate" required="true"
+						value="{path: '/formdata/cond/0/fromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+						fieldGroupIds="fgCondDates" change="fromDateChanged">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S4"/>
+						</layoutData>
+					</DatePicker>
+			</f:content>
+		</f:SimpleForm>
+</VBox>
+</mvc:View>

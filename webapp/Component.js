@@ -36,6 +36,7 @@ sap.ui.define([
 				case "selectedCust" : this.setModel(models.selectedCustModel(),"selectedCust"); break;	
 				case "selectedContacts" : this.setModel(models.selectedContactModel(),"selectedContacts"); break;
 				case "salesRules" : this.setModel(models.salesRuleModel(),"salesRules"); break;
+				case "contractForm" : this.setModel(models.contractFormModel(),"contractForm"); break;
 			}
 			
 			

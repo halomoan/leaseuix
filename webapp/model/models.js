@@ -30,6 +30,9 @@ sap.ui.define([
 		},
 		salesRuleModel: function(){
 			return new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/salesbased.json");
+		},
+		contractFormModel: function(){
+			return new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/contractform.json");
 		}
 		
 
