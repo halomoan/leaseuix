@@ -70,6 +70,32 @@
 			"css": [{
 				"uri": "css/style.css"
 			}]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "refx.leaseuix.view",
+				"controlId": "app",
+				"controlAggregation": "pages"
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "contractpage",
+				"target": "contractpage"
+			}, {
+				"pattern": "detail",
+				"name": "detail",
+				"target": "detail"
+			}],
+			"targets": {
+				"contractpage": {
+					"viewName": "ContractPage"
+				},
+				"detail": {
+					"viewName": "Detail"
+				}
+			}
 		}
 	}
 }

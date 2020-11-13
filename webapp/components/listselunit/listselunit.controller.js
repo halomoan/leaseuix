@@ -32,6 +32,7 @@ sap.ui.define([
 			var iIndex = sPath.slice(iLength - 1);
 
 			var oModel = this.getView().getModel();
+			
 			var oData = oModel.getData(); 
 			
 			oData.SelectedUnits.splice(iIndex, 1);
@@ -48,6 +49,8 @@ sap.ui.define([
 			oData.TotalSize = iTotalSize;
 			oData.SizeUnit = sSizeUnit;
 			oModel.setData(oData);
+		
+			
 		},
 
 	
