@@ -11,15 +11,17 @@ sap.ui.define(["sap/ui/core/format/NumberFormat","sap/ui/core/format/DateFormat"
 		},
 		NumberFormat: function(iNumber){
 			
-			var oFloatNumberFormat = NumberFormat.getFloatInstance({
+        	if (iNumber) {
+        		var oFloatNumberFormat = NumberFormat.getFloatInstance({
                     maxFractionDigits: 0,
                     minFractionDigits : 0,
                     groupingEnabled: true
                 } , sap.ui.getCore().getConfiguration().getLocale());
         	
-
-        
-			return oFloatNumberFormat.format(iNumber);
+				return oFloatNumberFormat.format(iNumber);
+        	} else{
+        		return 0;
+        	} 
 			
 		},
 		PercentageFormat: function(iNumber){
