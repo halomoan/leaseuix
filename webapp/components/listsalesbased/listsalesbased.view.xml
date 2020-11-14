@@ -1,12 +1,14 @@
 <mvc:View controllerName="refx.leaseuix.components.listsalesbased.listsalesbased" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core" displayBlock="true" height="100%">
-	<ScrollContainer  id="slrcontainer" height="100%" width="100%" vertical="true">
-		<HBox width="95%">
-			
+	<FlexBox alignItems="Start" justifyContent="Start" id="slrcontainer">
+		<VBox fitContainer="true">
 			<core:Fragment id="fr1" fragmentName="refx.leaseuix.components.listsalesbased.reportingrulecard" type="XML"/>
-				
-
-			<core:Fragment id="fr2" fragmentName="refx.leaseuix.components.listsalesbased.salesrulecard" type="XML"/>				
-		</HBox>
-	</ScrollContainer>
+			<layoutData>
+				<FlexItemData growFactor="2"/>
+			</layoutData>
+		</VBox>
+		<VBox fitContainer="true">
+			<core:Fragment id="fr2" fragmentName="refx.leaseuix.components.listsalesbased.salesrulecard" type="XML"/>
+		</VBox>
+	</FlexBox>
 </mvc:View>

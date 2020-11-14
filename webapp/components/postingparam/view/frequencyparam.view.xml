@@ -7,12 +7,11 @@
 					<core:Icon size="2rem" src="sap-icon://calendar" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"/>
 					<Title text="Frequency" level="H2"/>
 					<ToolbarSpacer/>
-				<Select>
-					<core:Item key="10" text="Monthly"/>
-						</Select>
-				
-				<Link text="Add" press="onFrequencyAdd"/>
-				<Button type="Transparent" tooltip="Toggle Sort By Date" icon="sap-icon://sort" press=".onFrequencySort"/>
+					<Select>
+						<core:Item key="10" text="Monthly"/>
+					</Select>
+					<Link text="Add" press="onFrequencyAdd"/>
+					<Button type="Transparent" tooltip="Toggle Sort By Date" icon="sap-icon://sort" press=".onFrequencySort"/>
 				</content>
 			</OverflowToolbar>
 		</headerToolbar>
@@ -34,19 +33,18 @@
 						</VBox>
 					</HBox>
 					<HBox>
-					<VBox class="sapUiSmallMargin">
-						
-						<HBox>
-						<Label text="Freq." class="sapUiSmallMarginTop sapUiSmallMarginEnd"/>
-						<Input value="{ path: 'freq', type : 'sap.ui.model.type.Integer'}" width="80px" maxLength="2"></Input>
-						
-						
-						<Label text="in" class="sapUiSmallMargin"/>
-						<Select selectedKey="{frequnitid}" forceSelection="false" items="{ path: 'postingparamvalues>/frequnits', sorter: { path: 'id' } }">
-							<core:Item key="{postingparamvalues>id}" text="{postingparamvalues>id} {postingparamvalues>text}"/>
-						</Select>
-						</HBox>
-					</VBox>
+						<VBox>
+							<!--<Label text="testing"></Label>-->
+							<!--<Title text="testing"></Title>-->
+							<HBox class="sapUiMediumMarginTop">
+								<Label text="Freq." class="sapUiSmallMarginTop sapUiSmallMarginEnd"/>
+								<Input value="{ path: 'freq', type : 'sap.ui.model.type.Integer'}" width="80px" maxLength="2"></Input>
+								<Label text="in" class="sapUiSmallMargin"/>
+								<Select selectedKey="{frequnitid}" forceSelection="false" items="{ path: 'postingparamvalues>/frequnits', sorter: { path: 'id' } }">
+									<core:Item key="{postingparamvalues>id}" text="{postingparamvalues>id} {postingparamvalues>text}"/>
+								</Select>
+							</HBox>
+						</VBox>
 					</HBox>
 				</VBox>
 			</HBox>

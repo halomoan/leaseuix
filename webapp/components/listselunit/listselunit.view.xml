@@ -1,7 +1,7 @@
 <mvc:View controllerName="refx.leaseuix.components.listselunit.listselunit" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 	<HBox class="customCSS sapUiSmallMargin">
-		<VBox>
+		<VBox class="sapUiSmallMarginEnd">
 			<FlexBox alignItems="End" direction="Column" width="6rem">
 				<Label text="{ path: '/TotalSize', formatter: '.formatter.NumberFormat'}" class="sapMNCLargeFontSize green"></Label>
 				<Label text="{/SizeUnit}, Total Size"></Label>

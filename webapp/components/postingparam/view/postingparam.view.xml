@@ -34,7 +34,7 @@
 						</VBox>
 					</HBox>
 					<HBox>
-					<VBox class="sapUiSmallMargin">
+					<VBox class="sapUiSmallMarginTop sapUiSmallMarginEnd">
 						<Label text="Payment Term"/>
 						<Select selectedKey="{paytermid}" forceSelection="false" items="{ path: 'postingparamvalues>/payterms', sorter: { path: 'id' } }">
 							<core:Item key="{postingparamvalues>id}" text="{postingparamvalues>id} {postingparamvalues>text}"/>

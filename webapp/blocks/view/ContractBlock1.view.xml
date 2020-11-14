@@ -1,11 +1,7 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" 
-	xmlns:html="http://www.w3.org/1999/xhtml">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml">
 	<FlexBox alignItems="Start" justifyContent="Start">
 		<VBox fitContainer="true">
 			<mvc:XMLView viewName="refx.leaseuix.components.listselunit.listselunit" id="listselunit" async="true"></mvc:XMLView>
-			<!--<layoutData>-->
-			<!--	<FlexItemData growFactor="1"/>-->
-			<!--</layoutData>-->
 		</VBox>
 		<VBox fitContainer="true">
 			<mvc:XMLView viewName="refx.leaseuix.components.contractform.view.contractform" id="contractform" async="true"></mvc:XMLView>
