@@ -80,20 +80,20 @@
 				"controlAggregation": "pages"
 			},
 			"routes": [{
-				"pattern": "",
+				"pattern": "contractpage",
 				"name": "contractpage",
 				"target": "contractpage"
 			}, {
-				"pattern": "detail",
-				"name": "detail",
-				"target": "detail"
+				"pattern": "",
+				"name": "manageunits",
+				"target": "manageunits"
 			}],
 			"targets": {
 				"contractpage": {
 					"viewName": "ContractPage"
 				},
-				"detail": {
-					"viewName": "Detail"
+				"manageunits": {
+					"viewName": "ManageUnits"
 				}
 			}
 		}

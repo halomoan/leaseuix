@@ -1,0 +1,45 @@
+<mvc:View controllerName="refx.leaseuix.controller.ManageUnits" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f"
+	xmlns:card="sap.f.cards" xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" displayBlock="true" height="100%">
+	<!--<ScrollContainer height="100%" width="100%" vertical="true">-->
+	<Panel headerText="Units Management">
+		
+		<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
+		
+			<ObjectNumber
+			class="sapUiSmallMarginBottom"
+			binding="{/TotalUnitSize}"
+			number="{
+					parts:[{path:'Price'},{path:'CurrencyCode'}],
+					type: 'sap.ui.model.type.Currency',
+					formatOptions: {showMeasure: false}
+				}"
+			unit="{CurrencyCode}" />
+	</Panel>
+	<f:GridContainer id="unitGrid" class="sapUiSmallMargin customCSS" items="{ path: '/RentalUnits' }">
+		<f:layout>
+			<f:GridContainerSettings rowSize="84px" columnSize="84px" gap="8px"/>
+		</f:layout>
+		<f:layoutXS>
+			<f:GridContainerSettings rowSize="70px" columnSize="70px" gap="8px"/>
+		</f:layoutXS>
+	
+		<VBox class="border">
+			<layoutData>
+				<f:GridContainerItemLayoutData minRows="2" columns="2"/>
+			</layoutData>
+			<!--<HBox justifyContent="SpaceBetween">-->
+			<Link text="{Name}" emphasized="{Available}"></Link>
+		
+			<!--</HBox>-->
+			<Label text="{MainCategory}"/>
+			<HBox justifyContent="End">
+			<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
+			<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
+			</HBox>
+			<tnt:InfoLabel text="{= ${Available} ? '' : 'Occupied'}" renderMode="Narrow" colorScheme="5" displayOnly= "false" />
+			<!--<Text text="{= ${Available} ? '' : 'Occupied'}"></Text>-->
+			
+		</VBox>
+	</f:GridContainer>
+	<!--</ScrollContainer>-->
+</mvc:View>

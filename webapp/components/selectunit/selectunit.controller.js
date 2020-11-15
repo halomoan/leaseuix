@@ -17,11 +17,22 @@ sap.ui.define([
 			this._oMultiInput = this.getView().byId("rentalUnits");
 			this._oMultiInput.addValidator(this._onMultiInputValidate);
 			//this._oMultiInput.setTokens(this._getDefaultTokens());
-
+			this.initData();
+		
+		},
+		
+		initData: function(){
+			var viewData = {
+				"UnitsName": "-None-"
+			};
+			this.getView().setModel(new JSONModel(viewData));
+			
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
 			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
-			//this.oRentalUnitsModel = this.getModel("rentalUnits");
+			
 			this.getView().setModel(this.oRentalUnitsModel);
+			
+			
 		},
 
 		// #region
@@ -75,7 +86,62 @@ sap.ui.define([
 		onValueHelpOkPress: function (oEvent) {
 			var aTokens = oEvent.getParameter("tokens");
 			this._oMultiInput.setTokens(aTokens);
+			
+			this._UpdateDependantControls(aTokens);
+			
 			this._oValueHelpDialog.close();
+		},
+		
+		onTokenUpdate: function(oEvent) {
+			var aRemovedTokens =  oEvent.getParameters().removedTokens;
+			var aTokens = oEvent.getSource().getTokens();
+			
+			for (var i = 0; i<aTokens.length;i++){
+				if( aRemovedTokens.includes(aTokens[i]) ){
+					aTokens.splice(i,1);		
+				}
+			}
+			
+			this._UpdateDependantControls(aTokens);
+			
+		},
+		
+		onClearTokens: function(oEvent){
+			this._oMultiInput.removeAllTokens();
+			this._oMultiInput.fireTokenUpdate();
+		},
+		
+		_UpdateDependantControls: function(aTokens){
+			var aFilters = [];
+			var sUnitsName = "";
+			var oData = this.oRentalUnitsModel.getData();
+			
+			console.log(oData.RentalUnits);
+			
+			for(var i = 0; i< aTokens.length; i++){
+				var sKey = aTokens[i].getKey();
+					if (i < aTokens.length - 1) {
+						sUnitsName += sKey + " / ";
+					} else {
+						sUnitsName += sKey ;
+					}
+					aFilters.push(
+					new Filter({ path: "UnitId", operator: FilterOperator.EQ, value1: sKey }));
+			}
+			
+			if (i > 0) {
+				this.getView().getModel().setProperty("/UnitsName",sUnitsName);
+			} else {
+				this.getView().getModel().setProperty("/UnitsName","-None-");
+			}
+			
+			var oUnitGridBinding = sap.ui.getCore().byId("__xmlview1--unitGrid").getBinding("items");
+			
+			if (oUnitGridBinding){
+			
+				oUnitGridBinding.filter(aFilters);
+			}
+			
 		},
 
 		onValueHelpCancelPress: function () {

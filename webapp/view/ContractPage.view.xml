@@ -7,13 +7,18 @@
 					<m:Image src="https://3ljx2m1ndho3557gp169nffb-wpengine.netdna-ssl.com/wp-content/uploads/2018/02/uol-logo.png" width="auto" />
 					<!--<m:Title text="{i18n>Contract}" wrapping="true"/>-->
 				</heading>
+				<expandedContent>
+					<m:Title text="We Simplified The Contract Management Screens For You - SAPCC" titleStyle="H6"/>
+				</expandedContent>
+
+			
 				<!--<snappedTitleOnMobile>-->
 				<!--	<m:Title text="Header Title On Phone"/>-->
 				<!--</snappedTitleOnMobile>-->
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
 		<headerContent>
-			<m:Title text="We Simplified The Contract Management Screens For You - SAPCC" titleStyle="H6"/>
+		
 		</headerContent>
 		<sections>
 			<ObjectPageSection titleUppercase="false" id="section1" title="Contract">
