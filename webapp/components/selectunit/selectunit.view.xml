@@ -1,15 +1,38 @@
-<mvc:View height="100%" controllerName="refx.leaseuix.components.selectunit.selectunit" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+<mvc:View height="100%" controllerName="refx.leaseuix.components.selectunit.selectunit" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
 	<Label text="{i18n>RentalUnit}" labelFor="rentalUnits"/>
 	<MultiInput id="rentalUnits" valueHelpRequest=".onValueHelpRequested" valueHelpOnly="true" tokenUpdate=".onTokenUpdate"></MultiInput>
 	<HBox justifyContent="SpaceBetween">
 		<VBox>
 			<HBox>
-			<Label text="Selected Unit(s):"></Label>
-			<Label text="{/UnitsName}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+				<Label text="Selected Unit(s):"></Label>
+				<Label text="{viewData>/UnitsName}" design="Bold" class="sapUiTinyMarginBegin"></Label>
 			</HBox>
 			<HBox>
-			<Label text="Total Size:"/>
-			<Label text="{/TotalSize}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+				<Label text="Total Size:"/>
+				<Label text="{viewData>/TotalSize}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+			</HBox>
+			<HBox class="sapUiTinyMargin" justifyContent="Start" alignItems="Center">
+				<VBox class="sapUiSmallMarginEnd">
+					<Label text="{i18n>Available} {i18n>In} {i18n>Next}" wrapping="true"/>
+				</VBox>
+				<VBox>
+					<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange"
+						class="sapUiSmallMarginEnd"/>
+					<HBox>
+						<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
+							 step="1"  change="onAvailChange"/>
+						<ComboBox width="8rem" selectedKey="{viewData>/Filter/AvailUnit}" change="onAvailChange">
+							<core:Item key="0" text="Weeks"/>
+							<core:Item key="1" text="Months"/>
+							<core:Item key="2" text="Years"/>
+						</ComboBox>
+					</HBox>
+				</VBox>
+				<VBox>
+					<Button text="{i18n>Apply}" press="onApplyAvail" type="Accept" class="sapUiTinyMarginBegin"/>
+					<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
+				</VBox>
 			</HBox>
 		</VBox>
 		<Button text="Clear" press=".onClearTokens"></Button>
