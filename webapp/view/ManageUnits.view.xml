@@ -3,29 +3,7 @@
 	<!--<ScrollContainer height="100%" width="100%" vertical="true">-->
 	<Panel headerText="Units Management">
 		<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
-		<!-- <HBox class="sapUiTinyMargin" justifyContent="Begin" alignItems="Center">
-			<VBox class="sapUiSmallMarginEnd">
-				<Label text="{i18n>Available} {i18n>In} {i18n>Next}" wrapping="true"/>
-			</VBox>
-			<VBox>
-			<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange" class="sapUiSmallMarginEnd"/>
-			<HBox>
-			<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}"
-				width="8rem" fieldWidth="50%" step="1" description=""  validationMode="{validationMode}" change="onAvailChange"/>
-				
-			<ComboBox width="8rem"  selectedKey="{viewData>/Filter/AvailUnit}" change="onAvailChange">
-				<core:Item key="0" text="Weeks"/>
-				<core:Item key="1" text="Months"/>
-				<core:Item key="2" text="Years"/>
-						
-			</ComboBox> 
-			</HBox>
-			</VBox>
-			<VBox>
-			<Button text="{i18n>Apply}" press="onApplyAvail" type="Accept" class="sapUiTinyMarginBegin"/>
-			<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
-			</VBox>
-		</HBox>-->
+	
 	</Panel>
 	<f:GridContainer id="unitGrid" class="sapUiSmallMargin customCSS" items="{ path: '/RentalUnits' }">
 		<f:layout>
@@ -46,7 +24,7 @@
 				<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
 				<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
 			</HBox>
-			<tnt:InfoLabel text="{= ${Available} ? '' : 'Occupied'}" renderMode="Narrow" colorScheme="5" displayOnly="false"/>
+			<tnt:InfoLabel text="" renderMode="Narrow" colorScheme="{= ${Available} ? 5 : 4}" displayOnly="false"/>
 			<!--<Text text="{= ${Available} ? '' : 'Occupied'}"></Text>-->
 		</VBox>
 	</f:GridContainer>

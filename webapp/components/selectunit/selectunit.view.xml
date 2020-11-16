@@ -2,7 +2,7 @@
 	xmlns="sap.m">
 	<Label text="{i18n>RentalUnit}" labelFor="rentalUnits"/>
 	<MultiInput id="rentalUnits" valueHelpRequest=".onValueHelpRequested" valueHelpOnly="true" tokenUpdate=".onTokenUpdate"></MultiInput>
-	<HBox justifyContent="SpaceBetween">
+	<HBox justifyContent="SpaceBetween" class="customCSS">
 		<VBox>
 			<HBox>
 				<Label text="Selected Unit(s):"></Label>
@@ -12,27 +12,39 @@
 				<Label text="Total Size:"/>
 				<Label text="{viewData>/TotalSize}" design="Bold" class="sapUiTinyMarginBegin"></Label>
 			</HBox>
-			<HBox class="sapUiTinyMargin" justifyContent="Start" alignItems="Center">
-				<VBox class="sapUiSmallMarginEnd">
-					<Label text="{i18n>Available} {i18n>In} {i18n>Next}" wrapping="true"/>
+			<HBox justifyContent="SpaceBetween" alignItems="End" width="120%">
+				<VBox class="sapUiTinyMargin">
+					<Label text="Show Units: "></Label>
+					<SegmentedButton selectedKey="satellite" class="">
+						<items>
+							<SegmentedButtonItem text="All" key="All"/>
+							<SegmentedButtonItem text="Vacant" key="Vacant"/>
+							<SegmentedButtonItem text="Occupied" key="Occupied"/>
+						</items>
+					</SegmentedButton>
 				</VBox>
-				<VBox>
-					<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange"
-						class="sapUiSmallMarginEnd"/>
-					<HBox>
-						<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
-							 step="1"  change="onAvailChange"/>
-						<ComboBox width="8rem" selectedKey="{viewData>/Filter/AvailUnit}" change="onAvailChange">
-							<core:Item key="0" text="Weeks"/>
-							<core:Item key="1" text="Months"/>
-							<core:Item key="2" text="Years"/>
-						</ComboBox>
-					</HBox>
-				</VBox>
-				<VBox>
-					<Button text="{i18n>Apply}" press="onApplyAvail" type="Accept" class="sapUiTinyMarginBegin"/>
-					<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
-				</VBox>
+				<HBox class="sapUiTinyMargin" justifyContent="Start" alignItems="Center">
+					<VBox class="sapUiSmallMarginEnd">
+						<Label text="{i18n>Vacant} {i18n>On}" wrapping="true"/>
+					</VBox>
+					<VBox>
+						<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange"
+							class="sapUiSmallMarginEnd"/>
+						<HBox>
+							<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
+								step="1" change="onAvailChange"/>
+							<ComboBox width="8rem" selectedKey="{viewData>/Filter/AvailUnit}" change="onAvailChange">
+								<core:Item key="0" text="Weeks"/>
+								<core:Item key="1" text="Months"/>
+								<core:Item key="2" text="Years"/>
+							</ComboBox>
+						</HBox>
+					</VBox>
+					<VBox>
+						<Button text="{i18n>Apply}" press="onApplyAvail" type="Accept" class="sapUiTinyMarginBegin"/>
+						<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
+					</VBox>
+				</HBox>
 			</HBox>
 		</VBox>
 		<Button text="Clear" press=".onClearTokens"></Button>
