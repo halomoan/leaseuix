@@ -2,18 +2,25 @@
 	xmlns:card="sap.f.cards" xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" displayBlock="true" height="100%">
 	<!--<ScrollContainer height="100%" width="100%" vertical="true">-->
 	<Panel headerText="Units Management">
-		
 		<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
-		
-			<ObjectNumber
-			class="sapUiSmallMarginBottom"
-			binding="{/TotalUnitSize}"
-			number="{
-					parts:[{path:'Price'},{path:'CurrencyCode'}],
-					type: 'sap.ui.model.type.Currency',
-					formatOptions: {showMeasure: false}
-				}"
-			unit="{CurrencyCode}" />
+		<HBox class="sapUiTinyMargin" justifyContent="Begin" alignItems="Center">
+			<VBox class="sapUiSmallMarginEnd">
+				<Label text="{i18n>Available} {i18n>In} {i18n>Next}" wrapping="true"/>
+			</VBox>
+			<VBox>
+			<HBox>
+			<StepInput value="{viewData>/Filter/AvailWeek/value}" min="{viewData>/Filter/AvailWeek/min}" max="{viewData>/Filter/AvailWeek/max}"
+				width="12rem" fieldWidth="10%" step="1" description="{i18n>Weeks}"  validationMode="{validationMode}" change="onAvailWeekChange"/>
+			<StepInput value="{viewData>/Filter/AvailYear/value}" min="{viewData>/Filter/AvailYear/min}" max="{viewData>/Filter/AvailYear/max}"
+				width="12rem" fieldWidth="10%" step="1" description="{i18n>Years}"  validationMode="{validationMode}" change="onAvailYearChange"/>
+			</HBox>
+			<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange" class="sapUiSmallMarginEnd"/>
+			</VBox>
+			<VBox>
+			<Button text="{i18n>Apply}" type="Accept" class="sapUiTinyMarginBegin"/>
+			<Button text="{i18n>Reset}" class="sapUiTinyMarginBeginEnd"/>
+			</VBox>
+		</HBox>
 	</Panel>
 	<f:GridContainer id="unitGrid" class="sapUiSmallMargin customCSS" items="{ path: '/RentalUnits' }">
 		<f:layout>
@@ -22,23 +29,20 @@
 		<f:layoutXS>
 			<f:GridContainerSettings rowSize="70px" columnSize="70px" gap="8px"/>
 		</f:layoutXS>
-	
 		<VBox class="border">
 			<layoutData>
 				<f:GridContainerItemLayoutData minRows="2" columns="2"/>
 			</layoutData>
 			<!--<HBox justifyContent="SpaceBetween">-->
 			<Link text="{Name}" emphasized="{Available}"></Link>
-		
 			<!--</HBox>-->
 			<Label text="{MainCategory}"/>
 			<HBox justifyContent="End">
-			<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
-			<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
+				<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
+				<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
 			</HBox>
-			<tnt:InfoLabel text="{= ${Available} ? '' : 'Occupied'}" renderMode="Narrow" colorScheme="5" displayOnly= "false" />
+			<tnt:InfoLabel text="{= ${Available} ? '' : 'Occupied'}" renderMode="Narrow" colorScheme="5" displayOnly="false"/>
 			<!--<Text text="{= ${Available} ? '' : 'Occupied'}"></Text>-->
-			
 		</VBox>
 	</f:GridContainer>
 	<!--</ScrollContainer>-->

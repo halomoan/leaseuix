@@ -115,8 +115,7 @@ sap.ui.define([
 			var aFilters = [];
 			var sUnitsName = "";
 			var oData = this.oRentalUnitsModel.getData();
-			
-			console.log(oData.RentalUnits);
+			var iTotalSize = 0;
 			
 			for(var i = 0; i< aTokens.length; i++){
 				var sKey = aTokens[i].getKey();
@@ -125,14 +124,19 @@ sap.ui.define([
 					} else {
 						sUnitsName += sKey ;
 					}
-					aFilters.push(
+				aFilters.push(
 					new Filter({ path: "UnitId", operator: FilterOperator.EQ, value1: sKey }));
+				var oUnit = oData.RentalUnits.find(unit => unit.UnitId === sKey);		
+				iTotalSize += oUnit.Size;	
+					
 			}
 			
 			if (i > 0) {
 				this.getView().getModel().setProperty("/UnitsName",sUnitsName);
+				this.getView().getModel().setProperty("/TotalSize",iTotalSize);
 			} else {
 				this.getView().getModel().setProperty("/UnitsName","-None-");
+				this.getView().getModel().setProperty("/TotalSize",0);
 			}
 			
 			var oUnitGridBinding = sap.ui.getCore().byId("__xmlview1--unitGrid").getBinding("items");

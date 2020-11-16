@@ -2,7 +2,16 @@
 	<Label text="{i18n>RentalUnit}" labelFor="rentalUnits"/>
 	<MultiInput id="rentalUnits" valueHelpRequest=".onValueHelpRequested" valueHelpOnly="true" tokenUpdate=".onTokenUpdate"></MultiInput>
 	<HBox justifyContent="SpaceBetween">
-	<Label id="unitsName" text="Selected Unit(s): {/UnitsName}"></Label>
-	<Button text="Clear"  press=".onClearTokens"></Button>
+		<VBox>
+			<HBox>
+			<Label text="Selected Unit(s):"></Label>
+			<Label text="{/UnitsName}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+			</HBox>
+			<HBox>
+			<Label text="Total Size:"/>
+			<Label text="{/TotalSize}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+			</HBox>
+		</VBox>
+		<Button text="Clear" press=".onClearTokens"></Button>
 	</HBox>
 </mvc:View>
