@@ -25,7 +25,7 @@
 					</layoutData>
 				</HBox>
 			</VBox>
-			<VBox>
+			<VBox class="sapUiSmallMarginBegin">
 				<HBox justifyContent="Start" alignItems="Center">
 				<Label labelFor="rbg4" text="{i18n>Show}:" class="sapUiSmallMarginEnd"/>
 				<RadioButtonGroup id="RBGroup1" columns="3" valueState="Success" select="onShowSelect" selectedIndex="{viewData>/ShowIdx}">
@@ -58,7 +58,8 @@
 			</VBox>
 			<!--<HBox>-->
 			<!--</HBox>-->
-			<DatePicker placeholder="Key Date" value="{viewData>/KeyDate}" valueFormat="yyyyMMdd" change="onKeyDateChange" class="sapUiSmallMarginEnd"/>
+			<Label text="{i18n>KeyDate} :"/>
+			<DatePicker placeholder="Key Date" value="{viewData>/KeyDate}" valueFormat="yyyyMMdd" change="onKeyDateChange" class="sapUiSmallMarginEnd" width="50%"/>
 		</l:Grid>
 	</l:VerticalLayout>
 </mvc:View>

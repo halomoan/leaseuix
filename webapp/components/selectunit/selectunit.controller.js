@@ -150,7 +150,7 @@ sap.ui.define([
 					oDate.setYear(oDate.getFullYear() + num);
 					break;
 			}
-
+			oModel.setProperty("/ShowIdx",1);
 			oModel.setProperty("/KeyDate", formatter.yyyyMMdd(oDate));
 			this.oGlobalData.setProperty("/KeyDate",formatter.yyyyMMdd(oDate));
 			this.onApplyAvail();
