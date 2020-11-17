@@ -7,6 +7,7 @@ sap.ui.define([
 
 	return BaseController.extend("refx.leaseuix.controller.ManageUnits", {
 		formatter: formatter,
+		_formFragments: {},
 		onInit: function() {
 			this.initData();
 		},
@@ -23,7 +24,19 @@ sap.ui.define([
 			this.getView().setModel(this.oGlobalData,"globalData");
 		},
 	
-	
+		onUnitDetail : function(oEvent){
+		
+			var oSource = oEvent.getSource();
+			
+			var oCtx = oEvent.getSource().getBindingContext();
+			
+			this.showPopOverFragment(this.getView(), oSource, this._formFragments, "refx.leaseuix.fragments.popunitdetail");
+			
+			var oPopOver = sap.ui.core.Fragment.byId(this.getView().getId(), "unitmaster");
+			oPopOver.bindElement(oCtx.getPath());
+			
+			
+		},
 		onExit: function() {
 
 		}

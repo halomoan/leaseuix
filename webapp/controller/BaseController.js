@@ -53,6 +53,10 @@ sap.ui.define([
 			var myFragment = (_formFragments[sFragmentName] = oFormFragment);
 			return myFragment;
 		},
+		
+		showPopOverFragment : function(oView,oSource, _formFragments,sFragmentName) {
+			this.getFormFragment(oView, _formFragments,sFragmentName).openBy(oSource);
+		},
 
 		showFormDialogFragment : function (oView, _formFragments,sFragmentName) {
 			this.getFormFragment(oView, _formFragments,sFragmentName).open();
