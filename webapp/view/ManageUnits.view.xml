@@ -24,7 +24,7 @@
 				<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
 				<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
 			</HBox>
-			<tnt:InfoLabel text="" renderMode="Narrow" colorScheme="{= ${Available} ? 5 : 4}" displayOnly="false"/>
+			<tnt:InfoLabel text="" renderMode="Narrow" colorScheme="{=  ${globalData>/KeyDate}  &gt;= ${StartDate} &amp;&amp; ${globalData>/KeyDate}  &lt;= ${EndDate}  ? 4 : 5 }" displayOnly="false"/>
 			<!--<Text text="{= ${Available} ? '' : 'Occupied'}"></Text>-->
 		</VBox>
 	</f:GridContainer>

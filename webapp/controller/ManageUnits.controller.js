@@ -18,6 +18,9 @@ sap.ui.define([
 			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
 			this.getView().setModel(this.oRentalUnitsModel);
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
+			
+			this.oGlobalData = this.getModel("globalData"); 
+			this.getView().setModel(this.oGlobalData,"globalData");
 		},
 	
 	

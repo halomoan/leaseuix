@@ -1,6 +1,6 @@
 sap.ui.define([
 	'sap/ui/comp/library',
-	'sap/ui/core/mvc/Controller',
+	'refx/leaseuix/controller/BaseController',
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/type/String',
 	'sap/m/ColumnListItem',
@@ -10,10 +10,10 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	"refx/leaseuix/model/formatter"
-], function(compLibrary, Controller, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator,formatter) {
+], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator, formatter) {
 	"use strict";
 
-	return Controller.extend("refx.leaseuix.components.selectunit.selectunit", {
+	return BaseController.extend("refx.leaseuix.components.selectunit.selectunit", {
 		formatter: formatter,
 		onInit: function() {
 			this._oMultiInput = this.getView().byId("rentalUnits");
@@ -24,22 +24,28 @@ sap.ui.define([
 		},
 
 		initData: function() {
-			this.oFilter1 = null;
+			this.oFilter1 = null; //Filter End Date
+			this.oFilter2 = null //Filter Available
 			this.aFilters = [];
 			var viewData = {
+				"KeyDate": formatter.yyyyMMdd(new Date()),
+				"ShowIdx": 0,
 				"UnitsName": "-None-",
 				"TotalSize": 0,
 				"Filter": {
-					"AvailDate": null,
 					"AvailNo": {
-						value: 2,
+						value: 0,
 						min: 0,
 						max: 54
 					},
 					"AvailUnit": "0"
 				}
 			};
-			this.getView().setModel(new JSONModel(viewData),"viewData");
+			
+			this.oGlobalData = this.getModel("globalData");
+			this.oGlobalData.setProperty("/KeyDate",formatter.yyyyMMdd(new Date()));
+			
+			this.getView().setModel(new JSONModel(viewData), "viewData");
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
 			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
@@ -125,7 +131,7 @@ sap.ui.define([
 			this._oMultiInput.removeAllTokens();
 			this._oMultiInput.fireTokenUpdate();
 		},
-		
+
 		onAvailChange: function(oEvent) {
 			var oDate = new Date();
 			var oModel = this.getView().getModel("viewData");
@@ -145,59 +151,111 @@ sap.ui.define([
 					break;
 			}
 
-			oModel.setProperty("/Filter/AvailDate", formatter.yyyyMMdd(oDate));
-
+			oModel.setProperty("/KeyDate", formatter.yyyyMMdd(oDate));
+			this.oGlobalData.setProperty("/KeyDate",formatter.yyyyMMdd(oDate));
+			this.onApplyAvail();
 		},
-			onResetAvail: function() {
-			var oModel = this.getView().getModel("viewData");
-			oModel.setProperty("/Filter/AvailDate", null);
-			oModel.setProperty("/Filter/AvailNo/value", 0);
-			oModel.setProperty("/Filter/AvailUnit", "0");
+
+		onKeyDateChange: function(oEvent){
 			
-
-			this._setFilterAvail(true);
+			this.oGlobalData.setProperty("/KeyDate",oEvent.getParameter("value"));
+			
 		},
-
 		onApplyAvail: function() {
-			this._setFilterAvail(false);
-		},
 
-		_setFilterAvail: function(bReset) {
+			var oModel = this.getView().getModel("viewData");
+			var sKeyDate = oModel.getProperty("/KeyDate");
+			var iShowIdx = oModel.getProperty("/ShowIdx");
+			var num = oModel.getProperty("/Filter/AvailNo/value");
 
-			if (bReset) {
-				var oUnitGridBinding = sap.ui.getCore().byId("__xmlview1--unitGrid").getBinding("items");
-				if (oUnitGridBinding) {
-					oUnitGridBinding.filter(this.aFilters);	
-				}
+			if (num === 0 && iShowIdx === 0) {
+				this.oFilter1 = null;
 			} else {
-				var oModel = this.getView().getModel("viewData");
-				var sKeyDate = oModel.getProperty("/Filter/AvailDate");
-				
-				var oFilter1 = new sap.ui.model.Filter("EndDate", sap.ui.model.FilterOperator.LT, sKeyDate);
-				
-				var oUnitGridBinding = sap.ui.getCore().byId("__xmlview1--unitGrid").getBinding("items");
-				if (oUnitGridBinding) {
-					
-					var aFilters = [];
-					
-					for(var i = 0; i < this.aFilters; i++){
-						aFilters.push(this.aFilters[i]);
-					}
-					aFilters.push(oFilter1);
-					
-					oUnitGridBinding.filter(aFilters);	
-				}
-				
+
+				this.oFilter1 = new sap.ui.model.Filter("EndDate", sap.ui.model.FilterOperator.LT, sKeyDate);
+			}
+			var oUnitGridBinding = sap.ui.getCore().byId("__xmlview1--unitGrid").getBinding("items");
+			if (oUnitGridBinding) {
+				oUnitGridBinding.filter(this._mergeFilters());
 			}
 		},
 
+		onShowSelect: function(oEvent) {
+
+			var aFilters = [];
+			switch (oEvent.getParameter("selectedIndex")) {
+				case 0:
+					this.oFilter2 = null;
+
+					break;
+				case 1:
+					this.oFilter2 = new Filter({
+						path: "Available",
+						operator: FilterOperator.EQ,
+						value1: true
+					});
+
+					break;
+				case 2:
+					this.oFilter2 = new Filter({
+						path: "Available",
+						operator: FilterOperator.EQ,
+						value1: false
+					});
+
+					break;
+			}
+
+			this.onApplyAvail();
+
+		},
+
+		_mergeFilters: function() {
+			var aFilters = [];
+
+			if (this.aFilters.length > 0) {
+				for (var i = 0; i < this.aFilters.length; i++) {
+					aFilters.push(this.aFilters[i]);
+				}
+
+			}
+
+			if (this.oFilter1) {
+				aFilters.push(this.oFilter1);
+			}
+			if (this.oFilter2) {
+				aFilters.push(this.oFilter2);
+			}
+
+			console.log(aFilters);
+
+			return aFilters;
+		},
+
+		onResetAvail: function() {
+			var oModel = this.getView().getModel("viewData");
+			oModel.setProperty("/KeyDate", formatter.yyyyMMdd(new Date()));
+			this.oGlobalData.setProperty("/KeyDate",formatter.yyyyMMdd(new Date()));
+			oModel.setProperty("/Filter/AvailNo/value", 0);
+			oModel.setProperty("/Filter/AvailUnit", "0");
+			oModel.setProperty("/ShowIdx", 0);
+
+			// this.byId("RBGroup1").setSelectedIndex(0);
+
+			this.oFilter1 = null;
+			this.oFilter2 = null;
+
+			var oUnitGridBinding = sap.ui.getCore().byId("__xmlview1--unitGrid").getBinding("items");
+			if (oUnitGridBinding) {
+				oUnitGridBinding.filter(this._mergeFilters());
+			}
+		},
 
 		_UpdateDependantControls: function(aTokens) {
-			//var aFilters = [];
 			var sUnitsName = "";
 			var oData = this.oRentalUnitsModel.getData();
 			var iTotalSize = 0;
-			
+
 			this.aFilters = [];
 
 			for (var i = 0; i < aTokens.length; i++) {
@@ -230,7 +288,7 @@ sap.ui.define([
 
 			if (oUnitGridBinding) {
 
-				oUnitGridBinding.filter(this.aFilters);
+				oUnitGridBinding.filter(this._mergeFilters());
 			}
 
 		},

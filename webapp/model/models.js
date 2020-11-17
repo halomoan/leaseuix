@@ -12,6 +12,14 @@ sap.ui.define([
 			return oModel;
 		},
 		
+		globalDataModel: function(){
+			var oData = {
+				"KeyDate": null
+			};
+			
+			return new JSONModel(oData);
+		},
+		
 		postingParamModel: function(){
 			return new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparams.json");
 		},

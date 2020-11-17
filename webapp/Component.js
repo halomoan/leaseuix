@@ -32,7 +32,7 @@ sap.ui.define([
 		createModel: function(sModelName){
 			
 			switch(sModelName) {
-				
+				case "globalData" : this.setModel(models.globalDataModel(),"globalData"); break;	
 				case "postingParams" : this.setModel(models.postingParamModel(),"postingParams"); break;	
 				case "rentalUnits" : this.setModel(models.rentalUnitModel(),"rentalUnits"); break;	
 				case "conditions" : this.setModel(models.conditionModel(),"conditions"); break;	

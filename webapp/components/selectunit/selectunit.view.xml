@@ -1,35 +1,46 @@
-<mvc:View height="100%" controllerName="refx.leaseuix.components.selectunit.selectunit" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m">
-	<Label text="{i18n>RentalUnit}" labelFor="rentalUnits"/>
-	<MultiInput id="rentalUnits" valueHelpRequest=".onValueHelpRequested" valueHelpOnly="true" tokenUpdate=".onTokenUpdate"></MultiInput>
-	<HBox justifyContent="SpaceBetween" class="customCSS">
-		<VBox>
-			<HBox>
-				<Label text="Selected Unit(s):"></Label>
-				<Label text="{viewData>/UnitsName}" design="Bold" class="sapUiTinyMarginBegin"></Label>
-			</HBox>
-			<HBox>
-				<Label text="Total Size:"/>
-				<Label text="{viewData>/TotalSize}" design="Bold" class="sapUiTinyMarginBegin"></Label>
-			</HBox>
-			<HBox justifyContent="SpaceBetween" alignItems="End" width="120%">
-				<VBox class="sapUiTinyMargin">
-					<Label text="Show Units: "></Label>
-					<SegmentedButton selectedKey="satellite" class="">
-						<items>
-							<SegmentedButtonItem text="All" key="All"/>
-							<SegmentedButtonItem text="Vacant" key="Vacant"/>
-							<SegmentedButtonItem text="Occupied" key="Occupied"/>
-						</items>
-					</SegmentedButton>
-				</VBox>
-				<HBox class="sapUiTinyMargin" justifyContent="Start" alignItems="Center">
+<mvc:View xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" height="100%"
+	controllerName="refx.leaseuix.components.selectunit.selectunit" class="GridDataSample">
+	<l:VerticalLayout width="100%">
+		<l:Grid containerQuery="true" hSpacing="1" vSpacing="0">
+			<VBox>
+				<Label text="{i18n>RentalUnit}" labelFor="rentalUnits"/>
+				<MultiInput id="rentalUnits" valueHelpRequest=".onValueHelpRequested" valueHelpOnly="true" tokenUpdate=".onTokenUpdate"></MultiInput>
+				<layoutData>
+					<l:GridData span="L4 M4 S8" linebreakL="true" linebreakM="true" linebreakS="true"/>
+				</layoutData>
+				<HBox justifyContent="SpaceBetween">
+					<VBox>
+						<HBox>
+							<Label text="Selected Unit(s):"></Label>
+							<Label text="{viewData>/UnitsName}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+						</HBox>
+						<HBox>
+							<Label text="Total Size:"/>
+							<Label text="{viewData>/TotalSize}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+						</HBox>
+					</VBox>
+					<!--<Button text="Clear" press=".onClearTokens"></Button>-->
+					<layoutData>
+						<l:GridData span="L4 M4 S8" linebreakL="true" linebreakM="true" linebreakS="true"/>
+					</layoutData>
+				</HBox>
+			</VBox>
+			<VBox>
+				<HBox justifyContent="Start" alignItems="Center">
+				<Label labelFor="rbg4" text="{i18n>Show}:" class="sapUiSmallMarginEnd"/>
+				<RadioButtonGroup id="RBGroup1" columns="3" valueState="Success" select="onShowSelect" selectedIndex="{viewData>/ShowIdx}">
+					<RadioButton text="All Units"/>
+					<RadioButton text="Vacant"/>
+					<RadioButton text="Occupied"/>
+				</RadioButtonGroup>
+				</HBox>
+				<HBox  justifyContent="Start" alignItems="Center">
 					<VBox class="sapUiSmallMarginEnd">
 						<Label text="{i18n>Vacant} {i18n>On}" wrapping="true"/>
 					</VBox>
 					<VBox>
-						<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange"
-							class="sapUiSmallMarginEnd"/>
+						<!--<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange"-->
+						<!--	class="sapUiSmallMarginEnd"/>-->
 						<HBox>
 							<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
 								step="1" change="onAvailChange"/>
@@ -40,13 +51,14 @@
 							</ComboBox>
 						</HBox>
 					</VBox>
-					<VBox>
-						<Button text="{i18n>Apply}" press="onApplyAvail" type="Accept" class="sapUiTinyMarginBegin"/>
-						<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
-					</VBox>
+					<!--<Button text="{i18n>Apply}" press="onApplyAvail" type="Accept" class="sapUiTinyMarginBegin"/>-->
+					<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
 				</HBox>
-			</HBox>
-		</VBox>
-		<Button text="Clear" press=".onClearTokens"></Button>
-	</HBox>
+				<!--<Label labelFor="rbg4" text="{i18n>Show}:"/>-->
+			</VBox>
+			<!--<HBox>-->
+			<!--</HBox>-->
+			<DatePicker placeholder="Key Date" value="{viewData>/KeyDate}" valueFormat="yyyyMMdd" change="onKeyDateChange" class="sapUiSmallMarginEnd"/>
+		</l:Grid>
+	</l:VerticalLayout>
 </mvc:View>
