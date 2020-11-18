@@ -62,7 +62,14 @@ sap.ui.define([
 				iDragPosition = oGrid.indexOfItem(oDragged),
 				iDropPosition = oGrid.indexOfItem(oDropped);
 
-			console.log(oDragged,oDropped);
+
+			var oDraggedData = oDragged.getBindingContext().getObject() ;
+			var oDroppedData = oDropped.getBindingContext().getObject() ;
+			console.log(oDraggedData,oDroppedData);
+			
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge");
+			
+			//console.log(oDragged,oDropped);
 			// remove the item
 			// var oItem = aItems[iDragPosition];
 			// aItems.splice(iDragPosition, 1);
@@ -80,8 +87,17 @@ sap.ui.define([
 
 			// oModel.setProperty("/items", aItems);
 		},
+		
+		closeMergeUnits: function(){
+			this.byId("mergeUnitsDialog").close();
+		},
+		cancelMergeUnits: function(){
+			this.byId("mergeUnitsDialog").close();
+		},
+		
 		onExit: function() {
-
+			this.removeFragment(this._formFragments);
+			console.log("exit");
 		}
 
 	});
