@@ -1,31 +1,45 @@
 <mvc:View controllerName="refx.leaseuix.controller.ManageUnits" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f"
-	xmlns:card="sap.f.cards" xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" displayBlock="true" height="100%">
-	<!--<ScrollContainer height="100%" width="100%" vertical="true">-->
+	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd" xmlns:dnd-grid="sap.f.dnd"
+	displayBlock="true" height="100%">
 	<Panel headerText="Units Management">
 		<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
-	
 	</Panel>
-	<f:GridContainer id="unitGrid" class="sapUiSmallMargin customCSS" items="{ path: '/RentalUnits' }">
-		<f:layout>
-			<f:GridContainerSettings rowSize="84px" columnSize="84px" gap="8px"/>
-		</f:layout>
-		<f:layoutXS>
-			<f:GridContainerSettings rowSize="70px" columnSize="70px" gap="8px"/>
-		</f:layoutXS>
-		<VBox class="border">
-			<layoutData>
-				<f:GridContainerItemLayoutData minRows="2" columns="2"/>
-			</layoutData>
-			
-			<Link text="{Name}" emphasized="{Available}" press=".onUnitDetail"></Link>
-			
-			<Label text="{MainCategory}"/>
-			<HBox justifyContent="End">
-				<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
-				<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
-			</HBox>
-			<tnt:InfoLabel text="" renderMode="Narrow" colorScheme="{=  ${globalData>/KeyDate}  &gt;= ${StartDate} &amp;&amp; ${globalData>/KeyDate}  &lt;= ${EndDate}  ? 4 : 5 }" displayOnly="false"/>
-		</VBox>
-	</f:GridContainer>
-	<!--</ScrollContainer>-->
+	<HBox justifyContent="End">
+		<OverflowToolbar >
+			<ToolbarSpacer/>
+			<Button text="Select" type="Transparent" press="onGridSelect"/>
+			<Button icon="sap-icon://sort" type="Transparent"/>
+			<Button icon="sap-icon://delete" type="Transparent"/>
+		</OverflowToolbar>
+	</HBox>
+	<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnits' }" selectionChange="onSelectionChange" delete="onDelete"
+		class="sapUiResponsiveContentPadding customCSS">
+		<f:customLayout>
+			<grid:GridBoxLayout boxWidth="15rem"/>
+		</f:customLayout>
+		<f:dragDropConfig>
+			<dnd:DragInfo sourceAggregation="items"/>
+			<!--<dnd-grid:GridDropInfo targetAggregation="items" dropPosition="Between" dropLayout="Horizontal" drop="onDrop"/>-->
+			<dnd-grid:GridDropInfo targetAggregation="items" drop="onDrop"/>
+		</f:dragDropConfig>
+		<f:GridListItem detailPress="onDetailPress"
+			highlight="{= ${globalData>/KeyDate} &gt;= ${StartDate} &amp;&amp; ${globalData>/KeyDate} &lt;= ${EndDate} ? 'Error' : 'Success' }"
+			type="{type}">
+			<VBox height="100%" class="sapUiSmallMargin">
+				<layoutData>
+					<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. --></layoutData>
+				<HBox justifyContent="SpaceBetween">
+					<Link text="{Name}" emphasized="{Available}" press=".onUnitDetail"></Link>
+					<tnt:InfoLabel text="Occupied" colorScheme="5"
+						visible="{= ${globalData>/KeyDate} &gt;= ${StartDate} &amp;&amp; ${globalData>/KeyDate} &lt;= ${EndDate} }"/>
+				</HBox>
+				<Label text="{MainCategory}"/>
+				<HBox justifyContent="End">
+					<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
+					<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
+				</HBox>
+				<!--<tnt:InfoLabel text="" renderMode="Narrow" colorScheme="{=  ${globalData>/KeyDate}  &gt;= ${StartDate} &amp;&amp; ${globalData>/KeyDate}  &lt;= ${EndDate}  ? 4 : 5 }" displayOnly="false"/>-->
+			</VBox>
+		</f:GridListItem>
+	</f:GridList>
 </mvc:View>
