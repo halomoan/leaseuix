@@ -1,12 +1,12 @@
 <mvc:View xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" height="100%"
-	controllerName="refx.leaseuix.components.selectunit.selectunit" class="GridDataSample">
+	controllerName="refx.leaseuix.components.selectunit.selectunit" class="customCSS">
 	<l:VerticalLayout width="100%">
 		<l:Grid containerQuery="true" hSpacing="1" vSpacing="0">
 			<VBox>
 				<Label text="{i18n>RentalUnit}" labelFor="rentalUnits"/>
 				<MultiInput id="rentalUnits" valueHelpRequest=".onValueHelpRequested" valueHelpOnly="true" tokenUpdate=".onTokenUpdate"></MultiInput>
 				<layoutData>
-					<l:GridData span="L4 M4 S8" linebreakL="true" linebreakM="true" linebreakS="true"/>
+					<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 				</layoutData>
 				<HBox justifyContent="SpaceBetween">
 					<VBox>
@@ -14,33 +14,25 @@
 							<Label text="Selected Unit(s):"></Label>
 							<Label text="{viewData>/UnitsName}" design="Bold" class="sapUiTinyMarginBegin"></Label>
 						</HBox>
-						<HBox>
-							<Label text="Total Size:"/>
-							<Label text="{viewData>/TotalSize}" design="Bold" class="sapUiTinyMarginBegin"></Label>
+						<HBox justifyContent="Start" alignItems="Center">
+							<Label labelFor="rbg4" text="{i18n>Show}:" class="sapUiSmallMarginEnd"/>
+							<RadioButtonGroup id="RBGroup1" columns="3" valueState="Success" select="onShowSelect" selectedIndex="{viewData>/ShowIdx}">
+								<RadioButton text="All Units"/>
+								<RadioButton text="Vacant"/>
+								<RadioButton text="Occupied"/>
+							</RadioButtonGroup>
 						</HBox>
 					</VBox>
 					<!--<Button text="Clear" press=".onClearTokens"></Button>-->
 					<layoutData>
-						<l:GridData span="L4 M4 S8" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 					</layoutData>
 				</HBox>
 			</VBox>
-			<VBox class="sapUiSmallMarginBegin">
-				<HBox justifyContent="Start" alignItems="Center">
-				<Label labelFor="rbg4" text="{i18n>Show}:" class="sapUiSmallMarginEnd"/>
-				<RadioButtonGroup id="RBGroup1" columns="3" valueState="Success" select="onShowSelect" selectedIndex="{viewData>/ShowIdx}">
-					<RadioButton text="All Units"/>
-					<RadioButton text="Vacant"/>
-					<RadioButton text="Occupied"/>
-				</RadioButtonGroup>
-				</HBox>
-				<HBox  justifyContent="Start" alignItems="Center">
-					<VBox class="sapUiSmallMarginEnd">
-						<Label text="{i18n>Vacant} {i18n>On}" wrapping="true"/>
-					</VBox>
+			<VBox class="">
+				<Label text="{i18n>Vacant} {i18n>On}" wrapping="true"/>
+				<HBox justifyContent="Start" alignItems="Start">
 					<VBox>
-						<!--<DatePicker placeholder="Available Date" value="{viewData>/Filter/AvailDate}" valueFormat="yyyyMMdd" change="handleChange"-->
-						<!--	class="sapUiSmallMarginEnd"/>-->
 						<HBox>
 							<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
 								step="1" change="onAvailChange"/>
@@ -51,15 +43,20 @@
 							</ComboBox>
 						</HBox>
 					</VBox>
-					<!--<Button text="{i18n>Apply}" press="onApplyAvail" type="Accept" class="sapUiTinyMarginBegin"/>-->
 					<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
 				</HBox>
-				<!--<Label labelFor="rbg4" text="{i18n>Show}:"/>-->
+				<Label text="{i18n>KeyDate} :"/>
+				<DatePicker placeholder="Key Date" value="{viewData>/KeyDate}" valueFormat="yyyyMMdd" change="onKeyDateChange" class="sapUiSmallMarginEnd"
+					width="50%"/>
 			</VBox>
-			<!--<HBox>-->
-			<!--</HBox>-->
-			<Label text="{i18n>KeyDate} :"/>
-			<DatePicker placeholder="Key Date" value="{viewData>/KeyDate}" valueFormat="yyyyMMdd" change="onKeyDateChange" class="sapUiSmallMarginEnd" width="50%"/>
+			<HBox justifyContent="End" alignItems="End">
+				<Label
+					text="{ path:'viewData>/TotalSize', type: 'sap.ui.model.type.Integer',formatOptions: { minFractionDigits: 0, groupingEnabled: true} }"
+					class="fontSize4 green"></Label>
+				<layoutData>
+					<l:GridData span="L5 M4 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
+				</layoutData>
+			</HBox>
 		</l:Grid>
 	</l:VerticalLayout>
 </mvc:View>

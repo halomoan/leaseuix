@@ -9,7 +9,7 @@ sap.ui.define([
 		formatter: formatter,
 		_formFragments: {},
 		onInit: function() {
-			
+
 			this.initData();
 		},
 
@@ -23,7 +23,29 @@ sap.ui.define([
 
 			this.oGlobalData = this.getModel("globalData");
 			this.getView().setModel(this.oGlobalData, "globalData");
+
 			
+
+			var oGridList = this.byId("unitGrid");
+			oGridList.addEventDelegate({
+				onAfterRendering: function() {
+					var oBinding = this.getBinding("items");
+					
+					oBinding.attachChange(function(oEvent) {
+						var oSource = oEvent.getSource();
+						var oFilteredRowsLength = oSource.iLength; 
+						var oData = oSource.getModel().getData();
+						var aFiltered = oSource.aIndices;
+						var iTotalSize = 0;
+						for(var i =0 ; i< aFiltered.length; i++){
+							console.log(oData.RentalUnits[aFiltered[i]].UnitId,oData.RentalUnits[aFiltered[i]].Size)
+							iTotalSize += oData.RentalUnits[aFiltered[i]].Size;
+						}
+						console.log(oData,oSource.aIndices,iTotalSize);
+					})
+				}
+			}, oGridList);
+
 		},
 
 		onUnitDetail: function(oEvent) {
@@ -62,13 +84,12 @@ sap.ui.define([
 				iDragPosition = oGrid.indexOfItem(oDragged),
 				iDropPosition = oGrid.indexOfItem(oDropped);
 
+			var oDraggedData = oDragged.getBindingContext().getObject();
+			var oDroppedData = oDropped.getBindingContext().getObject();
+			console.log(oDraggedData, oDroppedData);
 
-			var oDraggedData = oDragged.getBindingContext().getObject() ;
-			var oDroppedData = oDropped.getBindingContext().getObject() ;
-			console.log(oDraggedData,oDroppedData);
-			
 			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge");
-			
+
 			//console.log(oDragged,oDropped);
 			// remove the item
 			// var oItem = aItems[iDragPosition];
@@ -87,14 +108,14 @@ sap.ui.define([
 
 			// oModel.setProperty("/items", aItems);
 		},
-		
-		closeMergeUnits: function(){
+
+		closeMergeUnits: function() {
 			this.byId("mergeUnitsDialog").close();
 		},
-		cancelMergeUnits: function(){
+		cancelMergeUnits: function() {
 			this.byId("mergeUnitsDialog").close();
 		},
-		
+
 		onExit: function() {
 			this.removeFragment(this._formFragments);
 			console.log("exit");
