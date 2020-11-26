@@ -77,7 +77,11 @@ sap.ui.define([
 					maxLength: 7
 				})
 			}]);
-
+			
+			this._oValueHelpDialog.setTokenDisplayBehaviour(sap.ui.comp.smartfilterbar.DisplayBehaviour.descriptionOnly); 
+			this._oValueHelpDialog.setKey("UnitKey");
+			this._oValueHelpDialog.setDescriptionKey('UnitText');
+  
 			var oFilterBar = this._oValueHelpDialog.getFilterBar();
 			oFilterBar.setFilterBarExpanded(false);
 			oFilterBar.setBasicSearch(this._oBasicSearchField);
@@ -441,7 +445,8 @@ sap.ui.define([
 					oToken = new Token();
 
 				oToken.setKey(oObject.UnitKey);
-				//oToken.setText(oObject.Name + " (" + oObject.UnitId + ")");
+				//oToken.setText(oObject.UnitText + " (" + oObject.UnitKey + ")");
+				oToken.setText(oObject.UnitText);
 				oToken.setText(oObject.UnitText);
 				return oToken;
 			}

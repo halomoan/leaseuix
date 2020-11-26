@@ -58,6 +58,14 @@
 					<Label id="TotalUnits" text="0" class="fontSize2 grey sapUiTinyMarginEnd"></Label>
 					<Label text="Unit(s)" class="fontSize1 gold"></Label>
 				</HBox>
+				<HBox justifyContent="End">
+					<OverflowToolbar >
+						<ToolbarSpacer/>
+						<Button text="Select" type="Transparent" press="onGridSelect"/>
+						<Button icon="sap-icon://sort" type="Transparent"/>
+						<Button icon="sap-icon://delete" type="Transparent"/>
+					</OverflowToolbar>
+				</HBox>
 				<layoutData>
 					<l:GridData span="L5 M4 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
 				</layoutData>

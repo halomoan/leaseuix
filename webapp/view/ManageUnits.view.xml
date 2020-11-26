@@ -1,18 +1,23 @@
 <mvc:View controllerName="refx.leaseuix.controller.ManageUnits" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f"
 	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd" xmlns:dnd-grid="sap.f.dnd"
 	>
+
 	<Panel headerText="Units Management">
 		<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
 	</Panel>
-	<HBox justifyContent="End">
-		<OverflowToolbar >
-			<ToolbarSpacer/>
-			<Button text="Select" type="Transparent" press="onGridSelect"/>
-			<Button icon="sap-icon://sort" type="Transparent"/>
-			<Button icon="sap-icon://delete" type="Transparent"/>
-		</OverflowToolbar>
-	</HBox>
-	
+	<!--<HBox justifyContent="End">-->
+	<!--	<OverflowToolbar >-->
+	<!--		<ToolbarSpacer/>-->
+	<!--		<Button text="Select" type="Transparent" press="onGridSelect"/>-->
+	<!--		<Button icon="sap-icon://sort" type="Transparent"/>-->
+	<!--		<Button icon="sap-icon://delete" type="Transparent"/>-->
+	<!--	</OverflowToolbar>-->
+	<!--</HBox>-->
+		<ScrollContainer
+		height="100%"
+		width="100%"
+		vertical="true"
+		focusable="true">
 	<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
 	<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }"  updateFinished="onGridChange" selectionChange="onSelectionChange" delete="onDelete"
 	
@@ -49,5 +54,5 @@
 			</VBox>
 		</f:GridListItem>
 	</f:GridList>
-
+	</ScrollContainer>
 </mvc:View>
