@@ -46,21 +46,22 @@
 					<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
 				</HBox>
 				<Label text="{i18n>KeyDate} :"/>
-				<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange" class="sapUiSmallMarginEnd"
-					width="50%"/>
+				<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
+					class="sapUiSmallMarginEnd" width="50%"/>
 			</VBox>
-			<HBox justifyContent="End" alignItems="Start">
-			
-				<Label id="Size"
-					text="0"
-					class="fontSize4 green"></Label>
-				<Label id="SizeUnit"
-					text=""
-					class="fontSize2 gold"></Label>
+			<VBox>
+				<HBox justifyContent="End" alignItems="Start">
+					<Label id="TotalSize" text="0" class="fontSize4 green sapUiTinyMarginEnd"></Label>
+					<Label id="SizeUnit" text="" class="fontSize2 gold"></Label>
+				</HBox>
+				<HBox justifyContent="End" alignItems="Start">
+					<Label id="TotalUnits" text="0" class="fontSize2 grey sapUiTinyMarginEnd"></Label>
+					<Label text="Unit(s)" class="fontSize1 gold"></Label>
+				</HBox>
 				<layoutData>
 					<l:GridData span="L5 M4 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
 				</layoutData>
-			</HBox>
+			</VBox>
 		</l:Grid>
 	</l:VerticalLayout>
 </mvc:View>
