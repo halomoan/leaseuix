@@ -29,8 +29,8 @@
 					</layoutData>
 				</HBox>
 			</VBox>
-			<VBox class="">
-				<Label text="{i18n>Vacant} {i18n>On}" wrapping="true"/>
+			<VBox>
+				<Label text="{i18n>Vacant} {i18n>On}"/>
 				<HBox justifyContent="Start" alignItems="Start">
 					<VBox>
 						<HBox>
@@ -46,13 +46,17 @@
 					<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
 				</HBox>
 				<Label text="{i18n>KeyDate} :"/>
-				<DatePicker placeholder="Key Date" value="{viewData>/KeyDate}" valueFormat="yyyyMMdd" change="onKeyDateChange" class="sapUiSmallMarginEnd"
+				<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange" class="sapUiSmallMarginEnd"
 					width="50%"/>
 			</VBox>
-			<HBox justifyContent="End" alignItems="End">
-				<Label
-					text="{ path:'viewData>/TotalSize', type: 'sap.ui.model.type.Integer',formatOptions: { minFractionDigits: 0, groupingEnabled: true} }"
+			<HBox justifyContent="End" alignItems="Start">
+			
+				<Label id="Size"
+					text="0"
 					class="fontSize4 green"></Label>
+				<Label id="SizeUnit"
+					text=""
+					class="fontSize2 gold"></Label>
 				<layoutData>
 					<l:GridData span="L5 M4 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
 				</layoutData>

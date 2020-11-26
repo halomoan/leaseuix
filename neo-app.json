@@ -26,6 +26,14 @@
         "name": "P30"
       },
       "description": "P30_200"
+    },
+    {
+      "path": "/f30",
+      "target": {
+        "type": "destination",
+        "name": "f30"
+      },
+      "description": "f30"
     }
   ],
   "sendWelcomeFileRedirect": true

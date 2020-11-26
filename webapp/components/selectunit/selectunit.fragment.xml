@@ -9,30 +9,30 @@
 		cancel=".onValueHelpCancelPress"
 		afterClose=".onValueHelpAfterClose"
 		supportRanges="false"
-		key="UnitId"
-		descriptionKey="Name"
+		key="UnitKey"
+		descriptionKey="UnitText"
 	>
 		<filterBar>
 			<fb:FilterBar advancedMode="true" search=".onFilterBarSearch">
 				<fb:filterGroupItems>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="UnitId"
+						name="UnitKey"
 						label="Unit ID"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="UnitId" />
+							<m:Input name="UnitKey" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="Name"
+						name="UnitText"
 						label="Unit Name"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="Name" />
+							<m:Input name="UnitText" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
@@ -47,24 +47,25 @@
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="MainCategory"
-						label="Main Category"
+						name="UsageText"
+						label="Usage"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="MainCategory" />
+							<m:Input name="UsageText" />
 						</fb:control>
 					</fb:FilterGroupItem>
-					<fb:FilterGroupItem
+						<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="Category"
-						label="Category"
+						name="BuildingText"
+						label="Building"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="Category" />
+							<m:Input name="BuildingText" />
 						</fb:control>
 					</fb:FilterGroupItem>
+				
 					
 					
 					

@@ -10,7 +10,8 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	"refx/leaseuix/model/formatter"
-], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator, formatter) {
+], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator,
+	formatter) {
 	"use strict";
 
 	return BaseController.extend("refx.leaseuix.components.selectunit.selectunit", {
@@ -24,14 +25,14 @@ sap.ui.define([
 		},
 
 		initData: function() {
+			this.oFilter0 = new Filter("CompanyCode", FilterOperator.EQ, "1002"); // Filter Company Code
 			this.oFilter1 = null; //Filter End Date
-			this.oFilter2 = null //Filter Available
-			this.aFilters = [];
+			this.oFilter2 = null; //Filter Available
+			this.aFilters = [this.oFilter0];
 			var viewData = {
-				"KeyDate": formatter.yyyyMMdd(new Date()),
+				"KeyDate": new Date(),
 				"ShowIdx": 0,
 				"UnitsName": "-None-",
-				"TotalSize": 0,
 				"Filter": {
 					"AvailNo": {
 						value: 0,
@@ -41,16 +42,19 @@ sap.ui.define([
 					"AvailUnit": "0"
 				}
 			};
-			
+
 			this.oGlobalData = this.getModel("globalData");
-			this.oGlobalData.setProperty("/KeyDate",formatter.yyyyMMdd(new Date()));
-			
+			this.oGlobalData.setProperty("/KeyDate", formatter.yyyyMMdd(new Date()));
+
 			this.getView().setModel(new JSONModel(viewData), "viewData");
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
-			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
-
-			this.getView().setModel(this.oRentalUnitsModel);
+			
+			//this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
+			//this.getView().setModel(this.oRentalUnitsModel);
+			
+			var oModel = this.getOwnerComponent().getModel();
+			this.getView().setModel(oModel);
 
 		},
 
@@ -65,8 +69,8 @@ sap.ui.define([
 			this.getView().addDependent(this._oValueHelpDialog);
 
 			this._oValueHelpDialog.setRangeKeyFields([{
-				label: "UnitId",
-				key: "UnitId",
+				label: "UnitKey",
+				key: "UnitKey",
 				type: "string",
 				typeInstance: new typeString({}, {
 					maxLength: 7
@@ -82,11 +86,11 @@ sap.ui.define([
 				oTable.setModel(this.oColModel, "columns");
 
 				if (oTable.bindRows) {
-					oTable.bindAggregation("rows", "/RentalUnits");
+					oTable.bindAggregation("rows", { path: "/RentalUnitSet", filters: [this.oFilter0] } );
 				}
 
 				if (oTable.bindItems) {
-					oTable.bindAggregation("items", "/RentalUnits", function() {
+					oTable.bindAggregation("items", { path: "/RentalUnitSet", filters: [this.oFilter0] }, function() {
 						return new ColumnListItem({
 							cells: aCols.map(function(column) {
 								return new Label({
@@ -106,6 +110,7 @@ sap.ui.define([
 
 		onValueHelpOkPress: function(oEvent) {
 			var aTokens = oEvent.getParameter("tokens");
+			
 			this._oMultiInput.setTokens(aTokens);
 
 			this._UpdateDependantControls(aTokens);
@@ -150,16 +155,37 @@ sap.ui.define([
 					oDate.setYear(oDate.getFullYear() + num);
 					break;
 			}
-			oModel.setProperty("/ShowIdx",1);
+			oModel.setProperty("/ShowIdx", 1);
 			oModel.setProperty("/KeyDate", formatter.yyyyMMdd(oDate));
-			this.oGlobalData.setProperty("/KeyDate",formatter.yyyyMMdd(oDate));
+			this.oGlobalData.setProperty("/KeyDate", formatter.yyyyMMdd(oDate));
 			this.onApplyAvail();
 		},
 
-		onKeyDateChange: function(oEvent){
-			
-			this.oGlobalData.setProperty("/KeyDate",oEvent.getParameter("value"));
-			
+		onKeyDateChange: function(oEvent) {
+
+			var oDate = new Date(oEvent.getParameter("value"));
+
+			this.oGlobalData.setProperty("/KeyDate", oDate);
+
+			var oGridList = sap.ui.getCore().byId("__xmlview1--unitGrid");
+			if (oGridList) {
+				
+				var oUnitGridBindingInfo = oGridList.getBindingInfo("items");
+				
+
+				if (!oUnitGridBindingInfo.parameters) {
+					oUnitGridBindingInfo.parameters = {};
+				}
+				if (!oUnitGridBindingInfo.parameters.custom) {
+					oUnitGridBindingInfo.parameters.custom = {};
+				}
+
+				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
+				oGridList.bindItems(oUnitGridBindingInfo);
+				
+				
+			}
+
 		},
 		onApplyAvail: function() {
 
@@ -182,7 +208,7 @@ sap.ui.define([
 
 		onShowSelect: function(oEvent) {
 
-			var aFilters = [];
+			
 			switch (oEvent.getParameter("selectedIndex")) {
 				case 0:
 					this.oFilter2 = null;
@@ -227,15 +253,13 @@ sap.ui.define([
 				aFilters.push(this.oFilter2);
 			}
 
-			console.log(aFilters);
-
 			return aFilters;
 		},
 
 		onResetAvail: function() {
 			var oModel = this.getView().getModel("viewData");
 			oModel.setProperty("/KeyDate", formatter.yyyyMMdd(new Date()));
-			this.oGlobalData.setProperty("/KeyDate",formatter.yyyyMMdd(new Date()));
+			this.oGlobalData.setProperty("/KeyDate", formatter.yyyyMMdd(new Date()));
 			oModel.setProperty("/Filter/AvailNo/value", 0);
 			oModel.setProperty("/Filter/AvailUnit", "0");
 			oModel.setProperty("/ShowIdx", 0);
@@ -253,35 +277,36 @@ sap.ui.define([
 
 		_UpdateDependantControls: function(aTokens) {
 			var sUnitsName = "";
-			var oData = this.oRentalUnitsModel.getData();
-			var iTotalSize = 0;
+		
+		
 
 			this.aFilters = [];
 
 			for (var i = 0; i < aTokens.length; i++) {
 				var sKey = aTokens[i].getKey();
+				var sName = aTokens[i].getText();
 				if (i < aTokens.length - 1) {
-					sUnitsName += sKey + " / ";
+					sUnitsName += sName + " / ";
 				} else {
-					sUnitsName += sKey;
+					sUnitsName += sName;
 				}
 				this.aFilters.push(
 					new Filter({
-						path: "UnitId",
+						path: "UnitKey",
 						operator: FilterOperator.EQ,
 						value1: sKey
 					}));
-				var oUnit = oData.RentalUnits.find(unit => unit.UnitId === sKey);
-				iTotalSize += oUnit.Size;
+			
+				
 
 			}
 
 			if (i > 0) {
 				this.getView().getModel("viewData").setProperty("/UnitsName", sUnitsName);
-				this.getView().getModel("viewData").setProperty("/TotalSize", iTotalSize);
+				
 			} else {
 				this.getView().getModel("viewData").setProperty("/UnitsName", "-None-");
-				this.getView().getModel("viewData").setProperty("/TotalSize", 0);
+				
 			}
 
 			var oUnitGridBinding = sap.ui.getCore().byId("__xmlview1--unitGrid").getBinding("items");
@@ -347,22 +372,22 @@ sap.ui.define([
 			aFilters.push(new Filter({
 				filters: [
 					new Filter({
-						path: "UnitId",
+						path: "UnitKey",
 						operator: FilterOperator.Contains,
 						value1: sSearchQuery
 					}),
 					new Filter({
-						path: "Name",
+						path: "UnitText",
 						operator: FilterOperator.Contains,
 						value1: sSearchQuery
 					}),
 					new Filter({
-						path: "MainCategory",
+						path: "UsageText",
 						operator: FilterOperator.Contains,
 						value1: sSearchQuery
 					}),
 					new Filter({
-						path: "Category",
+						path: "BuildingText",
 						operator: FilterOperator.Contains,
 						value1: sSearchQuery
 					})
@@ -421,8 +446,9 @@ sap.ui.define([
 				var oObject = oArgs.suggestionObject.getBindingContext().getObject(),
 					oToken = new Token();
 
-				oToken.setKey(oObject.UnitId);
-				oToken.setText(oObject.Name + " (" + oObject.UnitId + ")");
+				oToken.setKey(oObject.UnitKey);
+				//oToken.setText(oObject.Name + " (" + oObject.UnitId + ")");
+				oToken.setText(oObject.UnitText);
 				return oToken;
 			}
 

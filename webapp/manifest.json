@@ -15,11 +15,11 @@
 		},
 		"dataSources": {
 			"ZLEASEUIX_ODATA_SRV": {
-				"uri": "/P30/sap/opu/odata/SAP/ZLEASEUIX_ODATA_SRV/",
+				"uri": "/f30/sap/opu/odata/SAP/ZLEASEUIX_ODATA_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
-					"localUri": "localService/metadata.xml"
+					"localUri": "localService/ZLEASEUIX_ODATA_SRV/metadata.xml"
 				}
 			}
 		}

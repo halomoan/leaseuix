@@ -22,7 +22,7 @@
     {
       "templateId": "servicecatalog.connectivityComponent",
       "templateVersion": "0.0.0",
-      "dateTimeStamp": "Wed, 25 Nov 2020 14:17:56 GMT"
+      "dateTimeStamp": "Thu, 26 Nov 2020 00:49:53 GMT"
     }
   ],
   "translation": {
@@ -52,7 +52,7 @@
     "excludedFiles": []
   },
   "mockpreview": {
-    "mockUri": "/P30/sap/opu/odata/SAP/ZLEASEUIX_ODATA_SRV",
+    "mockUri": "/f30/sap/opu/odata/SAP/ZLEASEUIX_ODATA_SRV",
     "metadataFilePath": "",
     "loadJSONFiles": false,
     "loadCustomRequests": false,

@@ -22,7 +22,6 @@ sap.ui.define([
 			//this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
 			
 			var oModel = this.getOwnerComponent().getModel();
-			
 			this.getView().setModel(oModel);
 			
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
@@ -30,30 +29,58 @@ sap.ui.define([
 			this.oGlobalData = this.getModel("globalData");
 			this.getView().setModel(this.oGlobalData, "globalData");
 
-			
+			this._initBinding();
 
+		
+			
+		},
+		
+		_initBinding : function(){
+			
 			var oGridList = this.byId("unitGrid");
+			
+			
 			oGridList.addEventDelegate({
 				onAfterRendering: function() {
 					var oBinding = this.getBinding("items");
 					
 					oBinding.attachChange(function(oEvent) {
-						var oSource = oEvent.getSource();
-						var oFilteredRowsLength = oSource.iLength; 
-						var oData = oSource.getModel().getData();
-						var aFiltered = oSource.aIndices;
+						
 						var iTotalSize = 0;
-						for(var i =0 ; i< aFiltered.length; i++){
-							console.log(oData.RentalUnits[aFiltered[i]].UnitId,oData.RentalUnits[aFiltered[i]].Size)
-							iTotalSize += oData.RentalUnits[aFiltered[i]].Size;
+						var sSizeUnit = "";
+						
+						
+						var aItems = oGridList.getItems();
+						
+						for(var i = 0 ; i < aItems.length; i++){
+							
+							var oItem = aItems[i].getBindingContext().getObject();
+							iTotalSize += parseInt(oItem.Size,0);
+							sSizeUnit = oItem.SizeUnit;
 						}
-						console.log(oData,oSource.aIndices,iTotalSize);
-					})
+						var oSizeText = sap.ui.getCore().byId("__xmlview1--selectunit--Size");
+						oSizeText.setText(formatter.NumberFormat(iTotalSize));
+						var oSizeUnitText = sap.ui.getCore().byId("__xmlview1--selectunit--SizeUnit");
+						oSizeUnitText.setText(sSizeUnit);
+					});
 				}
 			}, oGridList);
-			var oBinding = oGridList.getBinding("items");
-			var oFilter = new Filter("Companycode", FilterOperator.EQ, "1002");
-			oBinding.filter([oFilter]);
+			
+			var oUnitGridBindingInfo = oGridList.getBindingInfo("items");
+				
+				
+				if (!oUnitGridBindingInfo.parameters) {
+					oUnitGridBindingInfo.parameters = {};
+				}
+				if (!oUnitGridBindingInfo.parameters.custom) {
+					oUnitGridBindingInfo.parameters.custom = {};
+				}
+
+				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(new Date());
+				
+				var oFilter1 = new Filter("CompanyCode", FilterOperator.EQ, "1002");
+				oUnitGridBindingInfo.filters = [oFilter1];
+				oGridList.bindItems(oUnitGridBindingInfo);
 		},
 
 		onUnitDetail: function(oEvent) {
