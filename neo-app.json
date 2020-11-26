@@ -6,8 +6,7 @@
       "target": {
         "type": "service",
         "name": "sapui5",
-        "entryPath": "/resources",
-        "version": "1.52.13"
+        "entryPath": "/resources"
       },
       "description": "SAPUI5 Resources"
     },
@@ -16,10 +15,17 @@
       "target": {
         "type": "service",
         "name": "sapui5",
-        "entryPath": "/test-resources",
-        "version": "1.52.13"
+        "entryPath": "/test-resources"
       },
       "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/P30",
+      "target": {
+        "type": "destination",
+        "name": "P30"
+      },
+      "description": "P30_200"
     }
   ],
   "sendWelcomeFileRedirect": true

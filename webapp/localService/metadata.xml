@@ -1,0 +1,86 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ZLEASEUIX_ODATA_SRV" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="RentalUnit" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Unitkey"/>
+                </Key>
+                <Property Name="Unitkey" Type="Edm.String" Nullable="false" MaxLength="13" sap:unicode="false" sap:label="RE Key" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Unittext" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Rental Obj Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Validfrom" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Obj. Valid From" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Validto" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Object Valid To" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Companycode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Businessentity" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Business Entity" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Rentalobject" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Rental Object" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Building" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Building" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Buildingtext" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Building Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Usagetype" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Usage Type" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Usagetext" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="RU usage type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Availableamount" Type="Edm.Decimal" Nullable="false" Precision="17" Scale="4" sap:unicode="false" sap:label="Amount" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Remeasunit" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Units in" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="REContractKey" Type="Edm.String" Nullable="false" MaxLength="13" sap:unicode="false" sap:label="Contract Key" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Contractno" Type="Edm.String" MaxLength="13" sap:unicode="false" sap:label="Contract No" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Contractname" Type="Edm.String" MaxLength="80" sap:unicode="false" sap:label="Contract name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Startdate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Contract Start" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Enddate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="End of Term" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Endtermdate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="1st Contr. End" sap:creatable="false" sap:updatable="false"/>
+                <NavigationProperty Name="Contract" Relationship="ZLEASEUIX_ODATA_SRV.RentalUnitToContract" FromRole="FromRole_RentalUnitToContract" ToRole="ToRole_RentalUnitToContract"/>
+            </EntityType>
+            <EntityType Name="Contract" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="REContractKey"/>
+                </Key>
+                <Property Name="REContractKey" Type="Edm.String" Nullable="false" MaxLength="13" sap:unicode="false" sap:label="RE Key" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Companycode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Contractobjnr" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="Object Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Contractno" Type="Edm.String" Nullable="false" MaxLength="13" sap:unicode="false" sap:label="Contract" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Contractname" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Contract name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Startdate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Contract Start" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Enddate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="1st Contr. End" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EndTermDate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="End Term Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Contracttype" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Contract Type" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Contracttypetext" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Contract type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Industry" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Industry" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Industrytext" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Recontractstatus" Type="Edm.String" Nullable="false" MaxLength="449" sap:unicode="false" sap:label="RECONTRACTSTATUS" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="RentalUnitSet" Relationship="ZLEASEUIX_ODATA_SRV.ContractToRentalUnit" FromRole="FromRole_ContractToRentalUnit" ToRole="ToRole_ContractToRentalUnit"/>
+            </EntityType>
+            <Association Name="ContractToRentalUnit" sap:content-version="1">
+                <End Type="ZLEASEUIX_ODATA_SRV.Contract" Multiplicity="1" Role="FromRole_ContractToRentalUnit"/>
+                <End Type="ZLEASEUIX_ODATA_SRV.RentalUnit" Multiplicity="*" Role="ToRole_ContractToRentalUnit"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_ContractToRentalUnit">
+                        <PropertyRef Name="REContractKey"/>
+                    </Principal>
+                    <Dependent Role="ToRole_ContractToRentalUnit">
+                        <PropertyRef Name="REContractKey"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="RentalUnitToContract" sap:content-version="1">
+                <End Type="ZLEASEUIX_ODATA_SRV.RentalUnit" Multiplicity="0..1" Role="FromRole_RentalUnitToContract"/>
+                <End Type="ZLEASEUIX_ODATA_SRV.Contract" Multiplicity="1" Role="ToRole_RentalUnitToContract"/>
+            </Association>
+            <EntityContainer Name="ZLEASEUIX_ODATA_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="RentalUnitSet" EntityType="ZLEASEUIX_ODATA_SRV.RentalUnit" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ContractSet" EntityType="ZLEASEUIX_ODATA_SRV.Contract" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <AssociationSet Name="RentalUnitToContractSet" Association="ZLEASEUIX_ODATA_SRV.RentalUnitToContract" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RentalUnitSet" Role="FromRole_RentalUnitToContract"/>
+                    <End EntitySet="ContractSet" Role="ToRole_RentalUnitToContract"/>
+                </AssociationSet>
+                <AssociationSet Name="ContractToRentalUnitSet" Association="ZLEASEUIX_ODATA_SRV.ContractToRentalUnit" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ContractSet" Role="FromRole_ContractToRentalUnit"/>
+                    <End EntitySet="RentalUnitSet" Role="ToRole_ContractToRentalUnit"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link
+                xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./sap/opu/odata/SAP/ZLEASEUIX_ODATA_SRV/$metadata"/>
+                <atom:link
+                    xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./sap/opu/odata/SAP/ZLEASEUIX_ODATA_SRV/$metadata"/>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>

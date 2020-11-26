@@ -10,11 +10,20 @@
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
 		"sourceTemplate": {
-			"id": "ui5template.basicSAPUI5ApplicationProject",
-			"version": "1.40.12"
+			"id": "servicecatalog.connectivityComponent",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"ZLEASEUIX_ODATA_SRV": {
+				"uri": "/P30/sap/opu/odata/SAP/ZLEASEUIX_ODATA_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			}
 		}
 	},
-
 	"sap.ui": {
 		"technology": "UI5",
 		"icons": {
@@ -33,10 +42,8 @@
 		"supportedThemes": [
 			"sap_hcb",
 			"sap_belize"
-
 		]
 	},
-
 	"sap.ui5": {
 		"rootView": {
 			"viewName": "refx.leaseuix.view.App",
@@ -64,12 +71,17 @@
 				"settings": {
 					"bundleName": "refx.leaseuix.i18n.i18n"
 				}
+			},
+			"": {
+				"dataSource": "ZLEASEUIX_ODATA_SRV"
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -79,15 +91,18 @@
 				"controlId": "app",
 				"controlAggregation": "pages"
 			},
-			"routes": [{
-				"pattern": "contractpage",
-				"name": "contractpage",
-				"target": "contractpage"
-			}, {
-				"pattern": "",
-				"name": "manageunits",
-				"target": "manageunits"
-			}],
+			"routes": [
+				{
+					"pattern": "contractpage",
+					"name": "contractpage",
+					"target": "contractpage"
+				},
+				{
+					"pattern": "",
+					"name": "manageunits",
+					"target": "manageunits"
+				}
+			],
 			"targets": {
 				"contractpage": {
 					"viewName": "ContractPage"

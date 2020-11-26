@@ -1,8 +1,10 @@
 sap.ui.define([
 	"refx/leaseuix/controller/BaseController",
 	'sap/ui/model/json/JSONModel',
+	'sap/ui/model/Filter',
+	'sap/ui/model/FilterOperator',
 	"refx/leaseuix/model/formatter"
-], function(BaseController, JSONModel, formatter) {
+], function(BaseController, JSONModel, Filter, FilterOperator, formatter) {
 	"use strict";
 
 	return BaseController.extend("refx.leaseuix.controller.ManageUnits", {
@@ -17,8 +19,12 @@ sap.ui.define([
 			var oViewData = {
 
 			};
-			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
-			this.getView().setModel(this.oRentalUnitsModel);
+			//this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
+			
+			var oModel = this.getOwnerComponent().getModel();
+			
+			this.getView().setModel(oModel);
+			
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
 
 			this.oGlobalData = this.getModel("globalData");
@@ -45,7 +51,9 @@ sap.ui.define([
 					})
 				}
 			}, oGridList);
-
+			var oBinding = oGridList.getBinding("items");
+			var oFilter = new Filter("Companycode", FilterOperator.EQ, "1002");
+			oBinding.filter([oFilter]);
 		},
 
 		onUnitDetail: function(oEvent) {

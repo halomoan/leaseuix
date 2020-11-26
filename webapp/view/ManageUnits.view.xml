@@ -12,7 +12,7 @@
 			<Button icon="sap-icon://delete" type="Transparent"/>
 		</OverflowToolbar>
 	</HBox>
-	<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnits' }" selectionChange="onSelectionChange" delete="onDelete"
+	<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" selectionChange="onSelectionChange" delete="onDelete"
 		class="sapUiResponsiveContentPadding customCSS">
 		<f:customLayout>
 			<grid:GridBoxLayout boxWidth="15rem"/>
