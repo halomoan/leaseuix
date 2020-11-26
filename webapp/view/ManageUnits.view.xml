@@ -14,7 +14,7 @@
 	</HBox>
 	
 	<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
-	<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" selectionChange="onSelectionChange" delete="onDelete"
+	<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }"  updateFinished="onGridChange" selectionChange="onSelectionChange" delete="onDelete"
 	
 		class="sapUiResponsiveContentPadding customCSS">
 		<f:customLayout>

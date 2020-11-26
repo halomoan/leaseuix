@@ -35,8 +35,8 @@
 					<VBox>
 						<HBox>
 							<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
-								step="1" change="onAvailChange"/>
-							<ComboBox width="8rem" selectedKey="{viewData>/Filter/AvailUnit}" change="onAvailChange">
+								step="1" change="onStepChange"/>
+							<ComboBox width="8rem" selectedKey="{viewData>/Filter/AvailUnit}" change="onStepChange">
 								<core:Item key="0" text="Weeks"/>
 								<core:Item key="1" text="Months"/>
 								<core:Item key="2" text="Years"/>
