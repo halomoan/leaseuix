@@ -55,8 +55,8 @@
 					<HBox justifyContent="End" alignItems="Start">
 						<VBox class="sapUiTinyMarginTop" alignItems="End">
 							<Label text="Occupied: {path : 'viewData>/Tenancy/TOccupiedSize', formatter: '.formatter.NumberFormat'}" class="lightBlue"></Label>
+							<Label text="Area : {viewData>/Tenancy/POccupiedSize} %" class="green"></Label>
 							<Label text="Vacant: {path : 'viewData>/Tenancy/TVacantSize', formatter: '.formatter.NumberFormat'}"></Label>
-							<Label text="Rate : {viewData>/Tenancy/POccupiedSize} %" class="green"></Label>
 						</VBox>
 						<Label id="TotalSize" text="{path : 'viewData>/Tenancy/TSize', formatter: '.formatter.NumberFormat'}"
 							class="fontSize4 green sapUiTinyMarginBeginEnd"></Label>
@@ -87,7 +87,7 @@
 	</Panel>
 	<ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
 		<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
-		<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" updateFinished="onGridChange" selectionChange="onSelectionChange"
+		<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" selectionChange="onSelectionChange"
 			delete="onDelete" class="sapUiResponsiveContentPadding customCSS">
 			<f:customLayout>
 				<grid:GridBoxLayout boxWidth="15rem"/>

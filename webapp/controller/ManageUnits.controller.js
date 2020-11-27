@@ -54,13 +54,11 @@ sap.ui.define([
 
 			this.CompanyCode = "1001";
 			this.BusinessEntity = "00001001";
-			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode ); // Filter Company Code
-			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity ); // Filter BE
+			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
+			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity); // Filter BE
 			this.aFilterUnits = []; //Filter Unit Key
 			this.oFilter2 = null; //Filter Available
 			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
-
-			//this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model/") + "/rentalunitcolumns.json");
 
@@ -92,47 +90,7 @@ sap.ui.define([
 
 		},
 
-		// onGridChange: function(oEvent) {
-		// 	var oGridList = this.byId("unitGrid");
-		// 	var oModel = this.getView().getModel("viewData");
-		// 	var iTotalSize = 0;
-		// 	var sSizeUnit = "";
-		// 	var iTotalUnits = 0;
-		// 	var iTotalOccpSize = 0;
-		// 	var iTotalVacantSize = 0;
-		// 	var iTotalOccpUnits = 0;
-		// 	var iTotalVacantUnits = 0;
-
-		// 	var aItems = oGridList.getItems();
-
-		// 	for (var i = 0; i < aItems.length; i++) {
-
-		// 		var oItem = aItems[i].getBindingContext().getObject();
-		// 		var iSize = parseInt(oItem.Size, 0);
-		// 		iTotalSize += iSize;
-		// 		iTotalUnits += 1;
-		// 		sSizeUnit = oItem.SizeUnit;
-		// 		if (oItem.Available) {
-		// 			iTotalVacantSize += iSize;
-		// 			iTotalVacantUnits += 1;
-		// 		} else {
-		// 			iTotalOccpSize += iSize;
-		// 			iTotalOccpUnits += 1;
-		// 		}
-		// 	}
-		// 	oModel.setProperty("/Tenancy/SizeUnit", sSizeUnit);
-		// 	oModel.setProperty("/Tenancy/TSize", iTotalSize);
-		// 	oModel.setProperty("/Tenancy/TUnits", iTotalUnits);
-		// 	oModel.setProperty("/Tenancy/TOccupiedSize", iTotalOccpSize);
-		// 	oModel.setProperty("/Tenancy/TOccupidUnits", iTotalOccpUnits);
-		// 	oModel.setProperty("/Tenancy/TVacantSize", iTotalVacantSize);
-		// 	oModel.setProperty("/Tenancy/TVacantUnits", iTotalVacantUnits);
-		// 	oModel.setProperty("/Tenancy/POccupiedUnits", Math.round((iTotalOccpUnits / iTotalUnits) * 100));
-		// 	oModel.setProperty("/Tenancy/POccupiedSize", Math.round((iTotalOccpSize / iTotalSize) * 100));
-
-		// },
-		
-		_updateTenancyInfo: function(oData){
+		_updateTenancyInfo: function(oData) {
 			var oModel = this.getView().getModel("viewData");
 			oModel.setProperty("/Tenancy/SizeUnit", oData.SizeUnit);
 			oModel.setProperty("/Tenancy/TSize", oData.TotalSize);
@@ -142,7 +100,7 @@ sap.ui.define([
 			oModel.setProperty("/Tenancy/TVacantSize", oData.TVacantSize);
 			oModel.setProperty("/Tenancy/TVacantUnits", oData.TVacantUnits);
 			oModel.setProperty("/Tenancy/POccupiedUnits", Math.round((oData.TOccupiedUnits / oData.TotalUnits) * 100));
-			oModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));	
+			oModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));
 		},
 		onGridSelect: function(oEvent) {
 			var oSource = oEvent.getSource();
@@ -334,19 +292,32 @@ sap.ui.define([
 
 			var oModel = this.getOwnerComponent().getModel();
 
-			
-			var sKeys = "(CompanyCode='" + this.CompanyCode + "',BusinessEntity='" + this.BusinessEntity + "')";
-			//console.log(sKeys + "?at=" + formatter.yyyyMMdd(oDate) );
-			
-			oModel.read("/RentalUnitStatSet" + sKeys + "?at=" + formatter.yyyyMMdd(oDate) , {
+			// var sKeys = "(CompanyCode='" + this.CompanyCode + "',BusinessEntity='" + this.BusinessEntity + "')";
+			// //console.log(sKeys + "?at=" + formatter.yyyyMMdd(oDate) );
+
+			// oModel.read("/RentalUnitStatSet" + sKeys + "?at=" + formatter.yyyyMMdd(oDate) , {
+			// 	success: function(oData, oResponse) {
+			// 		oThis._updateTenancyInfo(oData);
+			// 	},
+			// 	error: function(oError) {
+			// 	}
+			// });
+
+			//var sParams = this._getUrlFilters();
+			var aFilters = this._mergeFilters();
+		
+			oModel.read("/RentalUnitStatSet",  {
+				 urlParameters : { "at": formatter.yyyyMMdd(oDate) },
+				filters: aFilters,
 				success: function(oData, oResponse) {
-					oThis._updateTenancyInfo(oData);
+		
+					oThis._updateTenancyInfo(oData.results[0]);
 				},
 				error: function(oError) {
+
 				}
 			});
 
-			
 
 			var oGridList = this.byId("unitGrid");
 			if (oGridList) {
@@ -428,39 +399,41 @@ sap.ui.define([
 			return aFilters;
 		},
 
-		_getUrlParams: function() {
+		_getUrlFilters: function() {
 			var i = 0;
 			var oModel = this.getView().getModel("viewData");
 			var sAt = formatter.yyyyMMdd(oModel.getProperty("/KeyDate"));
 			var sFilter = "&$filter=";
 			if (this.aFilters.length > 0) {
-				
+
 				for (i = 0; i < this.aFilters.length; i++) {
-					
-					if (i === 0 ) {
+
+					if (i === 0) {
 						sFilter += this.aFilters[i].sPath + " " + this.aFilters[i].sOperator.toLowerCase() + " '" + this.aFilters[i].oValue1 + "'";
 					} else {
-						sFilter +=  " and " + this.aFilters[i].sPath + " " + this.aFilters[i].sOperator.toLowerCase() + " '" + this.aFilters[i].oValue1 + "'";
+						sFilter += " and " + this.aFilters[i].sPath + " " + this.aFilters[i].sOperator.toLowerCase() + " '" + this.aFilters[i].oValue1 +
+							"'";
 					}
 					//console.log(this.aFilters[i].sPath, this.aFilters[i].sOperator,this.aFilters[i].oValue1);
-				}	
+				}
 			}
-			
+
 			if (this.aFilterUnits) {
-			
+
 				for (i = 0; i < this.aFilterUnits.length; i++) {
-					
-					if (i === 0 ) {
-						sFilter += this.aFilterUnits[i].sPath + " " + this.aFilterUnits[i].sOperator.toLowerCase() + " '" + this.aFilterUnits[i].oValue1 + "'";
+
+					if (i === 0) {
+						sFilter += this.aFilterUnits[i].sPath + " " + this.aFilterUnits[i].sOperator.toLowerCase() + " '" + this.aFilterUnits[i].oValue1 +
+							"'";
 					} else {
-						sFilter +=  " and " + this.aFilterUnits[i].sPath + " " + this.aFilterUnits[i].sOperator.toLowerCase() + " '" + this.aFilterUnits[i].oValue1 + "'";
+						sFilter += " and " + this.aFilterUnits[i].sPath + " " + this.aFilterUnits[i].sOperator.toLowerCase() + " '" + this.aFilterUnits[
+							i].oValue1 + "'";
 					}
 					//console.log(this.aFilterUnits[i].sPath, this.aFilterUnits[i].sOperator,this.aFilterUnits[i].oValue1);
-				}	
+				}
 			}
 			var sParams = "?at=" + sAt + sFilter;
-			
-			
+
 			return sParams;
 
 		},
