@@ -1,10 +1,17 @@
 sap.ui.define([
-	"refx/leaseuix/controller/BaseController",
+	'sap/ui/comp/library',
+	'refx/leaseuix/controller/BaseController',
 	'sap/ui/model/json/JSONModel',
+	'sap/ui/model/type/String',
+	'sap/m/ColumnListItem',
+	'sap/m/Label',
+	'sap/m/SearchField',
+	'sap/m/Token',
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	"refx/leaseuix/model/formatter"
-], function(BaseController, JSONModel, Filter, FilterOperator, formatter) {
+], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator,
+	formatter) {
 	"use strict";
 
 	return BaseController.extend("refx.leaseuix.controller.ManageUnits", {
@@ -12,46 +19,64 @@ sap.ui.define([
 		_formFragments: {},
 		onInit: function() {
 
+			this._oMultiInput = this.getView().byId("rentalUnits");
+			this._oMultiInput.addValidator(this._onMultiInputValidate);
+
 			this.initData();
 		},
 
 		initData: function() {
 			var oViewData = {
+				"KeyDate": new Date(),
+				"ShowIdx": 0,
+				"UnitsName": "-None-",
+				"Tenancy": {
+					"SizeUnit": "",
+					"TSize": 0,
+					"TUnits": 0,
+					"TOccupiedUnits": 0,
+					"TOccupiedSize": 0,
+					"TVacantUnits": 0,
+					"TVacantSize": 0,
+					"POccupiedUnits": 0.0,
+					"POccupiedSize": 0.0
 
+				},
+				"Filter": {
+					"AvailNo": {
+						value: 0,
+						min: 0,
+						max: 54
+					},
+					"AvailUnit": "0"
+				}
 			};
+
+			this.CompanyCode = "1001";
+			this.BusinessEntity = "00001001";
+			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode ); // Filter Company Code
+			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity ); // Filter BE
+			this.aFilterUnits = []; //Filter Unit Key
+			this.oFilter2 = null; //Filter Available
+			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
+
 			//this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
 
-			var oModel = this.getOwnerComponent().getModel();
-			this.getView().setModel(oModel);
+			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model/") + "/rentalunitcolumns.json");
+
+			this.getOwnerComponent().getModel().metadataLoaded().then(function() {
+				var oModel = this.getOwnerComponent().getModel();
+
+				this.getView().setModel(oModel);
+			}.bind(this));
 
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
 
-			this.oGlobalData = this.getModel("globalData");
-			this.getView().setModel(this.oGlobalData, "globalData");
+			// this.oGlobalData = this.getModel("globalData");
+			// this.getView().setModel(this.oGlobalData, "globalData");
 
-			this._initBinding();
+			this._updateGridBinding();
 
-		},
-
-		_initBinding: function() {
-
-			var oGridList = this.byId("unitGrid");
-
-			
-			var oUnitGridBindingInfo = oGridList.getBindingInfo("items");
-
-			if (!oUnitGridBindingInfo.parameters) {
-				oUnitGridBindingInfo.parameters = {};
-			}
-			if (!oUnitGridBindingInfo.parameters.custom) {
-				oUnitGridBindingInfo.parameters.custom = {};
-			}
-
-			oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(new Date());
-
-			var oFilter1 = new Filter("CompanyCode", FilterOperator.EQ, "1002");
-			oUnitGridBindingInfo.filters = [oFilter1];
-			oGridList.bindItems(oUnitGridBindingInfo);
 		},
 
 		onUnitDetail: function(oEvent) {
@@ -67,40 +92,57 @@ sap.ui.define([
 
 		},
 
-		onGridChange: function(oEvent) {
-			var oGridList = this.byId("unitGrid");
-			var iTotalSize = 0;
-			var sSizeUnit = "";
-			var iTotalUnits = 0;
-			var iTotalOccpSize = 0;
-			var iTotalVacantSize = 0;
-			var iTotalOccpUnits = 0;
-			var iTotalVacantUnits = 0;
+		// onGridChange: function(oEvent) {
+		// 	var oGridList = this.byId("unitGrid");
+		// 	var oModel = this.getView().getModel("viewData");
+		// 	var iTotalSize = 0;
+		// 	var sSizeUnit = "";
+		// 	var iTotalUnits = 0;
+		// 	var iTotalOccpSize = 0;
+		// 	var iTotalVacantSize = 0;
+		// 	var iTotalOccpUnits = 0;
+		// 	var iTotalVacantUnits = 0;
 
-			var aItems = oGridList.getItems();
+		// 	var aItems = oGridList.getItems();
 
-			for (var i = 0; i < aItems.length; i++) {
+		// 	for (var i = 0; i < aItems.length; i++) {
 
-				var oItem = aItems[i].getBindingContext().getObject();
-				var iSize = parseInt(oItem.Size, 0);
-				iTotalSize += iSize;
-				iTotalUnits += 1;
-				sSizeUnit = oItem.SizeUnit;
-				if (oItem.Available){
-					iTotalVacantSize += iSize;
-					iTotalVacantUnits += 1;
-				} else {
-					iTotalOccpSize += iSize;
-					iTotalOccpUnits += 1;
-				}
-			}
-			
-			// var oSizeText = sap.ui.getCore().byId("__xmlview1--selectunit--TotalSize");
-			// oSizeText.setText(formatter.NumberFormat(iTotalSize));
-			// var oSizeUnitText = sap.ui.getCore().byId("__xmlview1--selectunit--SizeUnit");
-			// oSizeUnitText.setText(sSizeUnit);
-			// var oTotalUnits = sap.ui.getCore().byId("__xmlview1--selectunit--TotalUnits");
-			// oTotalUnits.setText(iTotalUnits);
+		// 		var oItem = aItems[i].getBindingContext().getObject();
+		// 		var iSize = parseInt(oItem.Size, 0);
+		// 		iTotalSize += iSize;
+		// 		iTotalUnits += 1;
+		// 		sSizeUnit = oItem.SizeUnit;
+		// 		if (oItem.Available) {
+		// 			iTotalVacantSize += iSize;
+		// 			iTotalVacantUnits += 1;
+		// 		} else {
+		// 			iTotalOccpSize += iSize;
+		// 			iTotalOccpUnits += 1;
+		// 		}
+		// 	}
+		// 	oModel.setProperty("/Tenancy/SizeUnit", sSizeUnit);
+		// 	oModel.setProperty("/Tenancy/TSize", iTotalSize);
+		// 	oModel.setProperty("/Tenancy/TUnits", iTotalUnits);
+		// 	oModel.setProperty("/Tenancy/TOccupiedSize", iTotalOccpSize);
+		// 	oModel.setProperty("/Tenancy/TOccupidUnits", iTotalOccpUnits);
+		// 	oModel.setProperty("/Tenancy/TVacantSize", iTotalVacantSize);
+		// 	oModel.setProperty("/Tenancy/TVacantUnits", iTotalVacantUnits);
+		// 	oModel.setProperty("/Tenancy/POccupiedUnits", Math.round((iTotalOccpUnits / iTotalUnits) * 100));
+		// 	oModel.setProperty("/Tenancy/POccupiedSize", Math.round((iTotalOccpSize / iTotalSize) * 100));
+
+		// },
+		
+		_updateTenancyInfo: function(oData){
+			var oModel = this.getView().getModel("viewData");
+			oModel.setProperty("/Tenancy/SizeUnit", oData.SizeUnit);
+			oModel.setProperty("/Tenancy/TSize", oData.TotalSize);
+			oModel.setProperty("/Tenancy/TUnits", oData.TotalUnits);
+			oModel.setProperty("/Tenancy/TOccupiedSize", oData.TOccupiedSize);
+			oModel.setProperty("/Tenancy/TOccupidUnits", oData.TOccupiedUnits);
+			oModel.setProperty("/Tenancy/TVacantSize", oData.TVacantSize);
+			oModel.setProperty("/Tenancy/TVacantUnits", oData.TVacantUnits);
+			oModel.setProperty("/Tenancy/POccupiedUnits", Math.round((oData.TOccupiedUnits / oData.TotalUnits) * 100));
+			oModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));	
 		},
 		onGridSelect: function(oEvent) {
 			var oSource = oEvent.getSource();
@@ -156,6 +198,458 @@ sap.ui.define([
 		cancelMergeUnits: function() {
 			this.byId("mergeUnitsDialog").close();
 		},
+
+		// #region - Select Unit Panel
+
+		onValueHelpRequested: function() {
+			var aCols = this.oColModel.getData().cols;
+			this._oBasicSearchField = new SearchField({
+				showSearchButton: false
+			});
+
+			this._oValueHelpDialog = sap.ui.xmlfragment("refx.leaseuix.components.selectunit.selectunit", this);
+			this.getView().addDependent(this._oValueHelpDialog);
+
+			this._oValueHelpDialog.setRangeKeyFields([{
+				label: "UnitKey",
+				key: "UnitKey",
+				type: "string",
+				typeInstance: new typeString({}, {
+					maxLength: 7
+				})
+			}]);
+
+			this._oValueHelpDialog.setTokenDisplayBehaviour(sap.ui.comp.smartfilterbar.DisplayBehaviour.descriptionOnly);
+			this._oValueHelpDialog.setKey("UnitKey");
+			this._oValueHelpDialog.setDescriptionKey('UnitText');
+
+			var oFilterBar = this._oValueHelpDialog.getFilterBar();
+			oFilterBar.setFilterBarExpanded(false);
+			oFilterBar.setBasicSearch(this._oBasicSearchField);
+
+			this._oValueHelpDialog.getTableAsync().then(function(oTable) {
+				oTable.setModel(this.oRentalUnitsModel);
+				oTable.setModel(this.oColModel, "columns");
+
+				if (oTable.bindRows) {
+					oTable.bindAggregation("rows", {
+						path: "/RentalUnitSet",
+						filters: this.aFilters
+					});
+				}
+
+				if (oTable.bindItems) {
+					oTable.bindAggregation("items", {
+						path: "/RentalUnitSet",
+						filters: this.aFilters
+					}, function() {
+						return new ColumnListItem({
+							cells: aCols.map(function(column) {
+								return new Label({
+									text: "{" + column.template + "}"
+								});
+							})
+						});
+					});
+				}
+
+				this._oValueHelpDialog.update();
+			}.bind(this));
+
+			this._oValueHelpDialog.setTokens(this._oMultiInput.getTokens());
+			this._oValueHelpDialog.open();
+		},
+
+		onValueHelpOkPress: function(oEvent) {
+			var aTokens = oEvent.getParameter("tokens");
+
+			this._oMultiInput.setTokens(aTokens);
+
+			this._UpdateDependantControls(aTokens);
+
+			this._oValueHelpDialog.close();
+		},
+
+		onTokenUpdate: function(oEvent) {
+			var aRemovedTokens = oEvent.getParameters().removedTokens;
+			var aTokens = oEvent.getSource().getTokens();
+
+			for (var i = 0; i < aTokens.length; i++) {
+				if (aRemovedTokens.includes(aTokens[i])) {
+					aTokens.splice(i, 1);
+				}
+			}
+
+			this._UpdateDependantControls(aTokens);
+
+		},
+
+		onClearTokens: function(oEvent) {
+			this._oMultiInput.removeAllTokens();
+			this._oMultiInput.fireTokenUpdate();
+		},
+
+		onStepChange: function(oEvent) {
+			var oDate = new Date();
+			var oModel = this.getView().getModel("viewData");
+
+			var num = oModel.getProperty("/Filter/AvailNo/value");
+			var unit = oModel.getProperty("/Filter/AvailUnit");
+
+			switch (unit) {
+				case "0":
+					oDate.setDate(oDate.getDate() + num * 7);
+					break;
+				case "1":
+					oDate.setMonth(oDate.getMonth() + num);
+					break;
+				case "2":
+					oDate.setYear(oDate.getFullYear() + num);
+					break;
+			}
+
+			//Set to Vacant Radio Button
+			oModel.setProperty("/ShowIdx", 1);
+			this._onShowSelect(1);
+
+			oModel.setProperty("/KeyDate", oDate);
+			// this.oGlobalData.setProperty("/KeyDate",oDate);
+			this._updateGridBinding();
+		},
+
+		onKeyDateChange: function(oEvent) {
+			var oModel = this.getView().getModel("viewData");
+			var oDate = new Date(oEvent.getParameter("value"));
+			oModel.setProperty("/KeyDate", oDate);
+			// this.oGlobalData.setProperty("/KeyDate", oDate);
+
+			this._updateGridBinding();
+
+		},
+
+		_updateGridBinding: function() {
+
+			var oThis = this;
+			var oDate = this.getView().getModel("viewData").getProperty("/KeyDate");
+
+			var oModel = this.getOwnerComponent().getModel();
+
+			
+			var sKeys = "(CompanyCode='" + this.CompanyCode + "',BusinessEntity='" + this.BusinessEntity + "')";
+			//console.log(sKeys + "?at=" + formatter.yyyyMMdd(oDate) );
+			
+			oModel.read("/RentalUnitStatSet" + sKeys + "?at=" + formatter.yyyyMMdd(oDate) , {
+				success: function(oData, oResponse) {
+					oThis._updateTenancyInfo(oData);
+				},
+				error: function(oError) {
+				}
+			});
+
+			
+
+			var oGridList = this.byId("unitGrid");
+			if (oGridList) {
+
+				var oUnitGridBindingInfo = oGridList.getBindingInfo("items");
+
+				if (!oUnitGridBindingInfo.parameters) {
+					oUnitGridBindingInfo.parameters = {};
+				}
+				if (!oUnitGridBindingInfo.parameters.custom) {
+					oUnitGridBindingInfo.parameters.custom = {};
+				}
+
+				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
+
+				oUnitGridBindingInfo.filters = this._mergeFilters();
+				oGridList.bindItems(oUnitGridBindingInfo);
+
+			}
+
+		},
+
+		onShowSelect: function(oEvent) {
+
+			var index = oEvent.getParameter("selectedIndex");
+
+			this._onShowSelect(index);
+
+			this._updateGridBinding();
+
+		},
+
+		_onShowSelect: function(index) {
+			switch (index) {
+				case 0:
+					this.oFilter2 = null;
+
+					break;
+				case 1:
+					this.oFilter2 = new Filter({
+						path: "Available",
+						operator: FilterOperator.EQ,
+						value1: true
+					});
+
+					break;
+				case 2:
+					this.oFilter2 = new Filter({
+						path: "Available",
+						operator: FilterOperator.EQ,
+						value1: false
+					});
+
+					break;
+			}
+		},
+
+		_mergeFilters: function() {
+			var aFilters = [];
+			var i = 0;
+
+			if (this.aFilters.length > 0) {
+				for (i = 0; i < this.aFilters.length; i++) {
+					aFilters.push(this.aFilters[i]);
+				}
+
+			}
+
+			if (this.aFilterUnits) {
+				for (i = 0; i < this.aFilterUnits.length; i++) {
+					aFilters.push(this.aFilterUnits[i]);
+				}
+			}
+
+			if (this.oFilter2) {
+				aFilters.push(this.oFilter2);
+			}
+
+			return aFilters;
+		},
+
+		_getUrlParams: function() {
+			var i = 0;
+			var oModel = this.getView().getModel("viewData");
+			var sAt = formatter.yyyyMMdd(oModel.getProperty("/KeyDate"));
+			var sFilter = "&$filter=";
+			if (this.aFilters.length > 0) {
+				
+				for (i = 0; i < this.aFilters.length; i++) {
+					
+					if (i === 0 ) {
+						sFilter += this.aFilters[i].sPath + " " + this.aFilters[i].sOperator.toLowerCase() + " '" + this.aFilters[i].oValue1 + "'";
+					} else {
+						sFilter +=  " and " + this.aFilters[i].sPath + " " + this.aFilters[i].sOperator.toLowerCase() + " '" + this.aFilters[i].oValue1 + "'";
+					}
+					//console.log(this.aFilters[i].sPath, this.aFilters[i].sOperator,this.aFilters[i].oValue1);
+				}	
+			}
+			
+			if (this.aFilterUnits) {
+			
+				for (i = 0; i < this.aFilterUnits.length; i++) {
+					
+					if (i === 0 ) {
+						sFilter += this.aFilterUnits[i].sPath + " " + this.aFilterUnits[i].sOperator.toLowerCase() + " '" + this.aFilterUnits[i].oValue1 + "'";
+					} else {
+						sFilter +=  " and " + this.aFilterUnits[i].sPath + " " + this.aFilterUnits[i].sOperator.toLowerCase() + " '" + this.aFilterUnits[i].oValue1 + "'";
+					}
+					//console.log(this.aFilterUnits[i].sPath, this.aFilterUnits[i].sOperator,this.aFilterUnits[i].oValue1);
+				}	
+			}
+			var sParams = "?at=" + sAt + sFilter;
+			
+			
+			return sParams;
+
+		},
+
+		onResetAvail: function() {
+			var oModel = this.getView().getModel("viewData");
+			oModel.setProperty("/KeyDate", new Date());
+			// this.oGlobalData.setProperty("/KeyDate", new Date());
+			oModel.setProperty("/Filter/AvailNo/value", 0);
+			oModel.setProperty("/Filter/AvailUnit", "0");
+			oModel.setProperty("/ShowIdx", 0);
+
+			this.aFilterUnits = [];
+			this.oFilter2 = null;
+
+			this._updateGridBinding();
+		},
+
+		_UpdateDependantControls: function(aTokens) {
+			var sUnitsName = "";
+
+			var aFilters = [];
+
+			for (var i = 0; i < aTokens.length; i++) {
+				var sKey = aTokens[i].getKey();
+				var sName = aTokens[i].getText();
+				if (i < aTokens.length - 1) {
+					sUnitsName += sName + " / ";
+				} else {
+					sUnitsName += sName;
+				}
+				aFilters.push(
+					new Filter({
+						path: "UnitKey",
+						operator: FilterOperator.EQ,
+						value1: sKey
+					}));
+			}
+			this.aFilterUnits = aFilters;
+
+			if (i > 0) {
+				this.getView().getModel("viewData").setProperty("/UnitsName", sUnitsName);
+
+			} else {
+				this.getView().getModel("viewData").setProperty("/UnitsName", "-None-");
+
+			}
+
+			this._updateGridBinding();
+
+		},
+
+		onValueHelpCancelPress: function() {
+			this._oValueHelpDialog.close();
+		},
+
+		onValueHelpAfterClose: function() {
+			this._oValueHelpDialog.destroy();
+		},
+
+		onFilterBarSearch: function(oEvent) {
+
+			var sSearchQuery = this._oBasicSearchField.getValue(),
+				aSelectionSet = oEvent.getParameter("selectionSet");
+			var aFilters = aSelectionSet.reduce(function(aResult, oControl) {
+
+				var sType = oControl.getMetadata().getName();
+				switch (sType) {
+					case "sap.m.Switch":
+						if (oControl.getState()) {
+							aResult.push(new Filter({
+								path: oControl.getName(),
+								operator: FilterOperator.EQ,
+								value1: oControl.getState()
+							}));
+						}
+
+						break;
+					case "sap.m.Input":
+						if (oControl.getValue()) {
+							aResult.push(new Filter({
+								path: oControl.getName(),
+								operator: FilterOperator.Contains,
+								value1: oControl.getValue()
+							}));
+						}
+
+						break;
+
+					case "sap.m.CheckBox":
+						if (oControl.getSelected()) {
+							aResult.push(new Filter({
+								path: oControl.getName(),
+								operator: FilterOperator.EQ,
+								value1: true
+							}));
+						}
+
+						break;
+				}
+				return aResult;
+			}, []);
+
+			aFilters.push(new Filter({
+				filters: [
+					new Filter({
+						path: "UnitKey",
+						operator: FilterOperator.Contains,
+						value1: sSearchQuery
+					}),
+					new Filter({
+						path: "UnitText",
+						operator: FilterOperator.Contains,
+						value1: sSearchQuery
+					}),
+					new Filter({
+						path: "UsageText",
+						operator: FilterOperator.Contains,
+						value1: sSearchQuery
+					}),
+					new Filter({
+						path: "BuildingText",
+						operator: FilterOperator.Contains,
+						value1: sSearchQuery
+					})
+
+				],
+				and: false
+			}));
+
+			this._filterTable(new Filter({
+				filters: aFilters,
+				and: true
+			}));
+		},
+
+		_filterTable: function(oFilter) {
+			var oValueHelpDialog = this._oValueHelpDialog;
+
+			oValueHelpDialog.getTableAsync().then(function(oTable) {
+				if (oTable.bindRows) {
+					oTable.getBinding("rows").filter(oFilter);
+				}
+
+				if (oTable.bindItems) {
+					oTable.getBinding("items").filter(oFilter);
+				}
+
+				oValueHelpDialog.update();
+			});
+		},
+
+		_getDefaultTokens: function() {
+			var ValueHelpRangeOperation = compLibrary.valuehelpdialog.ValueHelpRangeOperation;
+			var oToken1 = new Token({
+				key: "HT-1001",
+				text: "Notebook Basic 17 (HT-1001)"
+			});
+
+			var oToken2 = new Token({
+				key: "range_0",
+				text: "!(=HT-1000)"
+			}).data("range", {
+				"exclude": true,
+				"operation": ValueHelpRangeOperation.EQ,
+				"keyField": "ProductId",
+				"value1": "HT-1000",
+				"value2": ""
+			});
+
+			return [oToken1, oToken2];
+		},
+
+		_onMultiInputValidate: function(oArgs) {
+			if (oArgs.suggestionObject) {
+				var oObject = oArgs.suggestionObject.getBindingContext().getObject(),
+					oToken = new Token();
+
+				oToken.setKey(oObject.UnitKey);
+				//oToken.setText(oObject.UnitText + " (" + oObject.UnitKey + ")");
+				oToken.setText(oObject.UnitText);
+				oToken.setText(oObject.UnitText);
+				return oToken;
+			}
+
+			return null;
+		},
+
+		// #endregion
 
 		onExit: function() {
 			this.removeFragment(this._formFragments);

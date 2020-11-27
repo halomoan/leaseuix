@@ -1,58 +1,120 @@
 <mvc:View controllerName="refx.leaseuix.controller.ManageUnits" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f"
-	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd" xmlns:dnd-grid="sap.f.dnd"
-	>
-
-	<Panel headerText="Units Management">
-		<mvc:XMLView viewName="refx.leaseuix.components.selectunit.selectunit" id="selectunit" async="true"></mvc:XMLView>
+	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd"
+	xmlns:dnd-grid="sap.f.dnd" class="customCSS">
+	<Panel headerText="Units Management" class="padding5">
+		<l:VerticalLayout width="100%" class="">
+			<l:Grid containerQuery="true" hSpacing="1" vSpacing="0">
+				<VBox>
+					<Label text="{i18n>RentalUnit}" labelFor="rentalUnits"/>
+					<MultiInput id="rentalUnits" valueHelpRequest=".onValueHelpRequested" valueHelpOnly="true" tokenUpdate=".onTokenUpdate"></MultiInput>
+					<layoutData>
+						<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+					</layoutData>
+					<HBox justifyContent="SpaceBetween">
+						<VBox>
+							<HBox>
+								<Label text="Selected Unit(s):"></Label>
+								<Label text="{viewData>/UnitsName}" wrapping="true" design="Bold" class="sapUiTinyMarginBegin"></Label>
+							</HBox>
+							<HBox justifyContent="Start" alignItems="Center">
+								<Label labelFor="rbg4" text="{i18n>Show}:" class="sapUiSmallMarginEnd"/>
+								<RadioButtonGroup id="RBGroup1" columns="3" valueState="Success" select="onShowSelect" selectedIndex="{viewData>/ShowIdx}">
+									<RadioButton text="All Units"/>
+									<RadioButton text="Vacant"/>
+									<RadioButton text="Occupied"/>
+								</RadioButtonGroup>
+							</HBox>
+						</VBox>
+						<!--<Button text="Clear" press=".onClearTokens"></Button>-->
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</HBox>
+				</VBox>
+				<VBox>
+					<Label text="{i18n>Vacant} {i18n>On}"/>
+					<HBox justifyContent="Start" alignItems="Start">
+						<VBox>
+							<HBox>
+								<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
+									step="1" change="onStepChange"/>
+								<ComboBox width="8rem" selectedKey="{viewData>/Filter/AvailUnit}" change="onStepChange">
+									<core:Item key="0" text="Weeks"/>
+									<core:Item key="1" text="Months"/>
+									<core:Item key="2" text="Years"/>
+								</ComboBox>
+							</HBox>
+						</VBox>
+						<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
+					</HBox>
+					<Label text="{i18n>KeyDate} :"/>
+					<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
+						class="sapUiSmallMarginEnd" width="50%"/>
+				</VBox>
+				<VBox>
+					<HBox justifyContent="End" alignItems="Start">
+						<VBox class="sapUiTinyMarginTop" alignItems="End">
+							<Label text="Occupied: {path : 'viewData>/Tenancy/TOccupiedSize', formatter: '.formatter.NumberFormat'}" class="lightBlue"></Label>
+							<Label text="Vacant: {path : 'viewData>/Tenancy/TVacantSize', formatter: '.formatter.NumberFormat'}"></Label>
+							<Label text="Rate : {viewData>/Tenancy/POccupiedSize} %" class="green"></Label>
+						</VBox>
+						<Label id="TotalSize" text="{path : 'viewData>/Tenancy/TSize', formatter: '.formatter.NumberFormat'}"
+							class="fontSize4 green sapUiTinyMarginBeginEnd"></Label>
+						<Label id="SizeUnit" text="{viewData>/Tenancy/SizeUnit}" class="fontSize2 gold"></Label>
+					</HBox>
+					<HBox justifyContent="End" alignItems="Start">
+						<ProgressIndicator class="sapUiTinyMarginTop" percentValue="{viewData>/Tenancy/POccupiedUnits}"
+							displayValue="{viewData>/Tenancy/POccupiedUnits} %" showValue="true" state="Information"/>
+						<Label id="TotalUnits" text="{viewData>/Tenancy/TUnits}" class="fontSize2 grey sapUiTinyMarginBeginEnd"></Label>
+						<Label text="Unit(s)" design="Bold" class="gold"></Label>
+					</HBox>
+					<layoutData>
+						<l:GridData span="L5 M4 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
+					</layoutData>
+				</VBox>
+				<Toolbar style="Clear" class="sapUiNoMarginBottom">
+					<Label text="United Investment / Tower B" class="fontSize1_5" />
+					<ToolbarSpacer/>
+					<Button text="Select" type="Transparent" press="onGridSelect"/>
+					<Button icon="sap-icon://sort" type="Transparent"/>
+					<Button icon="sap-icon://delete" type="Transparent"/>
+					<layoutData>
+						<l:GridData span="L12 M12 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
+					</layoutData>
+				</Toolbar>
+			</l:Grid>
+		</l:VerticalLayout>
 	</Panel>
-	<!--<HBox justifyContent="End">-->
-	<!--	<OverflowToolbar >-->
-	<!--		<ToolbarSpacer/>-->
-	<!--		<Button text="Select" type="Transparent" press="onGridSelect"/>-->
-	<!--		<Button icon="sap-icon://sort" type="Transparent"/>-->
-	<!--		<Button icon="sap-icon://delete" type="Transparent"/>-->
-	<!--	</OverflowToolbar>-->
-	<!--</HBox>-->
-		<ScrollContainer
-		height="100%"
-		width="100%"
-		vertical="true"
-		focusable="true">
-	<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
-	<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }"  updateFinished="onGridChange" selectionChange="onSelectionChange" delete="onDelete"
-	
-		class="sapUiResponsiveContentPadding customCSS">
-		<f:customLayout>
-			<grid:GridBoxLayout boxWidth="15rem"/>
-		</f:customLayout>
-		<f:dragDropConfig>
-			<dnd:DragInfo sourceAggregation="items"/>
-			<!--<dnd-grid:GridDropInfo targetAggregation="items" dropPosition="Between" dropLayout="Horizontal" drop="onDrop"/>-->
-			<dnd-grid:GridDropInfo targetAggregation="items" drop="onDrop"/>
-		</f:dragDropConfig>
-		<f:GridListItem detailPress="onDetailPress"
-			highlight="{= ${REContractKey} ? 'Error' : 'Success' }"
-			type="{type}">
-			<VBox  class="sapUiSmallMargin">
-        
-				<layoutData>
-					<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. --></layoutData>
-				<HBox justifyContent="SpaceBetween">
-					<Link text="{UnitText}" emphasized="{= ${REContractKey} ? true: false }" press=".onUnitDetail"></Link>
-				</HBox>
-				<Label text="{MainCategory}"/>
-				
-				<HBox justifyContent="SpaceBetween">
-					<tnt:InfoLabel text="Occupied" colorScheme="5" class="sapUiTinyMarginTop"
-						visible="{= ${REContractKey} ? true: false }"/>
-				<HBox justifyContent="End">
-					<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
-					<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
-				</HBox>
-				</HBox>
-				<!--<tnt:InfoLabel text="" renderMode="Narrow" colorScheme="{=  ${globalData>/KeyDate}  &gt;= ${StartDate} &amp;&amp; ${globalData>/KeyDate}  &lt;= ${EndDate}  ? 4 : 5 }" displayOnly="false"/>-->
-			</VBox>
-		</f:GridListItem>
-	</f:GridList>
+	<ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
+		<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
+		<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" updateFinished="onGridChange" selectionChange="onSelectionChange"
+			delete="onDelete" class="sapUiResponsiveContentPadding customCSS">
+			<f:customLayout>
+				<grid:GridBoxLayout boxWidth="15rem"/>
+			</f:customLayout>
+			<f:dragDropConfig>
+				<dnd:DragInfo sourceAggregation="items"/>
+				<!--<dnd-grid:GridDropInfo targetAggregation="items" dropPosition="Between" dropLayout="Horizontal" drop="onDrop"/>-->
+				<dnd-grid:GridDropInfo targetAggregation="items" drop="onDrop"/>
+			</f:dragDropConfig>
+			<f:GridListItem detailPress="onDetailPress" highlight="{= ${REContractKey} ? 'Error' : 'Success' }" type="{type}">
+				<VBox class="sapUiSmallMargin">
+					<layoutData>
+						<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. --></layoutData>
+					<HBox justifyContent="SpaceBetween">
+						<Link text="{UnitText}" emphasized="{= ${REContractKey} ? true: false }" press=".onUnitDetail"></Link>
+					</HBox>
+					<Label text="{MainCategory}"/>
+					<HBox justifyContent="SpaceBetween">
+						<tnt:InfoLabel text="Occupied" colorScheme="5" class="sapUiTinyMarginTop" visible="{= ${REContractKey} ? true: false }"/>
+						<HBox justifyContent="End">
+							<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
+							<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
+						</HBox>
+					</HBox>
+					<!--<tnt:InfoLabel text="" renderMode="Narrow" colorScheme="{=  ${globalData>/KeyDate}  &gt;= ${StartDate} &amp;&amp; ${globalData>/KeyDate}  &lt;= ${EndDate}  ? 4 : 5 }" displayOnly="false"/>-->
+				</VBox>
+			</f:GridListItem>
+		</f:GridList>
 	</ScrollContainer>
 </mvc:View>

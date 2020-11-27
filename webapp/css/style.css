@@ -3,6 +3,9 @@
 .customCSS .green {
     color: green;
 }
+.customCSS .lightBlue {
+	color: #427cac;
+}
 
 .customCSS .red {
     color: red;
@@ -48,6 +51,9 @@
     border: 1px solid transparent;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
     padding: 5px 5px 5px 5px;
+}
+.sapMPanelContent {
+	padding: 5px 5px 5px 5px;
 }
 
 .sapMITBAll .sapMITBCount {

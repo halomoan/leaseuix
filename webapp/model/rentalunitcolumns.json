@@ -1,0 +1,21 @@
+{
+	"cols": [
+		{
+			"label": "Unit Id",
+			"template": "UnitKey",
+			"width": "5rem"
+		},
+		{
+			"label": "Unit Name",
+			"template": "UnitText"
+		},
+		{
+			"label": "Usage",
+			"template": "UsageText"
+		},
+			{
+			"label": "Building",
+			"template": "BuildingText"
+		}
+	]
+}
