@@ -72,22 +72,35 @@ sap.ui.define([
 			var iTotalSize = 0;
 			var sSizeUnit = "";
 			var iTotalUnits = 0;
+			var iTotalOccpSize = 0;
+			var iTotalVacantSize = 0;
+			var iTotalOccpUnits = 0;
+			var iTotalVacantUnits = 0;
 
 			var aItems = oGridList.getItems();
 
 			for (var i = 0; i < aItems.length; i++) {
 
 				var oItem = aItems[i].getBindingContext().getObject();
-				iTotalSize += parseInt(oItem.Size, 0);
+				var iSize = parseInt(oItem.Size, 0);
+				iTotalSize += iSize;
 				iTotalUnits += 1;
 				sSizeUnit = oItem.SizeUnit;
+				if (oItem.Available){
+					iTotalVacantSize += iSize;
+					iTotalVacantUnits += 1;
+				} else {
+					iTotalOccpSize += iSize;
+					iTotalOccpUnits += 1;
+				}
 			}
-			var oSizeText = sap.ui.getCore().byId("__xmlview1--selectunit--TotalSize");
-			oSizeText.setText(formatter.NumberFormat(iTotalSize));
-			var oSizeUnitText = sap.ui.getCore().byId("__xmlview1--selectunit--SizeUnit");
-			oSizeUnitText.setText(sSizeUnit);
-			var oTotalUnits = sap.ui.getCore().byId("__xmlview1--selectunit--TotalUnits");
-			oTotalUnits.setText(iTotalUnits);
+			
+			// var oSizeText = sap.ui.getCore().byId("__xmlview1--selectunit--TotalSize");
+			// oSizeText.setText(formatter.NumberFormat(iTotalSize));
+			// var oSizeUnitText = sap.ui.getCore().byId("__xmlview1--selectunit--SizeUnit");
+			// oSizeUnitText.setText(sSizeUnit);
+			// var oTotalUnits = sap.ui.getCore().byId("__xmlview1--selectunit--TotalUnits");
+			// oTotalUnits.setText(iTotalUnits);
 		},
 		onGridSelect: function(oEvent) {
 			var oSource = oEvent.getSource();

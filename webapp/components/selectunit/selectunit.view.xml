@@ -1,5 +1,5 @@
 <mvc:View xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" height="100%"
-	controllerName="refx.leaseuix.components.selectunit.selectunit" class="customCSS">
+	controllerName="refx.leaseuix.components.selectunit.selectunit"  class="customCSS">
 	<l:VerticalLayout width="100%">
 		<l:Grid containerQuery="true" hSpacing="1" vSpacing="0">
 			<VBox>
@@ -51,12 +51,14 @@
 			</VBox>
 			<VBox>
 				<HBox justifyContent="End" alignItems="Start">
+					
+				
 					<Label id="TotalSize" text="0" class="fontSize4 green sapUiTinyMarginEnd"></Label>
 					<Label id="SizeUnit" text="" class="fontSize2 gold"></Label>
 				</HBox>
 				<HBox justifyContent="End" alignItems="Start">
-					<Label id="TotalUnits" text="0" class="fontSize2 grey sapUiTinyMarginEnd"></Label>
-					<Label text="Unit(s)" class="fontSize1 gold"></Label>
+					<Label id="TotalUnits" text="{tenancyData>/TUnits}" class="fontSize2 grey sapUiTinyMarginEnd"></Label>
+					<Label text="Unit(s)" design="Bold" class="gold"></Label>
 				</HBox>
 				<HBox justifyContent="End">
 					<OverflowToolbar >

@@ -44,15 +44,12 @@ sap.ui.define([
 			};
 
 			this.oGlobalData = this.getModel("globalData");
-			//this.oGlobalData.setProperty("/KeyDate", formatter.yyyyMMdd(new Date()));
 			this.oGlobalData.setProperty("/KeyDate", new Date());
 
 			this.getView().setModel(new JSONModel(viewData), "viewData");
-
-			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
 			
-			//this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
-			//this.getView().setModel(this.oRentalUnitsModel);
+		
+			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
 			
 			var oModel = this.getOwnerComponent().getModel();
 			this.getView().setModel(oModel);
