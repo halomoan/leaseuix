@@ -1,0 +1,35 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover showHeader="false" contentWidth="320px" contentHeight="500px" placement="Right" ariaLabelledBy="master-title">
+		<NavContainer id="navCon">
+			<Page id="unitmaster" class="sapUiResponsivePadding--header customCSS" title="{i18n>ContractDetail}">
+				<content>
+					<ObjectHeader title="{Contractname}">
+						<attributes>
+							<ObjectAttribute text="Contract No.: {Contractno}"/>
+							<ObjectAttribute text="Type : {Contracttype} - {Contracttypetext}"/>
+							<ObjectAttribute text="Industry : {Industrytext}"/>
+							<ObjectAttribute text="Status : {Recontractstatus}"/>
+						</attributes>
+					</ObjectHeader>
+					<HBox class="sapUiSmallMargin" justifyContent="SpaceBetween">
+						<VBox >
+							<Text text="Start Date: { path: 'Startdate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
+							<Text text="End Date: { path: 'Enddate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
+							<Text text="Term End Date: { path: 'EndTermDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
+						</VBox>
+						
+						
+						<VBox>	
+							<HBox justifyContent="End"><Text text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffYear' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Year(s)"/> </HBox>
+							<HBox justifyContent="End"><Text text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffMonth' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Mth(s)"/> </HBox>
+						</VBox>
+						
+					</HBox>
+				</content>
+			</Page>
+			<Page id="detail" class="sapUiResponsivePadding--header" showNavButton="true" navButtonPress="onNavBack" title="Product">
+				<content></content>
+			</Page>
+		</NavContainer>
+	</Popover>
+</core:FragmentDefinition>

@@ -42,7 +42,7 @@
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:CheckBox name="Available" text="" selected="true"/>
+							<m:CheckBox name="Available" text="" selected="false"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem

@@ -18,7 +18,15 @@ sap.ui.define([
 		formatter: formatter,
 		_formFragments: {},
 		onInit: function() {
+			
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+	    	oRouter.getRoute("manageunits").attachMatched(this.__onRouteMatched, this);
 
+
+		
+		},
+		
+		__onRouteMatched: function(oEvent){
 			this._oMultiInput = this.getView().byId("rentalUnits");
 			this._oMultiInput.addValidator(this._onMultiInputValidate);
 
@@ -77,16 +85,21 @@ sap.ui.define([
 
 		},
 
-		onUnitDetail: function(oEvent) {
+		onContractDetail: function(oEvent) {
 
 			var oSource = oEvent.getSource();
 
 			var oCtx = oEvent.getSource().getBindingContext();
 
-			this.showPopOverFragment(this.getView(), oSource, this._formFragments, "refx.leaseuix.fragments.popunitdetail");
+			this.showPopOverFragment(this.getView(), oSource, this._formFragments, "refx.leaseuix.fragments.popcontractdetail",this);
 
 			var oPopOver = sap.ui.core.Fragment.byId(this.getView().getId(), "unitmaster");
-			oPopOver.bindElement(oCtx.getPath());
+			
+			var sPath = oCtx.getPath() + "/Contract";
+			var oDate = this.getView().getModel("viewData").getProperty("/KeyDate");
+			
+			
+			oPopOver.bindElement( { path: sPath, parameters: { custom : { at: formatter.yyyyMMdd(oDate)} } } );
 
 		},
 

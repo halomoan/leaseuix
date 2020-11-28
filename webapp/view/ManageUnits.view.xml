@@ -102,9 +102,10 @@
 					<layoutData>
 						<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. --></layoutData>
 					<HBox justifyContent="SpaceBetween">
-						<Link text="{UnitText}" emphasized="{= ${REContractKey} ? true: false }" press=".onUnitDetail"></Link>
+						<!--<Link text="{UnitText}" emphasized="{= ${REContractKey} ? true: false }" press=".onUnitDetail"></Link>-->
+						<Label text="{UnitText}" design="Bold"/>
 					</HBox>
-					<Label text="{MainCategory}"/>
+					<Link text="{ContractNo}"  press=".onContractDetail"/>
 					<HBox justifyContent="SpaceBetween">
 						<tnt:InfoLabel text="Occupied" colorScheme="5" class="sapUiTinyMarginTop" visible="{= ${REContractKey} ? true: false }"/>
 						<HBox justifyContent="End">

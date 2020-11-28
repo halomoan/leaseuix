@@ -38,7 +38,7 @@ sap.ui.define([
 				this.getRouter().navTo("appHome", {}, true /*no history*/);
 			}
 		},
-		getFormFragment: function (oView, _formFragments, sFragmentName) {
+		getFormFragment: function (oView, _formFragments, sFragmentName,oThis) {
 			var oFormFragment = _formFragments[sFragmentName];
 		
 			if (oFormFragment) {
@@ -47,15 +47,15 @@ sap.ui.define([
 			}
 		
 			//oFormFragment = sap.ui.xmlfragment(oView.getId(), "refx.leaseuix.components.gridcondition." + sFragmentName,this);
-			oFormFragment = sap.ui.xmlfragment(oView.getId(), sFragmentName,this);
+			oFormFragment = sap.ui.xmlfragment(oView.getId(), sFragmentName,oThis);
 			oView.addDependent(oFormFragment);
 			
 			var myFragment = (_formFragments[sFragmentName] = oFormFragment);
 			return myFragment;
 		},
 		
-		showPopOverFragment : function(oView,oSource, _formFragments,sFragmentName) {
-			this.getFormFragment(oView, _formFragments,sFragmentName).openBy(oSource);
+		showPopOverFragment : function(oView,oSource, _formFragments,sFragmentName,oThis) {
+			this.getFormFragment(oView, _formFragments,sFragmentName,oThis).openBy(oSource);
 		},
 
 		showFormDialogFragment : function (oView, _formFragments,sFragmentName) {
