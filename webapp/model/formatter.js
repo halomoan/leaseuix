@@ -36,26 +36,18 @@ sap.ui.define(["sap/ui/core/format/NumberFormat", "sap/ui/core/format/DateFormat
 		diffYear: function(oSDate, oEndDate) {
 
 			if (oSDate && oEndDate) {
-				var time = (oEndDate.getTime() - oSDate.getTime()) / 1000;
-				var year = Math.abs(Math.round((time / (60 * 60 * 24)) / 365.25));
-				//var month = Math.abs(Math.round(time/(60 * 60 * 24 * 7 * 4)));
-				//var days = Math.abs(Math.round(time/(3600 * 24)));
-				//return "Year :- " + year + " Month :- " + month + " Days :-" + days;	
-				return year;
+				let yearsDiff =  oEndDate.getFullYear() - oSDate.getFullYear();	
+				return yearsDiff;
 
 			}
 			return "";
 		},
 		diffMonth: function(oSDate, oEndDate) {
-			if (oSDate && oEndDate) {
-				oEndDate.setFullYear(oSDate.getFullYear());
+			if (oSDate && oEndDate) {				
+				let months =  (oEndDate.getFullYear()*12+oEndDate.getMonth())-(oSDate.getFullYear()*12+oSDate.getMonth()) + 1;
 				
-				var time = (oEndDate.getTime() - oSDate.getTime()) / 1000;
-				//var year  = Math.abs(Math.round((time/(60 * 60 * 24))/365.25));
-				var month = Math.abs(Math.round(time / (60 * 60 * 24 * 7 * 4)));
-				//var days = Math.abs(Math.round(time/(3600 * 24)));
-				//return "Year :- " + year + " Month :- " + month + " Days :-" + days;	
-				return month;
+				return months % 12;
+	
 			}
 			return "";
 		},
