@@ -57,12 +57,12 @@
 					</fb:FilterGroupItem>
 						<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="BuildingText"
-						label="Building"
+						name="ContractNo"
+						label="Contract No"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="BuildingText" />
+							<m:Input name="ContractNo" />
 						</fb:control>
 					</fb:FilterGroupItem>
 				

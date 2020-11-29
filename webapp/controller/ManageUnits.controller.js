@@ -509,8 +509,8 @@ sap.ui.define([
 
 		onFilterBarSearch: function(oEvent) {
 
-			var sSearchQuery = this._oBasicSearchField.getValue(),
-				aSelectionSet = oEvent.getParameter("selectionSet");
+			//var sSearchQuery = this._oBasicSearchField.getValue(),
+			var aSelectionSet = oEvent.getParameter("selectionSet");
 			var aFilters = aSelectionSet.reduce(function(aResult, oControl) {
 
 				var sType = oControl.getMetadata().getName();
@@ -550,32 +550,32 @@ sap.ui.define([
 				return aResult;
 			}, []);
 
-			aFilters.push(new Filter({
-				filters: [
-					new Filter({
-						path: "UnitKey",
-						operator: FilterOperator.Contains,
-						value1: sSearchQuery
-					}),
-					new Filter({
-						path: "UnitText",
-						operator: FilterOperator.Contains,
-						value1: sSearchQuery
-					}),
-					new Filter({
-						path: "UsageText",
-						operator: FilterOperator.Contains,
-						value1: sSearchQuery
-					}),
-					new Filter({
-						path: "BuildingText",
-						operator: FilterOperator.Contains,
-						value1: sSearchQuery
-					})
+			// aFilters.push(new Filter({
+			// 	filters: [
+			// 		new Filter({
+			// 			path: "UnitKey",
+			// 			operator: FilterOperator.Contains,
+			// 			value1: sSearchQuery
+			// 		}),
+			// 		new Filter({
+			// 			path: "UnitText",
+			// 			operator: FilterOperator.Contains,
+			// 			value1: sSearchQuery
+			// 		}),
+			// 		new Filter({
+			// 			path: "UsageText",
+			// 			operator: FilterOperator.Contains,
+			// 			value1: sSearchQuery
+			// 		}),
+			// 		new Filter({
+			// 			path: "ContractNo",
+			// 			operator: FilterOperator.Contains,
+			// 			value1: sSearchQuery
+			// 		})
 
-				],
-				and: false
-			}));
+			// 	],
+			// 	and: false
+			// }));
 
 			this._filterTable(new Filter({
 				filters: aFilters,
@@ -589,6 +589,7 @@ sap.ui.define([
 			oValueHelpDialog.getTableAsync().then(function(oTable) {
 				if (oTable.bindRows) {
 					oTable.getBinding("rows").filter(oFilter);
+
 				}
 
 				if (oTable.bindItems) {
