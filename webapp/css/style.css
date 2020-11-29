@@ -30,6 +30,11 @@
 .customCSS .fontSize2 {
     font-size: 2rem;
 }
+
+.customCSS .fontSize2_5 {
+    font-size: 2.5rem;
+}
+
 .customCSS .fontSize4 {
     font-size: 4rem;
 }

@@ -18,15 +18,13 @@ sap.ui.define([
 		formatter: formatter,
 		_formFragments: {},
 		onInit: function() {
-			
+
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-	    	oRouter.getRoute("manageunits").attachMatched(this.__onRouteMatched, this);
+			oRouter.getRoute("manageunits").attachMatched(this.__onRouteMatched, this);
 
-
-		
 		},
-		
-		__onRouteMatched: function(oEvent){
+
+		__onRouteMatched: function(oEvent) {
 			this._oMultiInput = this.getView().byId("rentalUnits");
 			this._oMultiInput.addValidator(this._onMultiInputValidate);
 
@@ -50,6 +48,7 @@ sap.ui.define([
 					"POccupiedSize": 0.0
 
 				},
+				"Floor": "ALL",
 				"Filter": {
 					"AvailNo": {
 						value: 0,
@@ -57,7 +56,12 @@ sap.ui.define([
 						max: 54
 					},
 					"AvailUnit": "0"
-				}
+				},
+				"busy": {
+					"popcontract": false
+				},
+				"delay": 0
+
 			};
 
 			this.CompanyCode = "1001";
@@ -65,10 +69,17 @@ sap.ui.define([
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
 			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity); // Filter BE
 			this.aFilterUnits = []; //Filter Unit Key
-			this.oFilter2 = null; //Filter Available
+			this.oFilterAvail = null; //Filter Available
+			this.oFilterFloor = null;
 			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model/") + "/rentalunitcolumns.json");
+
+			var oFloorBinding = this.byId("Floor").getBinding("items");
+			oFloorBinding.filter([
+				this.oFilterCoCode,
+				this.oFilterBE
+			]);
 
 			this.getOwnerComponent().getModel().metadataLoaded().then(function() {
 				var oModel = this.getOwnerComponent().getModel();
@@ -87,19 +98,35 @@ sap.ui.define([
 
 		onContractDetail: function(oEvent) {
 
+			var oViewModel = this.getView().getModel("viewData");
 			var oSource = oEvent.getSource();
 
 			var oCtx = oEvent.getSource().getBindingContext();
 
-			this.showPopOverFragment(this.getView(), oSource, this._formFragments, "refx.leaseuix.fragments.popcontractdetail",this);
+			this.showPopOverFragment(this.getView(), oSource, this._formFragments, "refx.leaseuix.fragments.popcontractdetail", this);
 
 			var oPopOver = sap.ui.core.Fragment.byId(this.getView().getId(), "unitmaster");
-			
+
 			var sPath = oCtx.getPath() + "/Contract";
-			var oDate = this.getView().getModel("viewData").getProperty("/KeyDate");
-			
-			
-			oPopOver.bindElement( { path: sPath, parameters: { custom : { at: formatter.yyyyMMdd(oDate)} } } );
+
+			var oDate = oViewModel.getProperty("/KeyDate");
+
+			oPopOver.bindElement({
+				path: sPath,
+				parameters: {
+					custom: {
+						at: formatter.yyyyMMdd(oDate)
+					}
+				},
+				events: {
+					dataRequested: function() {
+						oViewModel.setProperty("/busy/popcontract", true);
+					},
+					dataReceived: function() {
+						oViewModel.setProperty("/busy/popcontract", false);
+					}
+				}
+			});
 
 		},
 
@@ -173,6 +200,9 @@ sap.ui.define([
 		// #region - Select Unit Panel
 
 		onValueHelpRequested: function() {
+
+			var oDate = this.getView().getModel("viewData").getProperty("/KeyDate");
+
 			var aCols = this.oColModel.getData().cols;
 			this._oBasicSearchField = new SearchField({
 				showSearchButton: false
@@ -205,14 +235,24 @@ sap.ui.define([
 				if (oTable.bindRows) {
 					oTable.bindAggregation("rows", {
 						path: "/RentalUnitSet",
-						filters: this.aFilters
+						filters: this.aFilters,
+						parameters: {
+							custom: {
+								at: formatter.yyyyMMdd(oDate)
+							}
+						}
 					});
 				}
 
 				if (oTable.bindItems) {
 					oTable.bindAggregation("items", {
 						path: "/RentalUnitSet",
-						filters: this.aFilters
+						filters: this.aFilters,
+						parameters: {
+							custom: {
+								at: formatter.yyyyMMdd(oDate)
+							}
+						}
 					}, function() {
 						return new ColumnListItem({
 							cells: aCols.map(function(column) {
@@ -288,10 +328,26 @@ sap.ui.define([
 			this._updateGridBinding();
 		},
 
+		onFloorChange: function(oEvent) {
+			var oViewModel = this.getView().getModel("viewData");
+			var sFloor = oViewModel.getProperty("/Floor");
+
+			if (sFloor !== 'ALL') {
+				this.oFilterFloor = new Filter({
+					path: "Floor",
+					operator: FilterOperator.EQ,
+					value1: sFloor
+				});
+			} else {
+				this.oFilterFloor = null;
+			}
+			this._updateGridBinding();
+		},
+
 		onKeyDateChange: function(oEvent) {
-			var oModel = this.getView().getModel("viewData");
+			var oViewModel = this.getView().getModel("viewData");
 			var oDate = new Date(oEvent.getParameter("value"));
-			oModel.setProperty("/KeyDate", oDate);
+			oViewModel.setProperty("/KeyDate", oDate);
 			// this.oGlobalData.setProperty("/KeyDate", oDate);
 
 			this._updateGridBinding();
@@ -318,19 +374,20 @@ sap.ui.define([
 
 			//var sParams = this._getUrlFilters();
 			var aFilters = this._mergeFilters();
-		
-			oModel.read("/RentalUnitStatSet",  {
-				 urlParameters : { "at": formatter.yyyyMMdd(oDate) },
+
+			oModel.read("/RentalUnitStatSet", {
+				urlParameters: {
+					"at": formatter.yyyyMMdd(oDate)
+				},
 				filters: aFilters,
 				success: function(oData, oResponse) {
-		
+
 					oThis._updateTenancyInfo(oData.results[0]);
 				},
 				error: function(oError) {
 
 				}
 			});
-
 
 			var oGridList = this.byId("unitGrid");
 			if (oGridList) {
@@ -366,11 +423,11 @@ sap.ui.define([
 		_onShowSelect: function(index) {
 			switch (index) {
 				case 0:
-					this.oFilter2 = null;
+					this.oFilterAvail = null;
 
 					break;
 				case 1:
-					this.oFilter2 = new Filter({
+					this.oFilterAvail = new Filter({
 						path: "Available",
 						operator: FilterOperator.EQ,
 						value1: true
@@ -378,7 +435,7 @@ sap.ui.define([
 
 					break;
 				case 2:
-					this.oFilter2 = new Filter({
+					this.oFilterAvail = new Filter({
 						path: "Available",
 						operator: FilterOperator.EQ,
 						value1: false
@@ -405,8 +462,12 @@ sap.ui.define([
 				}
 			}
 
-			if (this.oFilter2) {
-				aFilters.push(this.oFilter2);
+			if (this.oFilterAvail) {
+				aFilters.push(this.oFilterAvail);
+			}
+
+			if (this.oFilterFloor) {
+				aFilters.push(this.oFilterFloor);
 			}
 
 			return aFilters;
@@ -460,7 +521,7 @@ sap.ui.define([
 			oModel.setProperty("/ShowIdx", 0);
 
 			this.aFilterUnits = [];
-			this.oFilter2 = null;
+			this.oFilterAvail = null;
 
 			this._updateGridBinding();
 		},
@@ -509,8 +570,8 @@ sap.ui.define([
 
 		onFilterBarSearch: function(oEvent) {
 
-			//var sSearchQuery = this._oBasicSearchField.getValue(),
-			var aSelectionSet = oEvent.getParameter("selectionSet");
+			var sSearchQuery = this._oBasicSearchField.getValue(),
+				aSelectionSet = oEvent.getParameter("selectionSet");
 			var aFilters = aSelectionSet.reduce(function(aResult, oControl) {
 
 				var sType = oControl.getMetadata().getName();
@@ -550,6 +611,19 @@ sap.ui.define([
 				return aResult;
 			}, []);
 
+			if (sSearchQuery) {
+				aFilters.push(new Filter({
+					filters: [
+						new Filter({
+							path: "UnitText",
+							operator: FilterOperator.Contains,
+							value1: sSearchQuery
+						})
+					],
+					and: false
+				}));
+			}
+
 			// aFilters.push(new Filter({
 			// 	filters: [
 			// 		new Filter({
@@ -577,10 +651,14 @@ sap.ui.define([
 			// 	and: false
 			// }));
 
-			this._filterTable(new Filter({
-				filters: aFilters,
-				and: true
-			}));
+			if (aFilters.length > 0) {
+				this._filterTable(new Filter({
+					filters: aFilters,
+					and: true
+				}));
+			} else {
+				this._filterTable([]);
+			}
 		},
 
 		_filterTable: function(oFilter) {

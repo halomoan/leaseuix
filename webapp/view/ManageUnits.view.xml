@@ -45,11 +45,21 @@
 								</ComboBox>
 							</HBox>
 						</VBox>
-						<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBeginEnd"/>
+						<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBegin"/>
 					</HBox>
-					<Label text="{i18n>KeyDate} :"/>
-					<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
-						class="sapUiSmallMarginEnd" width="50%"/>
+					<HBox>
+						<VBox class="sapUiSmallMarginEnd">
+							<Label text="{i18n>Floor} :" labelFor="Floor"/>
+							<ComboBox id="Floor" width="8rem" items="{ path: '/RentalUnitFloorSet' }" selectedKey="{viewData>/Floor}" change="onFloorChange">
+								<core:ListItem key="{Floor}" text="{Floor}"/>
+							</ComboBox>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>KeyDate} :"/>
+							<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
+								class="sapUiSmallMarginEnd" />
+						</VBox>
+					</HBox>
 				</VBox>
 				<VBox>
 					<HBox justifyContent="End" alignItems="Start">
@@ -65,7 +75,7 @@
 					<HBox justifyContent="End" alignItems="Start">
 						<ProgressIndicator class="sapUiTinyMarginTop" percentValue="{viewData>/Tenancy/POccupiedUnits}"
 							displayValue="{viewData>/Tenancy/POccupiedUnits} %" showValue="true" state="Information"/>
-						<Label id="TotalUnits" text="{viewData>/Tenancy/TUnits}" class="fontSize2 grey sapUiTinyMarginBeginEnd"></Label>
+						<Label id="TotalUnits" text="{viewData>/Tenancy/TUnits}" class="fontSize2_5 grey sapUiTinyMarginBeginEnd"></Label>
 						<Label text="Unit(s)" design="Bold" class="gold"></Label>
 					</HBox>
 					<layoutData>
@@ -73,7 +83,7 @@
 					</layoutData>
 				</VBox>
 				<Toolbar style="Clear" class="sapUiNoMarginBottom">
-					<Label text="United Investment / Tower B" class="fontSize1_5" />
+					<Label text="United Investment / Tower B" class="fontSize1_5"/>
 					<ToolbarSpacer/>
 					<Button text="Select" type="Transparent" press="onGridSelect"/>
 					<Button icon="sap-icon://sort" type="Transparent"/>
@@ -87,8 +97,8 @@
 	</Panel>
 	<ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
 		<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
-		<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" selectionChange="onSelectionChange"
-			delete="onDelete" class="sapUiResponsiveContentPadding customCSS">
+		<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" selectionChange="onSelectionChange" delete="onDelete"
+			class="sapUiResponsiveContentPadding customCSS">
 			<f:customLayout>
 				<grid:GridBoxLayout boxWidth="15rem"/>
 			</f:customLayout>
@@ -105,7 +115,7 @@
 						<!--<Link text="{UnitText}" emphasized="{= ${REContractKey} ? true: false }" press=".onUnitDetail"></Link>-->
 						<Label text="{UnitText}" design="Bold"/>
 					</HBox>
-					<Link text="{ContractNo}"  press=".onContractDetail"/>
+					<Link text="{ContractNo}" press=".onContractDetail"/>
 					<HBox justifyContent="SpaceBetween">
 						<tnt:InfoLabel text="Occupied" colorScheme="5" class="sapUiTinyMarginTop" visible="{= ${REContractKey} ? true: false }"/>
 						<HBox justifyContent="End">
