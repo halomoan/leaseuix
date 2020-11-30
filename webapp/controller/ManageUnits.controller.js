@@ -573,6 +573,9 @@ sap.ui.define([
 			oViewModel.setProperty("/ShowIdx", 0);
 			oViewModel.setProperty("/Floor", "ALL");
 			oViewModel.setProperty("/SizeRange", [0,10000]);
+			
+			this._oMultiInput.removeAllTokens();
+			oViewModel.setProperty("/UnitsName", "-None-");
 
 			this.aFilterUnits = [];
 			this.oFilterAvail = null;

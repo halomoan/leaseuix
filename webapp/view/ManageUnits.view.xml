@@ -32,6 +32,20 @@
 					</HBox>
 				</VBox>
 				<VBox>
+					
+					<HBox>
+						<VBox class="sapUiSmallMarginEnd">
+							<Label text="{i18n>Floor} :" labelFor="Floor"/>
+							<ComboBox id="Floor" width="8rem" items="{ path: '/RentalUnitFloorSet' }" selectedKey="{viewData>/Floor}" change="onFloorChange">
+								<core:ListItem key="{FloorText}" text="{FloorText}"/>
+							</ComboBox>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>KeyDate} :"/>
+							<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
+								class="sapUiSmallMarginEnd" width="90%"/>
+						</VBox>
+					</HBox>
 					<Label text="{i18n>Vacant} {i18n>On}"/>
 					<HBox justifyContent="Start" alignItems="Start">
 						<VBox>
@@ -46,19 +60,6 @@
 							</HBox>
 						</VBox>
 						<!--<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBegin"/>-->
-					</HBox>
-					<HBox>
-						<VBox class="sapUiSmallMarginEnd">
-							<Label text="{i18n>Floor} :" labelFor="Floor"/>
-							<ComboBox id="Floor" width="8rem" items="{ path: '/RentalUnitFloorSet' }" selectedKey="{viewData>/Floor}" change="onFloorChange">
-								<core:ListItem key="{FloorText}" text="{FloorText}"/>
-							</ComboBox>
-						</VBox>
-						<VBox>
-							<Label text="{i18n>KeyDate} :"/>
-							<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
-								class="sapUiSmallMarginEnd" width="90%"/>
-						</VBox>
 					</HBox>
 				</VBox>
 				<VBox>
