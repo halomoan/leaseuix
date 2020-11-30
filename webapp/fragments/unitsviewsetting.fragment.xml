@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<ViewSettingsDialog confirm="onGridViewSetConfirm" resetFilters="onGridViewSetReset">
+		<sortItems>
+			<ViewSettingsItem text="Unit" key="UnitText" selected="true"/>
+			<ViewSettingsItem text="Size" key="UnitSize"/>
+			<ViewSettingsItem text="Vacant/Occupied" key="Available"/>
+			<ViewSettingsItem text="Floor" key="Floor"/>
+		</sortItems>
+		<filterItems>
+			<ViewSettingsCustomItem  text="Size Range" key="sizeFilter">
+				<customControl>
+					<RangeSlider showAdvancedTooltip="true" range="{viewData>/SizeRange}" min="0" max="10000" width="90%" class="sapUiSmallMargin" change="onSizeRangeChange"/>
+				</customControl>
+			</ViewSettingsCustomItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>

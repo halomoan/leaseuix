@@ -58,8 +58,8 @@ sap.ui.define([
 			this.getFormFragment(oView, _formFragments,sFragmentName,oThis).openBy(oSource);
 		},
 
-		showFormDialogFragment : function (oView, _formFragments,sFragmentName) {
-			this.getFormFragment(oView, _formFragments,sFragmentName).open();
+		showFormDialogFragment : function (oView, _formFragments,sFragmentName,oThis) {
+			this.getFormFragment(oView, _formFragments,sFragmentName,oThis).open();
 		},
 		
 		showFormFragment : function (oView,containerId,_formFragments,sFragmentName,bClearMode) {

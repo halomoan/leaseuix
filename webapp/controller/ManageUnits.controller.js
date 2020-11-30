@@ -17,6 +17,7 @@ sap.ui.define([
 	return BaseController.extend("refx.leaseuix.controller.ManageUnits", {
 		formatter: formatter,
 		_formFragments: {},
+		
 		onInit: function() {
 
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -32,6 +33,7 @@ sap.ui.define([
 		},
 
 		initData: function() {
+			
 			var oViewData = {
 				"KeyDate": new Date(),
 				"ShowIdx": 0,
@@ -49,6 +51,7 @@ sap.ui.define([
 
 				},
 				"Floor": "ALL",
+				"SizeRange": [0,10000],
 				"Filter": {
 					"AvailNo": {
 						value: 0,
@@ -71,7 +74,11 @@ sap.ui.define([
 			this.aFilterUnits = []; //Filter Unit Key
 			this.oFilterAvail = null; //Filter Available
 			this.oFilterFloor = null;
+			this.oFilterSize = null;
 			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
+			
+			this.oSort = new sap.ui.model.Sorter('UnitText', false);
+		
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model/") + "/rentalunitcolumns.json");
 
@@ -131,16 +138,16 @@ sap.ui.define([
 		},
 
 		_updateTenancyInfo: function(oData) {
-			var oModel = this.getView().getModel("viewData");
-			oModel.setProperty("/Tenancy/SizeUnit", oData.SizeUnit);
-			oModel.setProperty("/Tenancy/TSize", oData.TotalSize);
-			oModel.setProperty("/Tenancy/TUnits", oData.TotalUnits);
-			oModel.setProperty("/Tenancy/TOccupiedSize", oData.TOccupiedSize);
-			oModel.setProperty("/Tenancy/TOccupidUnits", oData.TOccupiedUnits);
-			oModel.setProperty("/Tenancy/TVacantSize", oData.TVacantSize);
-			oModel.setProperty("/Tenancy/TVacantUnits", oData.TVacantUnits);
-			oModel.setProperty("/Tenancy/POccupiedUnits", Math.round((oData.TOccupiedUnits / oData.TotalUnits) * 100));
-			oModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));
+			var oViewModel = this.getView().getModel("viewData");
+			oViewModel.setProperty("/Tenancy/SizeUnit", oData.SizeUnit);
+			oViewModel.setProperty("/Tenancy/TSize", oData.TotalSize);
+			oViewModel.setProperty("/Tenancy/TUnits", oData.TotalUnits);
+			oViewModel.setProperty("/Tenancy/TOccupiedSize", oData.TOccupiedSize);
+			oViewModel.setProperty("/Tenancy/TOccupidUnits", oData.TOccupiedUnits);
+			oViewModel.setProperty("/Tenancy/TVacantSize", oData.TVacantSize);
+			oViewModel.setProperty("/Tenancy/TVacantUnits", oData.TVacantUnits);
+			oViewModel.setProperty("/Tenancy/POccupiedUnits", Math.round((oData.TOccupiedUnits / oData.TotalUnits) * 100));
+			oViewModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));
 		},
 		onGridSelect: function(oEvent) {
 			var oSource = oEvent.getSource();
@@ -155,6 +162,46 @@ sap.ui.define([
 
 		},
 
+		onGridViewSetting: function(oEvent){
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsviewsetting", this);
+		},
+		
+		onSizeRangeChange: function(oEvent){
+			
+			var aRange = oEvent.getSource().getRange();
+			
+				this.oFilterSize = new Filter({
+					path: "UnitSize",
+					operator: FilterOperator.BT,
+					value1: aRange[0],
+					value2: aRange[1]
+				});
+		},
+		
+		onGridViewSetConfirm: function(oEvent){
+			
+			var oSortItem = oEvent.getParameters().sortItem;
+		
+			var sSortBy = oSortItem.getKey();
+			var bDescending = oEvent.getParameters().sortDescending;
+		
+			this.oSort = new sap.ui.model.Sorter(sSortBy, bDescending);
+			
+			// var oRangeSlider = oSource.getFilterItems()[0].getCustomControl();
+			// var aRange = oRangeSlider.getRange();
+				
+			this._updateGridBinding();	
+		},
+		
+		onGridViewSetReset: function(oEvent){
+			var oViewModel = this.getView().getModel("viewData");
+			
+			oViewModel.setProperty("/SizeRange",[0,10000]);
+			this.oFilterSize = null;
+			
+			
+		},
+		
 		onDrop: function(oInfo) {
 			var oDragged = oInfo.getParameter("draggedControl"),
 				oDropped = oInfo.getParameter("droppedControl"),
@@ -402,8 +449,10 @@ sap.ui.define([
 				}
 
 				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
-
+			
 				oUnitGridBindingInfo.filters = this._mergeFilters();
+				oUnitGridBindingInfo.sorter = this.oSort;
+				
 				oGridList.bindItems(oUnitGridBindingInfo);
 
 			}
@@ -469,6 +518,10 @@ sap.ui.define([
 			if (this.oFilterFloor) {
 				aFilters.push(this.oFilterFloor);
 			}
+			
+			if (this.oFilterSize) {
+				aFilters.push(this.oFilterSize);
+			}
 
 			return aFilters;
 		},
@@ -512,17 +565,20 @@ sap.ui.define([
 
 		},
 
-		onResetAvail: function() {
-			var oModel = this.getView().getModel("viewData");
-			oModel.setProperty("/KeyDate", new Date());
-			// this.oGlobalData.setProperty("/KeyDate", new Date());
-			oModel.setProperty("/Filter/AvailNo/value", 0);
-			oModel.setProperty("/Filter/AvailUnit", "0");
-			oModel.setProperty("/ShowIdx", 0);
+		onReset: function() {
+			var oViewModel = this.getView().getModel("viewData");
+			oViewModel.setProperty("/KeyDate", new Date());
+			oViewModel.setProperty("/Filter/AvailNo/value", 0);
+			oViewModel.setProperty("/Filter/AvailUnit", "0");
+			oViewModel.setProperty("/ShowIdx", 0);
+			oViewModel.setProperty("/Floor", "ALL");
+			oViewModel.setProperty("/SizeRange", [0,10000]);
 
 			this.aFilterUnits = [];
 			this.oFilterAvail = null;
-
+			this.oFilterFloor = null;
+			this.oFilterSize = null;
+			
 			this._updateGridBinding();
 		},
 

@@ -1,7 +1,7 @@
 <mvc:View controllerName="refx.leaseuix.controller.ManageUnits" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f"
 	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd"
 	xmlns:dnd-grid="sap.f.dnd" class="customCSS">
-	<Panel headerText="Units Management" class="padding5">
+	<Panel headerText="Units Management" class="padding5" expandable="true">
 		<l:VerticalLayout width="100%" class="">
 			<l:Grid containerQuery="true" hSpacing="1" vSpacing="0">
 				<VBox>
@@ -45,19 +45,19 @@
 								</ComboBox>
 							</HBox>
 						</VBox>
-						<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBegin"/>
+						<!--<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBegin"/>-->
 					</HBox>
 					<HBox>
 						<VBox class="sapUiSmallMarginEnd">
 							<Label text="{i18n>Floor} :" labelFor="Floor"/>
 							<ComboBox id="Floor" width="8rem" items="{ path: '/RentalUnitFloorSet' }" selectedKey="{viewData>/Floor}" change="onFloorChange">
-								<core:ListItem key="{Floor}" text="{Floor}"/>
+								<core:ListItem key="{FloorText}" text="{FloorText}"/>
 							</ComboBox>
 						</VBox>
 						<VBox>
 							<Label text="{i18n>KeyDate} :"/>
 							<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
-								class="sapUiSmallMarginEnd" />
+								class="sapUiSmallMarginEnd" width="90%"/>
 						</VBox>
 					</HBox>
 				</VBox>
@@ -85,8 +85,9 @@
 				<Toolbar style="Clear" class="sapUiNoMarginBottom">
 					<Label text="United Investment / Tower B" class="fontSize1_5"/>
 					<ToolbarSpacer/>
+					<Button text="{i18n>Reset}" press="onReset" type="Transparent" class="sapUiTinyMarginBegin"/>
 					<Button text="Select" type="Transparent" press="onGridSelect"/>
-					<Button icon="sap-icon://sort" type="Transparent"/>
+					<Button icon="sap-icon://grid" type="Transparent" press="onGridViewSetting"/>
 					<Button icon="sap-icon://delete" type="Transparent"/>
 					<layoutData>
 						<l:GridData span="L12 M12 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
@@ -119,7 +120,7 @@
 					<HBox justifyContent="SpaceBetween">
 						<tnt:InfoLabel text="Occupied" colorScheme="5" class="sapUiTinyMarginTop" visible="{= ${REContractKey} ? true: false }"/>
 						<HBox justifyContent="End">
-							<Text text="{ path: 'Size', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
+							<Text text="{ path: 'UnitSize', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
 							<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
 						</HBox>
 					</HBox>
