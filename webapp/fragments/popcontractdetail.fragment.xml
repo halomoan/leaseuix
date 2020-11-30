@@ -22,6 +22,7 @@
 						<VBox>	
 							<HBox justifyContent="End"><Text text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffYear' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Year(s)"/> </HBox>
 							<HBox justifyContent="End"><Text text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffMonth' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Mth(s)"/> </HBox>
+							<!--<Label  text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffDays' }" />-->
 						</VBox>
 						
 					</HBox>

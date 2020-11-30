@@ -86,10 +86,14 @@
 				<Toolbar style="Clear" class="sapUiNoMarginBottom">
 					<Label text="United Investment / Tower B" class="fontSize1_5"/>
 					<ToolbarSpacer/>
+					<Button icon="sap-icon://media-reverse" press="" type="Transparent"/>
+					<Label text="1/5"></Label>
+					<Button icon="sap-icon://media-play" press="" type="Transparent"/>
+					
 					<Button text="{i18n>Reset}" press="onReset" type="Transparent" class="sapUiTinyMarginBegin"/>
 					<Button text="Select" type="Transparent" press="onGridSelect"/>
 					<Button icon="sap-icon://grid" type="Transparent" press="onGridViewSetting"/>
-					<Button icon="sap-icon://delete" type="Transparent"/>
+				
 					<layoutData>
 						<l:GridData span="L12 M12 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
 					</layoutData>

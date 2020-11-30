@@ -36,34 +36,25 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			return oPercentFormat.format(iNumber);
 		},
 
-		diffYear: function(oSDate, oEndDate) {
+		diffYear: function(oSDate, oEDate) {
 
-		
+			var oEndDate = moment(oEDate).add(1,'days');
 			var startDate = moment(oSDate);
 			var endDate = moment(oEndDate);
-			var years = endDate.diff(startDate, 'years');
+		
+			
+			var years = Math.round(endDate.diff(startDate, 'months') / 12,0);
+			
 			return years;
 		},
-		diffMonth: function(oSDate, oEndDate) {
+		diffMonth: function(oSDate, oEDate) {
 		
+			var oEndDate = moment(oEDate).add(1,'days');
 			var startDate = moment(oSDate);
 			var endDate = moment(oEndDate);
-			var years = endDate.diff(startDate, 'years');
-			var months = endDate.diff(startDate, 'months') - (years * 12 );
+			
+			var months = Math.round(endDate.diff(startDate, 'months') % 12,0);
 			return months;
-		},
-		
-		diffDays: function(oSDate, oEndDate) {
-		
-			var startDate = moment(oSDate);
-			var endDate = moment(oEndDate);
-			var years = endDate.diff(startDate, 'years');
-			var months = endDate.diff(startDate, 'months') - (years * 12 );
-			//to calculate the days, first get the previous month and then subtract it
-        	startDate.add(years, 'years').add(months, 'months');
-        	var days = endDate.diff(startDate, 'days');
-          
-			return days;
 		},
 
 		ddMMyyyy: function(oDate) {
