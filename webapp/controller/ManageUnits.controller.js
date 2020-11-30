@@ -51,6 +51,7 @@ sap.ui.define([
 
 				},
 				"Floor": "ALL",
+				"ShowCreate": false,
 				"SizeRange": [0,10000],
 				"Filter": {
 					"AvailNo": {
@@ -150,16 +151,31 @@ sap.ui.define([
 			oViewModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));
 		},
 		onGridSelect: function(oEvent) {
+			var oViewModel = this.getView().getModel("viewData");
 			var oSource = oEvent.getSource();
 			var sMode = oSource.getText();
+			
 			if (sMode === 'Select') {
 				this.byId("unitGrid").setMode('MultiSelect');
 				oSource.setText('Deselect');
+				oViewModel.setProperty("/ShowCreate",true); 
 			} else {
 				this.byId("unitGrid").setMode('None');
 				oSource.setText('Select');
+				oViewModel.setProperty("/ShowCreate",false);
 			}
 
+		},
+		
+		onGridSelectChange: function(oEvent){
+			var bSelected = oEvent.getParameter("selected");
+			var oParameters = oEvent.getParameters();
+			console.log(oParameters);
+			console.log(oEvent.getParameter("listItem").getId());
+		},
+		
+		onCreateContract: function(oEvent){
+			
 		},
 
 		onGridViewSetting: function(oEvent){
@@ -381,7 +397,7 @@ sap.ui.define([
 
 			if (sFloor !== 'ALL') {
 				this.oFilterFloor = new Filter({
-					path: "Floor",
+					path: "FloorText",
 					operator: FilterOperator.EQ,
 					value1: sFloor
 				});
@@ -442,11 +458,13 @@ sap.ui.define([
 				var oUnitGridBindingInfo = oGridList.getBindingInfo("items");
 
 				if (!oUnitGridBindingInfo.parameters) {
-					oUnitGridBindingInfo.parameters = {};
-				}
-				if (!oUnitGridBindingInfo.parameters.custom) {
+					oUnitGridBindingInfo.parameters = { };
 					oUnitGridBindingInfo.parameters.custom = {};
+					
 				}
+				// if (!oUnitGridBindingInfo.parameters.custom) {
+				// 	oUnitGridBindingInfo.parameters.custom = {};
+				// }
 
 				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
 			
