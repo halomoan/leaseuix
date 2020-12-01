@@ -66,7 +66,13 @@ sap.ui.define([
 				"busy": {
 					"popcontract": false
 				},
-				"delay": 0
+				"delay": 0,
+				
+				"Merge": {
+					"Name" : "",
+					"UnitSize" : 0,
+					"SizeUnit": ""
+				}
 
 			};
 
@@ -242,6 +248,9 @@ sap.ui.define([
 		},
 		
 		onDrop: function(oInfo) {
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			var oViewModel = this.getView().getModel("viewData");
+			
 			var oDragged = oInfo.getParameter("draggedControl"),
 				oDropped = oInfo.getParameter("droppedControl"),
 				sInsertPosition = oInfo.getParameter("dropPosition"),
@@ -253,21 +262,39 @@ sap.ui.define([
 
 			var oDraggedData = oDragged.getBindingContext().getObject();
 			var oDroppedData = oDropped.getBindingContext().getObject();
-			console.log(oDraggedData, oDroppedData);
+			
+			
+			if (oDraggedData.UnitKey === oDroppedData.UnitKey) {
+				return;
+			}
 			
 			if (! (oDraggedData.Available && oDroppedData.Available  ) ) {
-				MessageBox.error("{i18n>msgErrMergeUnits}");
+				MessageBox.error(oBundle.getText("msgErrMergeUnits"));
 				return;
 			}
 	
-	
+			var fragId = this.getView().getId();
 			var sDragBindPath = oDragged.getBindingContext().getPath();
 			var sDropBindPath = oDropped.getBindingContext().getPath();
-		    sap.ui.core.Fragment.byId(this.getView().getId(),"UnitsDrag").bindElement(sDragBindPath);
-		    sap.ui.core.Fragment.byId(this.getView().getId(),"UnitsDrag").bindElement(sDropBindPath);
+			
     
 			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge",this);
 
+			var oUnitsDragForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrag');
+			oUnitsDragForm.bindElement(sDragBindPath);
+			var oUnitsDropForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrop');
+			oUnitsDropForm.bindElement(sDropBindPath);
+			
+			var aName1 = oDraggedData.UnitText.split('-');
+			var aName2 = oDroppedData.UnitText.split('-');
+			
+			var sNewName = aName1[0] + '-' + aName1[1] + ' & ' + aName2[1];
+			 sap.ui.core.Fragment.byId(fragId,'newName').setValue(sNewName);
+			 oViewModel.setProperty("/Merge/Name",sNewName);
+			 oViewModel.setProperty("/Merge/UnitSize", parseInt(oDraggedData.UnitSize) +  parseInt(oDroppedData.UnitSize));
+			 oViewModel.setProperty("/Merge/SizeUnit",oDraggedData.SizeUnit);
+			
+			
 			//console.log(oDragged,oDropped);
 			// remove the item
 			// var oItem = aItems[iDragPosition];
@@ -510,7 +537,8 @@ sap.ui.define([
 
 				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
 			
-				oUnitGridBindingInfo.filters = this._mergeFilters();
+				//oUnitGridBindingInfo.filters = this._mergeFilters();
+				oUnitGridBindingInfo.filters = aFilters;
 				oUnitGridBindingInfo.sorter = this.oSort;
 				
 				oGridList.bindItems(oUnitGridBindingInfo);
@@ -566,6 +594,7 @@ sap.ui.define([
 			}
 			
 			var oViewModel = this.getView().getModel("viewData");
+				
 			oViewModel.setProperty("/IsFiltered", false);
 			
 			if (this.aFilterUnits.length > 0) {

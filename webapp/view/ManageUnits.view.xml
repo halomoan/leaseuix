@@ -85,7 +85,7 @@
 				<Toolbar style="Clear" class="sapUiNoMarginBottom">
 					<Label text="United Investment / Tower B" class="fontSize1_5"/>
 					<ToolbarSpacer/>
-					<DraftIndicator text="(Filtered)" visible="{viewData>/IsFiltered}" />
+					<Text text="(Filtered)" visible="{viewData>/IsFiltered}" />
 					<Button text="{i18n>Reset}" press="onReset" type="Transparent" class="sapUiTinyMarginBegin"/>
 					<Button text="Select" type="Transparent" press="onGridSelect"/>
 					<Button text="{i18n>Create} {i18n>Contract}" press="onCreateContract" visible="{viewData>/ShowCreate}" type="Transparent"
