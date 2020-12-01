@@ -26,6 +26,12 @@
 						</VBox>
 						
 					</HBox>
+					
+					<OverflowToolbar design="Solid">
+						<ToolbarSpacer />
+						<Label id="NoOfUnits" text="" textAlign="End"/>
+						<Button id="UnitIcon" icon="{= ${Contracttype} === 'L001' ? 'sap-icon://building': 'sap-icon://retail-store'}" type="Transparent" tooltip="{i18n>Units}" press="onShowContractUnits(${REContractKey})" />
+					</OverflowToolbar>
 				</content>
 			</Page>
 			<Page id="detail" class="sapUiResponsivePadding--header" showNavButton="true" navButtonPress="onNavBack" title="Product">

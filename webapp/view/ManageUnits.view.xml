@@ -32,7 +32,6 @@
 					</HBox>
 				</VBox>
 				<VBox>
-					
 					<HBox>
 						<VBox class="sapUiSmallMarginEnd">
 							<Label text="{i18n>Floor} :" labelFor="Floor"/>
@@ -86,12 +85,12 @@
 				<Toolbar style="Clear" class="sapUiNoMarginBottom">
 					<Label text="United Investment / Tower B" class="fontSize1_5"/>
 					<ToolbarSpacer/>
-					
+					<DraftIndicator text="(Filtered)" visible="{viewData>/IsFiltered}" />
 					<Button text="{i18n>Reset}" press="onReset" type="Transparent" class="sapUiTinyMarginBegin"/>
 					<Button text="Select" type="Transparent" press="onGridSelect"/>
-					<Button text="{i18n>Create} {i18n>Contract}" press="onCreateContract" visible="{viewData>/ShowCreate}" type="Transparent" class="sapUiTinyMarginBegin"/>
+					<Button text="{i18n>Create} {i18n>Contract}" press="onCreateContract" visible="{viewData>/ShowCreate}" type="Transparent"
+						class="sapUiTinyMarginBegin"/>
 					<Button icon="sap-icon://grid" type="Transparent" press="onGridViewSetting"/>
-				
 					<layoutData>
 						<l:GridData span="L12 M12 S12" linebreakL="false" linebreakM="false" linebreakS="false"/>
 					</layoutData>
@@ -114,27 +113,23 @@
 			<f:GridListItem detailPress="onDetailPress" highlight="{= ${REContractKey} ? 'Error' : 'Success' }" type="{type}">
 				<VBox height="100%" justifyContent="SpaceBetween">
 					<layoutData>
-						<FlexItemData growFactor="1" shrinkFactor="0" /><!-- Don't shrink below minimum size. Fill space if available. -->
-					</layoutData>
-
+						<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. --></layoutData>
 					<VBox class="sapUiSmallMargin">
 						<HBox justifyContent="SpaceBetween">
-							
-							<core:Icon
-								src="{= ${UsageType} === '0001' ? 'sap-icon://building': 'sap-icon://retail-store'}"
-								size="2rem"
-								color="Default"
-								class="sapUiTinyMarginBottom" />
+							<core:Icon src="{= ${UsageType} === '0001' ? 'sap-icon://building': 'sap-icon://retail-store'}" size="2rem" color="Default"
+								class="sapUiTinyMarginBottom"/>
 							<tnt:InfoLabel text="Occupied" colorScheme="5" class="sapUiTinyMarginTop" visible="{= ${REContractKey} ? true: false }"/>
 						</HBox>
-						<Title text="{UnitText}" wrapping="true" />
-						<Link text="{ContractNo}" press=".onContractDetail"/>
-					
+						<Title text="{UnitText}" wrapping="true"/>
+						<Link text="{ContractNo}" press=".onContractDetail">
+							<customData>
+								<core:CustomData key="REContractKey" value="{REContractKey}"/>
+							</customData>
+						</Link>
 						<HBox justifyContent="End">
 							<Text text="{ path: 'UnitSize', formatter: '.formatter.NumberFormat' }" class="fontSize1_5 green"></Text>
 							<Text text="{SizeUnit}" class="sapUiTinyMarginBegin gold"></Text>
 						</HBox>
-						
 					</VBox>
 					<!--<OverflowToolbar design="Solid">-->
 					<!--	<ToolbarSpacer />-->

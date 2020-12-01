@@ -9,8 +9,9 @@ sap.ui.define([
 	'sap/m/Token',
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
+	"sap/m/MessageBox",
 	"refx/leaseuix/model/formatter"
-], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator,
+], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator, MessageBox,
 	formatter) {
 	"use strict";
 
@@ -53,6 +54,7 @@ sap.ui.define([
 				"Floor": "ALL",
 				"ShowCreate": false,
 				"SizeRange": [0,10000],
+				"IsFiltered": false,
 				"Filter": {
 					"AvailNo": {
 						value: 0,
@@ -75,6 +77,7 @@ sap.ui.define([
 			this.aFilterUnits = []; //Filter Unit Key
 			this.oFilterAvail = null; //Filter Available
 			this.oFilterFloor = null;
+			this.oFilterContract = null;
 			this.oFilterSize = null;
 			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
 			
@@ -106,6 +109,8 @@ sap.ui.define([
 
 		onContractDetail: function(oEvent) {
 
+			var oThis = this;
+			var sREContractKey = oEvent.getSource().data('REContractKey');
 			var oViewModel = this.getView().getModel("viewData");
 			var oSource = oEvent.getSource();
 
@@ -118,12 +123,13 @@ sap.ui.define([
 			var sPath = oCtx.getPath() + "/Contract";
 
 			var oDate = oViewModel.getProperty("/KeyDate");
+			var sDate = formatter.yyyyMMdd(oDate);
 
 			oPopOver.bindElement({
 				path: sPath,
 				parameters: {
 					custom: {
-						at: formatter.yyyyMMdd(oDate)
+						at: sDate
 					}
 				},
 				events: {
@@ -135,6 +141,23 @@ sap.ui.define([
 					}
 				}
 			});
+			
+			var oModel = this.getModel();
+			oModel.read("/ContractSet('" + sREContractKey + "')/RentalUnitSet/$count", {
+					urlParameters : {"at" : sDate },
+                    success: function (oEvt, oResponse) {
+                    	if(isNaN(oResponse.data)){
+                        	oThis.getView().byId("NoOfUnits").setText('');
+                        	oThis.getView().byId("UnitIcon").setVisible(false);
+                    	} else {
+                    		oThis.getView().byId("NoOfUnits").setText(oResponse.data);
+                        	oThis.getView().byId("UnitIcon").setVisible(true);
+                    		
+                    	}
+                    	
+                        
+                }
+                });
 
 		},
 
@@ -231,8 +254,19 @@ sap.ui.define([
 			var oDraggedData = oDragged.getBindingContext().getObject();
 			var oDroppedData = oDropped.getBindingContext().getObject();
 			console.log(oDraggedData, oDroppedData);
-
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge");
+			
+			if (! (oDraggedData.Available && oDroppedData.Available  ) ) {
+				MessageBox.error("{i18n>msgErrMergeUnits}");
+				return;
+			}
+	
+	
+			var sDragBindPath = oDragged.getBindingContext().getPath();
+			var sDropBindPath = oDropped.getBindingContext().getPath();
+		    sap.ui.core.Fragment.byId(this.getView().getId(),"UnitsDrag").bindElement(sDragBindPath);
+		    sap.ui.core.Fragment.byId(this.getView().getId(),"UnitsDrag").bindElement(sDropBindPath);
+    
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge",this);
 
 			//console.log(oDragged,oDropped);
 			// remove the item
@@ -390,7 +424,15 @@ sap.ui.define([
 			// this.oGlobalData.setProperty("/KeyDate",oDate);
 			this._updateGridBinding();
 		},
-
+		
+		onShowContractUnits: function(sREContractKey){
+			this.oFilterContract = new Filter({
+					path: "REContractKey",
+					operator: FilterOperator.EQ,
+					value1: sREContractKey
+			});
+			this._updateGridBinding();
+		},
 		onFloorChange: function(oEvent) {
 			var oViewModel = this.getView().getModel("viewData");
 			var sFloor = oViewModel.getProperty("/Floor");
@@ -522,23 +564,40 @@ sap.ui.define([
 				}
 
 			}
-
-			if (this.aFilterUnits) {
+			
+			var oViewModel = this.getView().getModel("viewData");
+			oViewModel.setProperty("/IsFiltered", false);
+			
+			if (this.aFilterUnits.length > 0) {
 				for (i = 0; i < this.aFilterUnits.length; i++) {
 					aFilters.push(this.aFilterUnits[i]);
 				}
+			
+				oViewModel.setProperty("/IsFiltered", true);
 			}
 
 			if (this.oFilterAvail) {
 				aFilters.push(this.oFilterAvail);
+				oViewModel.setProperty("/IsFiltered", true);
+			
 			}
 
 			if (this.oFilterFloor) {
 				aFilters.push(this.oFilterFloor);
+				oViewModel.setProperty("/IsFiltered", true);
+			
 			}
 			
 			if (this.oFilterSize) {
 				aFilters.push(this.oFilterSize);
+				oViewModel.setProperty("/IsFiltered", true);
+				
+			}
+			
+			if (this.oFilterContract){
+				aFilters.push(this.oFilterContract);
+				oViewModel.setProperty("/IsFiltered", true);
+			
 			}
 
 			return aFilters;
@@ -591,6 +650,7 @@ sap.ui.define([
 			oViewModel.setProperty("/ShowIdx", 0);
 			oViewModel.setProperty("/Floor", "ALL");
 			oViewModel.setProperty("/SizeRange", [0,10000]);
+			oViewModel.setProperty("/IsFiltered", false);
 			
 			this._oMultiInput.removeAllTokens();
 			oViewModel.setProperty("/UnitsName", "-None-");
@@ -599,6 +659,7 @@ sap.ui.define([
 			this.oFilterAvail = null;
 			this.oFilterFloor = null;
 			this.oFilterSize = null;
+			this.oFilterContract = null;
 			
 			this._updateGridBinding();
 		},
