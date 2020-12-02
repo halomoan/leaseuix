@@ -10,8 +10,9 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	"sap/m/MessageBox",
+	"sap/m/MessageToast",
 	"refx/leaseuix/model/formatter"
-], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator, MessageBox,
+], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator, MessageBox,MessageToast,
 	formatter) {
 	"use strict";
 
@@ -52,7 +53,8 @@ sap.ui.define([
 
 				},
 				"Floor": "ALL",
-				"ShowCreate": false,
+				"IsMultiSelect": false,
+				"IsAllowMerge": false,
 				"SizeRange": [0,10000],
 				"IsFiltered": false,
 				"Filter": {
@@ -69,6 +71,7 @@ sap.ui.define([
 				"delay": 0,
 				
 				"Merge": {
+					"Units" : [],
 					"Name" : "",
 					"UnitSize" : 0,
 					"SizeUnit": ""
@@ -76,8 +79,8 @@ sap.ui.define([
 
 			};
 
-			this.CompanyCode = "1001";
-			this.BusinessEntity = "00001001";
+			this.CompanyCode = "1002";
+			this.BusinessEntity = "00001002";
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
 			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity); // Filter BE
 			this.aFilterUnits = []; //Filter Unit Key
@@ -152,16 +155,14 @@ sap.ui.define([
 			oModel.read("/ContractSet('" + sREContractKey + "')/RentalUnitSet/$count", {
 					urlParameters : {"at" : sDate },
                     success: function (oEvt, oResponse) {
-                    	if(isNaN(oResponse.data)){
-                        	oThis.getView().byId("NoOfUnits").setText('');
-                        	oThis.getView().byId("UnitIcon").setVisible(false);
-                    	} else {
-                    		oThis.getView().byId("NoOfUnits").setText(oResponse.data);
-                        	oThis.getView().byId("UnitIcon").setVisible(true);
-                    		
-                    	}
+                    if(isNaN(oResponse.data)){
+                     	oThis.getView().byId("NoOfUnits").setText('');
+                     	oThis.getView().byId("UnitIcon").setVisible(false);
+                    } else {
+                    	oThis.getView().byId("NoOfUnits").setText(oResponse.data);
+                     	oThis.getView().byId("UnitIcon").setVisible(true);
                     	
-                        
+                    }
                 }
                 });
 
@@ -187,20 +188,37 @@ sap.ui.define([
 			if (sMode === 'Select') {
 				this.byId("unitGrid").setMode('MultiSelect');
 				oSource.setText('Deselect');
-				oViewModel.setProperty("/ShowCreate",true); 
+				oViewModel.setProperty("/IsMultiSelect",true); 
+				
+				if (this.oFilterFloor) {
+					oViewModel.setProperty("/IsAllowMerge",true); 
+				} else {
+					oViewModel.setProperty("/IsAllowMerge",false); 
+				}
 			} else {
 				this.byId("unitGrid").setMode('None');
 				oSource.setText('Select');
-				oViewModel.setProperty("/ShowCreate",false);
+				oViewModel.setProperty("/IsMultiSelect",false);
+				oViewModel.setProperty("/IsAllowMerge",false); 
 			}
 
 		},
 		
 		onGridSelectChange: function(oEvent){
 			var bSelected = oEvent.getParameter("selected");
-			var oParameters = oEvent.getParameters();
-			console.log(oParameters);
-			console.log(oEvent.getParameter("listItem").getId());
+			var oViewModel = this.getView().getModel("viewData");
+			var aUnits = oViewModel.getProperty("/Merge/Units");		
+			var oUnit = oEvent.getParameter("listItem").getBindingContext().getObject();
+			if (bSelected) {
+				aUnits.push(oUnit);
+			} else{
+				aUnits = aUnits.filter(function(unit){
+					return unit.UnitKey !== oUnit.UnitKey;
+				});
+			}
+			
+			oViewModel.setProperty("/Merge/Units",aUnits);
+		
 		},
 		
 		onCreateContract: function(oEvent){
@@ -246,7 +264,37 @@ sap.ui.define([
 			
 			
 		},
-		
+		onMergeUnits : function(){
+			var oViewModel = this.getView().getModel("viewData");
+			var aUnits = oViewModel.getProperty("/Merge/Units");
+			
+			if (aUnits.length > 0){
+				var sNewName ="";
+				var sFloor = "";
+				var iUnitSize = 0;
+				var sSizeUnit = "";
+			
+				for(var i = 0; i < aUnits.length; i++){
+					var aName = aUnits[i].UnitText.split('-');
+					if (i === 0) {
+						sNewName = aName[1];
+					} else {
+						sNewName += ' & ' + aName[1];
+					}
+					sFloor = aName[0];
+					iUnitSize += parseInt(aUnits[i].UnitSize,0);
+					if (aUnits[i].UnitSize !== ''){
+						sSizeUnit = aUnits[i].SizeUnit;
+					}
+				}
+				sNewName = sFloor + '-' + sNewName;
+			
+				oViewModel.setProperty("/Merge/Name",sNewName);
+				oViewModel.setProperty("/Merge/UnitSize",iUnitSize);
+				oViewModel.setProperty("/Merge/SizeUnit",sSizeUnit);
+				this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge",this);
+			}
+		},
 		onDrop: function(oInfo) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oViewModel = this.getView().getModel("viewData");
@@ -264,6 +312,7 @@ sap.ui.define([
 			var oDroppedData = oDropped.getBindingContext().getObject();
 			
 			
+			
 			if (oDraggedData.UnitKey === oDroppedData.UnitKey) {
 				return;
 			}
@@ -273,29 +322,27 @@ sap.ui.define([
 				return;
 			}
 	
-			var fragId = this.getView().getId();
-			var sDragBindPath = oDragged.getBindingContext().getPath();
-			var sDropBindPath = oDropped.getBindingContext().getPath();
+			// var fragId = this.getView().getId();
+			// var sDragBindPath = oDragged.getBindingContext().getPath();
+			// var sDropBindPath = oDropped.getBindingContext().getPath();
 			
-    
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge",this);
-
-			var oUnitsDragForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrag');
-			oUnitsDragForm.bindElement(sDragBindPath);
-			var oUnitsDropForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrop');
-			oUnitsDropForm.bindElement(sDropBindPath);
+			// var oUnitsDragForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrag');
+			// oUnitsDragForm.bindElement(sDragBindPath);
+			// var oUnitsDropForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrop');
+			// oUnitsDropForm.bindElement(sDropBindPath);
 			
 			var aName1 = oDraggedData.UnitText.split('-');
 			var aName2 = oDroppedData.UnitText.split('-');
 			
+			
 			var sNewName = aName1[0] + '-' + aName1[1] + ' & ' + aName2[1];
-			 sap.ui.core.Fragment.byId(fragId,'newName').setValue(sNewName);
+			 oViewModel.setProperty("/Merge/Units",[oDraggedData,oDroppedData]);
 			 oViewModel.setProperty("/Merge/Name",sNewName);
-			 oViewModel.setProperty("/Merge/UnitSize", parseInt(oDraggedData.UnitSize) +  parseInt(oDroppedData.UnitSize));
-			 oViewModel.setProperty("/Merge/SizeUnit",oDraggedData.SizeUnit);
+			 oViewModel.setProperty("/Merge/UnitSize", parseInt(oDraggedData.UnitSize,0) +  parseInt(oDroppedData.UnitSize,0));
+			 oViewModel.setProperty("/Merge/SizeUnit",oDraggedData.SizeUnit === '' ? oDroppedData.SizeUnit : oDraggedData.SizeUnit );
 			
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge",this);
 			
-			//console.log(oDragged,oDropped);
 			// remove the item
 			// var oItem = aItems[iDragPosition];
 			// aItems.splice(iDragPosition, 1);
@@ -314,7 +361,14 @@ sap.ui.define([
 			// oModel.setProperty("/items", aItems);
 		},
 
-		closeMergeUnits: function() {
+		confirmMergeUnits: function() {
+			MessageBox.confirm("Are You Sure To Merge These Units?", {
+				actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+				emphasizedAction: MessageBox.Action.CANCEL,
+				onClose: function (sAction) {
+					MessageToast.show("Action selected: " + sAction);
+				}
+			});
 			this.byId("mergeUnitsDialog").close();
 		},
 		cancelMergeUnits: function() {

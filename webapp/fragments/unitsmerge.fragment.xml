@@ -1,48 +1,33 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
-	<Dialog id="mergeUnitsDialog" contentWidth="350px" contentHeight="450px" title="Merge Units" icon="sap-icon://combine">
+	<Dialog id="mergeUnitsDialog" contentWidth="340px" contentHeight="450px" title="Merge Units" icon="sap-icon://combine">
 		<NavContainer id="mergeUnitsNav" class="customCSS">
 			<Page id="page1" class="sapUiResponsivePadding--header" showHeader="false" showNavButton="false">
 				<content>
 					<l:VerticalLayout class="sapUiContentPadding">
-						<VBox class="sapUiTinyMarginBeginEnd">
-							<VBox id="UnitsDrag">
-								<HBox justifyContent="SpaceBetween">
-									<VBox>
-										<Label text="Unit 1"/>
-										<Input editable="false" value="{UnitText}"/>
-									</VBox>
-									<HBox class="sapUiSmallMarginTop">
-										<Text text="{path: 'UnitSize', formatter: '.formatter.NumberFormat'}" class="fontSize1_5 green sapUiTinyMarginEnd"></Text>
-										<Text text="{SizeUnit}" class="fontSize1 gold"></Text>
+						<HBox justifyContent="End">
+							<Text text="{path: 'viewData>/Merge/UnitSize', formatter: '.formatter.NumberFormat'}" class="fontSize2 green sapUiTinyMarginEnd"></Text>
+							<Text text="{viewData>/Merge/SizeUnit}" class="fontSize1_5 gold"></Text>
+						</HBox>
+						<HBox>
+							<Label text="{i18n>New} {i18n>Name}:" labelFor="newName" class="sapUiSmallMarginTop"/>
+							<Input id="newName" value="{viewData>/Merge/Name}" class="sapUiSmallMarginBegin" width="13rem"></Input>
+						</HBox>
+						<HBox>
+							<Label text="{i18n>From} {i18n>Date}:" labelFor="fromDate" class="sapUiSmallMarginTop"/>
+							<DatePicker id="fromDate" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" placeholder="Enter Date ..."
+								change="handleChange" class="sapUiSmallMarginBegin" width="13rem"/>
+						</HBox>
+						<List headerText="" mode="None" items="{path: 'viewData>/Merge/Units'}">
+							<CustomListItem highlight="Success">
+								<HBox justifyContent="SpaceBetween" class="sapUiSmallMargin">
+									<Title text="{viewData>UnitText}"></Title>
+									<HBox class="">
+										<Text text="{path: 'viewData>UnitSize', formatter: '.formatter.NumberFormat'}" class="fontSize1_5 green sapUiTinyMarginEnd"></Text>
+										<Text text="{viewData>SizeUnit}" class="fontSize1 gold"></Text>
 									</HBox>
 								</HBox>
-							</VBox>
-							<VBox id="UnitsDrop">
-								<HBox justifyContent="SpaceBetween">
-									<VBox>
-										<Label text="Unit 2"/>
-										<Input editable="false" value="{UnitText}"/>
-									</VBox>
-									<HBox class="sapUiSmallMarginTop">
-										<Text text="{path: 'UnitSize', formatter: '.formatter.NumberFormat'}" class="fontSize1_5 green sapUiTinyMarginEnd"></Text>
-										<Text text="{SizeUnit}" class="fontSize1 gold"></Text>
-									</HBox>
-								</HBox>
-							</VBox>
-							<HBox class="sapUiSmallMarginTop">
-								<Label text="{i18n>From} {i18n>Date}:" labelFor="fromDate" class="sapUiSmallMarginTop"/>
-								<DatePicker id="fromDate" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" placeholder="Enter Date ..."
-									change="handleChange" class="sapUiSmallMarginBegin" width="13rem"/>
-							</HBox>
-							<HBox>
-								<Label text="{i18n>New} {i18n>Name}:" labelFor="newName" class="sapUiSmallMarginTop"/>
-								<Input id="newName" value="{viewData>/Merge/Name}" class="sapUiSmallMarginBegin" width="13rem"></Input>
-							</HBox>
-							<HBox justifyContent="End" class="sapUiSmallMarginTop">
-								<Text text="{path: 'viewData>/Merge/UnitSize', formatter: '.formatter.NumberFormat'}" class="fontSize2 green sapUiTinyMarginEnd"></Text>
-								<Text text="{viewData>/Merge/SizeUnit}" class="fontSize1_5 gold"></Text>
-							</HBox>
-						</VBox>
+							</CustomListItem>
+						</List>
 					</l:VerticalLayout>
 				</content>
 			</Page>
@@ -51,7 +36,7 @@
 			</Page>
 		</NavContainer>
 		<beginButton>
-			<Button text="OK" press="closeMergeUnits"/>
+			<Button text="OK" press="confirmMergeUnits"/>
 		</beginButton>
 		<endButton>
 			<Button text="Cancel" press="cancelMergeUnits"/>
