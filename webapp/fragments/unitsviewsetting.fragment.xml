@@ -1,10 +1,10 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<ViewSettingsDialog confirm="onGridViewSetConfirm" resetFilters="onGridViewSetReset">
 		<sortItems>
-			<ViewSettingsItem text="Unit" key="UnitText" selected="true"/>
+			<ViewSettingsItem text="Unit" key="UnitText" />
 			<ViewSettingsItem text="Size" key="UnitSize"/>
 			<ViewSettingsItem text="Vacant/Occupied" key="Available"/>
-			<ViewSettingsItem text="Floor" key="Floor"/>
+			<ViewSettingsItem text="Floor" key="Floor" selected="true"/>
 		</sortItems>
 		<filterItems>
 			<ViewSettingsCustomItem  text="Size Range" key="sizeFilter">

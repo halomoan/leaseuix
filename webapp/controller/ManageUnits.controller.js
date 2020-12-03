@@ -11,8 +11,10 @@ sap.ui.define([
 	'sap/ui/model/FilterOperator',
 	"sap/m/MessageBox",
 	"sap/m/MessageToast",
+	"sap/m/GroupHeaderListItem",
 	"refx/leaseuix/model/formatter"
-], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, SearchField, Token, Filter, FilterOperator, MessageBox,MessageToast,
+], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, 
+	SearchField, Token, Filter, FilterOperator, MessageBox,MessageToast,GroupHeaderListItem,
 	formatter) {
 	"use strict";
 
@@ -90,7 +92,7 @@ sap.ui.define([
 			this.oFilterSize = null;
 			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
 			
-			this.oSort = new sap.ui.model.Sorter('UnitText', false);
+			this.aSort = [new sap.ui.model.Sorter('Floor', false, true)];
 		
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model/") + "/rentalunitcolumns.json");
@@ -180,6 +182,13 @@ sap.ui.define([
 			oViewModel.setProperty("/Tenancy/POccupiedUnits", Math.round((oData.TOccupiedUnits / oData.TotalUnits) * 100));
 			oViewModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));
 		},
+		
+		getGroupHeader: function(oGroup) {
+			
+			return new GroupHeaderListItem({
+				title : oGroup.key
+			});
+		},
 		onGridSelect: function(oEvent) {
 			var oViewModel = this.getView().getModel("viewData");
 			var oSource = oEvent.getSource();
@@ -248,7 +257,13 @@ sap.ui.define([
 			var sSortBy = oSortItem.getKey();
 			var bDescending = oEvent.getParameters().sortDescending;
 		
-			this.oSort = new sap.ui.model.Sorter(sSortBy, bDescending);
+			 if (sSortBy === 'Floor') {
+			 	this.aSort = [	new sap.ui.model.Sorter('Floor', bDescending, true)];
+			 } else {
+			 	
+			 	this.aSort = [	new sap.ui.model.Sorter('Floor', false, true), new sap.ui.model.Sorter(sSortBy, bDescending,false) ];
+			 }
+			
 			
 			// var oRangeSlider = oSource.getFilterItems()[0].getCustomControl();
 			// var aRange = oRangeSlider.getRange();
@@ -307,6 +322,10 @@ sap.ui.define([
 				aItems = oModel.getProperty("/items"),
 				iDragPosition = oGrid.indexOfItem(oDragged),
 				iDropPosition = oGrid.indexOfItem(oDropped);
+				
+			if ( ! oDragged.getBindingContext() ) {
+				return;
+			}	
 
 			var oDraggedData = oDragged.getBindingContext().getObject();
 			var oDroppedData = oDropped.getBindingContext().getObject();
@@ -520,7 +539,7 @@ sap.ui.define([
 
 			if (sFloor !== 'ALL') {
 				this.oFilterFloor = new Filter({
-					path: "FloorText",
+					path: "Floor",
 					operator: FilterOperator.EQ,
 					value1: sFloor
 				});
@@ -593,7 +612,7 @@ sap.ui.define([
 			
 				//oUnitGridBindingInfo.filters = this._mergeFilters();
 				oUnitGridBindingInfo.filters = aFilters;
-				oUnitGridBindingInfo.sorter = this.oSort;
+				oUnitGridBindingInfo.sorter = this.aSort;
 				
 				oGridList.bindItems(oUnitGridBindingInfo);
 

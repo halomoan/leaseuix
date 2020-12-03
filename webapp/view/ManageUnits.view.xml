@@ -36,7 +36,7 @@
 						<VBox class="sapUiSmallMarginEnd">
 							<Label text="{i18n>Floor} :" labelFor="Floor"/>
 							<ComboBox id="Floor" width="8rem" items="{ path: '/RentalUnitFloorSet' }" selectedKey="{viewData>/Floor}" change="onFloorChange">
-								<core:ListItem key="{FloorText}" text="{FloorText}"/>
+								<core:ListItem key="{Floor}" text="{Floor}"/>
 							</ComboBox>
 						</VBox>
 						<VBox>
@@ -101,8 +101,9 @@
 	</Panel>
 	<ScrollContainer height="95%" width="100%" vertical="true" focusable="true">
 		<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
-		<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet' }" selectionChange="onGridSelectChange" delete="onDelete"
-			growingThreshold="50" growing="true" class="sapUiResponsiveContentPadding customCSS">
+		<f:GridList id="unitGrid" items="{ path: '/RentalUnitSet', groupHeaderFactory: '.getGroupHeader' }"
+			
+			selectionChange="onGridSelectChange" growingThreshold="50" growing="true" class="sapUiResponsiveContentPadding customCSS">
 			<f:customLayout>
 				<grid:GridBoxLayout boxWidth="15rem"/>
 			</f:customLayout>
@@ -135,9 +136,7 @@
 							</VBox>
 							<tnt:InfoLabel text="Occupied" colorScheme="5" class="" visible="{= ${REContractKey} ? true: false }"/>
 						</HBox>
-						
 					</VBox>
-					
 				</VBox>
 			</f:GridListItem>
 		</f:GridList>
