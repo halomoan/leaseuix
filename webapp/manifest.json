@@ -93,17 +93,25 @@
 			},
 			"routes": [
 				{
+					"pattern": "",
+					"name": "contractlist",
+					"target": "contractlist"
+				},
+				{
 					"pattern": "contractpage",
 					"name": "contractpage",
 					"target": "contractpage"
 				},
 				{
-					"pattern": "",
+					"pattern": "manageunits",
 					"name": "manageunits",
 					"target": "manageunits"
 				}
 			],
 			"targets": {
+				"contractlist": {
+					"viewName": "ContractList"
+				},
 				"contractpage": {
 					"viewName": "ContractPage"
 				},

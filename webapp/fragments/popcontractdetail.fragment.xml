@@ -5,23 +5,23 @@
 				<content>
 					<ObjectHeader title="{Contractname}">
 						<attributes>
-							<ObjectAttribute text="Contract No.: {Contractno}"/>
-							<ObjectAttribute text="Type : {Contracttype} - {Contracttypetext}"/>
-							<ObjectAttribute text="Industry : {Industrytext}"/>
-							<ObjectAttribute text="Status : {Recontractstatus}"/>
+							<ObjectAttribute text="Contract No.: {ContractNo}"/>
+							<ObjectAttribute text="Type : {ContractType} - {ContractTypeText}"/>
+							<ObjectAttribute text="Industry : {IndustryText}"/>
+							<ObjectAttribute text="Status : {ContractStatus}"/>
 						</attributes>
 					</ObjectHeader>
 					<HBox class="sapUiSmallMargin" justifyContent="SpaceBetween">
 						<VBox >
-							<Text text="Start Date: { path: 'Startdate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
-							<Text text="End Date: { path: 'Enddate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
+							<Text text="Start Date: { path: 'StartDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
 							<Text text="Term End Date: { path: 'EndTermDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
+							<Text text="End Date: { path: 'EndDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
 						</VBox>
 						
 						
 						<VBox>	
-							<HBox justifyContent="End"><Text text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffYear' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Year(s)"/> </HBox>
-							<HBox justifyContent="End"><Text text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffMonth' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Mth(s)"/> </HBox>
+							<HBox justifyContent="End"><Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffYear' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Year(s)"/> </HBox>
+							<HBox justifyContent="End"><Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffMonth' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Mth(s)"/> </HBox>
 							<!--<Label  text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffDays' }" />-->
 						</VBox>
 						

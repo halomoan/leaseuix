@@ -136,6 +136,7 @@ sap.ui.define([
 			var oDate = oViewModel.getProperty("/KeyDate");
 			var sDate = formatter.yyyyMMdd(oDate);
 
+		
 			oPopOver.bindElement({
 				path: sPath,
 				parameters: {
@@ -550,9 +551,9 @@ sap.ui.define([
 		},
 
 		onKeyDateChange: function(oEvent) {
-			var oViewModel = this.getView().getModel("viewData");
-			var oDate = new Date(oEvent.getParameter("value"));
-			oViewModel.setProperty("/KeyDate", oDate);
+			// var oViewModel = this.getView().getModel("viewData");
+			// var oDate = new Date(oEvent.getParameter("value"));
+			// oViewModel.setProperty("/KeyDate", oDate);
 			// this.oGlobalData.setProperty("/KeyDate", oDate);
 
 			this._updateGridBinding();
@@ -604,13 +605,9 @@ sap.ui.define([
 					oUnitGridBindingInfo.parameters.custom = {};
 					
 				}
-				// if (!oUnitGridBindingInfo.parameters.custom) {
-				// 	oUnitGridBindingInfo.parameters.custom = {};
-				// }
 
 				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
 			
-				//oUnitGridBindingInfo.filters = this._mergeFilters();
 				oUnitGridBindingInfo.filters = aFilters;
 				oUnitGridBindingInfo.sorter = this.aSort;
 				

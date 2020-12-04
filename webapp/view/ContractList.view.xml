@@ -1,4 +1,9 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" 	xmlns="sap.f" controllerName="refx.leaseuix.controller.ContractList"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<FlexibleColumnLayout id="flexibleColumnLayout" backgroundDesign="Solid"></FlexibleColumnLayout>
+	<FlexibleColumnLayout id="flexibleColumnLayout" backgroundDesign="Solid">
+		<beginColumnPages>
+			<mvc:XMLView id="beginView" viewName="refx.leaseuix.components.contractlst.view.contractlist"/>
+		</beginColumnPages>
+		
+	</FlexibleColumnLayout>
 </mvc:View>
