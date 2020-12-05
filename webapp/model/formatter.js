@@ -38,25 +38,60 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 
 		diffYear: function(oSDate, oEDate) {
 
-			var oEndDate = moment(oEDate).add(1,'days');
+			var endDate = moment(oEDate).add(1,'days');
 			var startDate = moment(oSDate);
-			var endDate = moment(oEndDate);
-		
 			
-			var years = Math.round(endDate.diff(startDate, 'months') / 12,0);
+			var years = endDate.diff(startDate, 'year');
 			
-			return years;
+			
+			return Math.abs(years);
 		},
 		diffMonth: function(oSDate, oEDate) {
 		
-			var oEndDate = moment(oEDate).add(1,'days');
+			var endDate = moment(oEDate).add(1,'days');
 			var startDate = moment(oSDate);
-			var endDate = moment(oEndDate);
 			
-			var months = Math.round(endDate.diff(startDate, 'months') % 12,0);
-			return months;
+			var years = endDate.diff(startDate, 'year');
+			startDate.add(years, 'years');
+			
+			var months = endDate.diff(startDate, 'months');
+			
+
+			return Math.abs(months);
 		},
 
+		diffDay: function(oSDate, oEDate) {
+		
+			var endDate = moment(oEDate).add(1,'days');
+			var startDate = moment(oSDate);
+			
+			var years = endDate.diff(startDate, 'year');
+			startDate.add(years, 'years');
+			
+			var months = endDate.diff(startDate, 'months');
+			
+			startDate.add(months, 'months');
+			
+			var days = endDate.diff(startDate, 'days');
+
+			return Math.abs(days);
+		},
+		
+		diffDateState:  function(oSDate, oEDate) {
+		
+			var endDate = moment(oEDate).add(1,'days');
+			var startDate = moment(oSDate);
+			
+			var days = endDate.diff(startDate, 'days');
+			
+			if (days <= 60) {
+				return 'Error';
+			} else {
+				return 'Success';
+			}
+
+			
+		},
 		ddMMyyyy: function(oDate) {
 			// var oDateFormat = DateFormat.getDateTimeInstance({
 			// 	pattern: "dd/MMM/yyyy HH:mm"

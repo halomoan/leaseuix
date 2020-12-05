@@ -955,7 +955,6 @@ sap.ui.define([
 
 		onExit: function() {
 			this.removeFragment(this._formFragments);
-			console.log("exit");
 		}
 
 	});

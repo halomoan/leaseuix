@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<ViewSettingsDialog confirm="onSortConfirm" resetFilters="onContractSortReset">
+		<sortItems>
+			<ViewSettingsItem text="Contract Name" key="ContractName" />
+			<ViewSettingsItem text="Duration" key="Duration"/>
+			<ViewSettingsItem text="Expire Soon" key="DaysToExpire"/>
+		</sortItems>
+		<groupItems>
+			<ViewSettingsItem text="Industry" key="IndustryText" selected="true" />
+		</groupItems>
+		<filterItems>
+			<ViewSettingsCustomItem  text="Expire Within" key="ExpireWithin">
+				<customControl>
+					<HBox justifyContent="Center" alignItems="Start">
+						<VBox>
+							<HBox>
+								<StepInput value="{viewData>/Filter/AvailNo/value}" min="{viewData>/Filter/AvailNo/min}" max="{viewData>/Filter/AvailNo/max}" width="8rem"
+									step="1" change="onStepChange"/>
+								<ComboBox width="8rem" selectedKey="{viewData>/Filter/AvailUnit}" change="onStepChange">
+									<core:Item key="0" text="Weeks"/>
+									<core:Item key="1" text="Months"/>
+									<core:Item key="2" text="Years"/>
+								</ComboBox>
+							</HBox>
+						</VBox>
+						<!--<Button text="{i18n>Reset}" press="onResetAvail" class="sapUiTinyMarginBegin"/>-->
+					</HBox>
+				</customControl>
+			</ViewSettingsCustomItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>

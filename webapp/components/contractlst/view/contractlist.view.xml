@@ -1,10 +1,10 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f"
 	controllerName="refx.leaseuix.components.contractlst.controller.contractlist" xmlns:html="http://www.w3.org/1999/xhtml">
-	<f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false">
+	<f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false" class="customCSS">
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title text="Contract ()"/>
+					<Title text="{viewData>/ContractTypeText} ({viewData>/NoOfContracts})"/>
 				</f:heading>
 			</f:DynamicPageTitle>
 		</f:title>
@@ -14,34 +14,33 @@
 				<OverflowToolbar class="sapFDynamicPageAlignContent">
 					<Label text="{i18n>KeyDate} :"/>
 					<DatePicker placeholder="Key Date" value="{path: 'viewData>/KeyDate', type:'sap.ui.model.type.Date' }" change="onKeyDateChange"
-								class="sapUiSmallMarginEnd" width="10rem"/>
+						class="sapUiSmallMarginEnd" width="10rem"/>
 					<ToolbarSpacer/>
 					<SearchField search=".onSearch" width="17.5rem"/>
 					<OverflowToolbarButton icon="sap-icon://add" text="Add" type="Transparent" press=".onAdd"/>
-					<OverflowToolbarButton icon="sap-icon://sort" text="Sort" type="Transparent" press=".onSort"/>
+					<OverflowToolbarButton icon="sap-icon://grid" text="Sort" type="Transparent" press=".onSort"/>
 				</OverflowToolbar>
-				<Table id="contractTable" inset="false" items="{ path: '/ContractSet' ,groupHeaderFactory: '.getGroupHeader' }" class="sapFDynamicPageAlignContent" 
-					growing="true" 
-					width="auto" 
-					sticky="ColumnHeaders"
-					alternateRowColors="true">
+				<Table id="contractTable" inset="false" items="{ path: '/ContractSet' ,groupHeaderFactory: '.getGroupHeader' }"
+					class="sapFDynamicPageAlignContent" growingThreshold="50" growing="true" width="auto" sticky="ColumnHeaders" alternateRowColors="true">
 					<columns>
 						<Column>
 							<Text text="Contract"/>
 						</Column>
-						<Column hAlign="End">
+						<Column hAlign="End" minScreenWidth="Desktop">
+							<Text text="Period"/>
+						</Column>
+						<Column hAlign="Center" width="7em">
 							<Text text="Duration"/>
+						</Column>
+						<Column hAlign="Center" width="7em">
+							<Text text="Days To Expire"/>
 						</Column>
 						<Column hAlign="End" minScreenWidth="Desktop">
 							<Text text="Lease Start"/>
 						</Column>
 						<Column hAlign="Center" minScreenWidth="Desktop">
-							<Text text="Relevant To Sales"/>
-						</Column>
-						<Column hAlign="Center" minScreenWidth="Desktop">
 							<Text text="Status"/>
 						</Column>
-					
 					</columns>
 					<items>
 						<ColumnListItem type="Navigation">
@@ -49,9 +48,44 @@
 								<ObjectIdentifier title="{ContractName}" text="{ContractNo}"/>
 								<ObjectIdentifier title="{path: 'StartDate' ,type:'sap.ui.model.type.Date'} to {path: 'EndDate' ,type:'sap.ui.model.type.Date'}"
 									text="Term End: { path: 'EndTermDate' , type:'sap.ui.model.type.Date'}"/>
+								<!--Duration-->
+								<HBox>
+									<HBox justifyContent="End">
+										<VBox alignItems="End">
+											<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffYear' }" class="gold fontSize1_5"></Text>
+											<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffMonth' }" class="gold fontSize1_5"></Text>
+										</VBox>
+									</HBox>
+									<HBox justifyContent="End">
+										<VBox alignItems="End">
+											<Text text="Year(s)" class="sapUiSmallMarginBottom"/>
+											<Text text=" Mth(s)"/>
+										</VBox>
+									</HBox>
+								</HBox>
+								<!-- Days To Expire -->
+								<HBox>
+									<HBox justifyContent="End">
+										<VBox alignItems="End">
+											
+											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffYear' }" icon=""
+												state="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDateState' }"/>
+											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffMonth' }" icon=""
+												state="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDateState' }"/>
+											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDay' }" icon=""
+												state="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDateState' }"/>
+										</VBox>
+									</HBox>
+									<HBox justifyContent="End">
+										<VBox alignItems="End">
+											<Text text="Year(s)" class="sapUiSmallMarginBottom"/>
+											<Text text=" Mth(s)" class="sapUiSmallMarginBottom"/>
+											<Text text=" Day(s)"/>
+										</VBox>
+									</HBox>
+								</HBox>
 								<ObjectIdentifier title="{path: 'LeaseStart' , type:'sap.ui.model.type.Date'}" text=""/>
-								<ObjectStatus class="sapUiSmallMarginBottom" text="" visible="{RelSalesRule}" icon="sap-icon://message-success" state="Success"/>
-								<Text text="{ContractStatus}"/>
+								<ObjectIdentifier title="{ContractStatus}" text="{= ${RelSalesRule} ? 'Relevant To Sales': '' }"/>
 							</cells>
 						</ColumnListItem>
 					</items>
