@@ -4,8 +4,9 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	"sap/m/GroupHeaderListItem",
+	'sap/f/library',
 	"refx/leaseuix/model/formatter"
-], function(BaseController,JSONModel,Filter,FilterOperator,GroupHeaderListItem,formatter) {
+], function(BaseController,JSONModel,Filter,FilterOperator,GroupHeaderListItem,fioriLibrary,formatter) {
 	"use strict";
 
 	return BaseController.extend("refx.leaseuix.components.contractlst.controller.contractlist", {
@@ -13,8 +14,9 @@ sap.ui.define([
 		_formFragments: {},
 		
 		onInit: function(){
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.getRoute("contractlist").attachMatched(this.__onRouteMatched, this);
+			//var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			this.oRouter = this.getOwnerComponent().getRouter();
+			this.oRouter.getRoute("contractlist").attachMatched(this.__onRouteMatched, this);
 		},
 		
 		__onRouteMatched: function(oEvent) {
@@ -26,7 +28,15 @@ sap.ui.define([
 				"KeyDate": new Date(),
 				"ContractType": "L002",
 				"ContractTypeText": "Tenancy Retail Contract",
-				"NoOfContracts" : 0
+				"NoOfContracts" : 0,
+				"Filter": {
+					"AvailNo": {
+						value: 0,
+						min: 0,
+						max: 54
+					},
+					"AvailUnit": "1"
+				}
 			};
 			
 			this.CompanyCode = "1001";
@@ -39,7 +49,9 @@ sap.ui.define([
 			this.aFilters = [this.oFilterCoCode, this.oFilterBE,this.oFilterType];
 			this.oFilterSearch = null;
 			
-			this.aSort = [new sap.ui.model.Sorter('IndustryText', false, true)];
+			this.oFilterDaysToExpire = null;
+			
+			this.aSort = [new sap.ui.model.Sorter('IndustryText', false, true),new sap.ui.model.Sorter('ContractName', false, false)];
 			
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
 			
@@ -67,18 +79,31 @@ sap.ui.define([
 		onSearch : function(oEvent){
 			this.oFilterSearch = [];
 			var sQuery = oEvent.getParameter("query");
-			if (sQuery && sQuery.length > 0) {
+			
+			
+			if (sQuery && sQuery !== '') {
 				this.oFilterSearch = new Filter({
 					filters: [new Filter("ContractNo", FilterOperator.Contains, sQuery), new Filter("ContractName", FilterOperator.Contains, sQuery)],
 					and: false
 				});
+			} else {
+				this.oFilterSearch = null;
 			}
 			this._updateBinding();
 		},
 		onSort: function(){
 			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.contractsviewsetting", this);
 		},
-		
+		onSortReset: function(oEvent){
+			var oModel = this.getView().getModel("viewData");
+			
+			this.aSort = [new sap.ui.model.Sorter('IndustryText', false, true),new sap.ui.model.Sorter('ContractName', false, false)];
+			this.oFilterDaysToExpire = null;
+			
+
+			oModel.setProperty("/Filter/AvailNo/value",0);
+			oModel.setProperty("/Filter/AvailUnit","1");
+		},
 		onSortConfirm: function(oEvent){
 			var oSortItem = oEvent.getParameters().sortItem;
 			var bDescending = false;
@@ -102,9 +127,48 @@ sap.ui.define([
 				this.aSort.push(oSort);
 			}
 			
-			
 		
 			this._updateBinding();
+		},
+		onStepChange: function(oEvent) {
+			var oModel = this.getView().getModel("viewData");
+
+			var num = oModel.getProperty("/Filter/AvailNo/value");
+			var unit = oModel.getProperty("/Filter/AvailUnit");
+			
+			var iDays = 0;
+		
+			switch (unit) {
+				case "0":
+					iDays = num * 7;
+					break;
+				case "1":
+					iDays = num * 31;
+					break;
+				case "2":
+					iDays = num * 366;
+					break;
+			}
+		
+			if (iDays > 0) {
+				this.oFilterDaysToExpire = new Filter({
+					path: "DaysToExpire",
+					operator: FilterOperator.BT,
+					value1: 0 ,
+					value2: iDays 
+				});
+			}
+		},
+		onListItemPress: function (oEvent) {
+			var oFCL = this.oView.getParent().getParent();
+
+			oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
+			var sPath = oEvent.getSource().getBindingContext().getPath();
+			
+			var oControl = sap.ui.getCore().byId("__xmlview1--detailView--ContractDetail");
+			
+			oControl.bindElement(sPath);
+			
 		},
 		_updateBinding : function(){
 			var oDate = this.getView().getModel("viewData").getProperty("/KeyDate");
@@ -155,6 +219,10 @@ sap.ui.define([
 			if (this.oFilterSearch) {
 				//aFilters = aFilters.concat(this.oFilterSearch);
 				aFilters.push(this.oFilterSearch);
+			}
+			
+			if (this.oFilterDaysToExpire) {
+				aFilters.push(this.oFilterDaysToExpire);
 			}
 			return aFilters;
 		},

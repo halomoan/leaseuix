@@ -89,7 +89,9 @@
 				"viewType": "XML",
 				"viewPath": "refx.leaseuix.view",
 				"controlId": "app",
-				"controlAggregation": "pages"
+				"controlAggregation": "pages",
+				
+				"async": true
 			},
 			"routes": [
 				{
@@ -97,6 +99,7 @@
 					"name": "contractlist",
 					"target": "contractlist"
 				},
+			
 				{
 					"pattern": "contractpage",
 					"name": "contractpage",

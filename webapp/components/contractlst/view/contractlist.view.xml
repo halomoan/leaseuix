@@ -33,17 +33,15 @@
 							<Text text="Duration"/>
 						</Column>
 						<Column hAlign="Center" width="7em">
-							<Text text="Days To Expire"/>
+							<Text text="To Expire"/>
 						</Column>
-						<Column hAlign="End" minScreenWidth="Desktop">
-							<Text text="Lease Start"/>
-						</Column>
+					
 						<Column hAlign="Center" minScreenWidth="Desktop">
 							<Text text="Status"/>
 						</Column>
 					</columns>
 					<items>
-						<ColumnListItem type="Navigation">
+						<ColumnListItem type="Navigation" press=".onListItemPress">
 							<cells>
 								<ObjectIdentifier title="{ContractName}" text="{ContractNo}"/>
 								<ObjectIdentifier title="{path: 'StartDate' ,type:'sap.ui.model.type.Date'} to {path: 'EndDate' ,type:'sap.ui.model.type.Date'}"
@@ -84,7 +82,6 @@
 										</VBox>
 									</HBox>
 								</HBox>
-								<ObjectIdentifier title="{path: 'LeaseStart' , type:'sap.ui.model.type.Date'}" text=""/>
 								<ObjectIdentifier title="{ContractStatus}" text="{= ${RelSalesRule} ? 'Relevant To Sales': '' }"/>
 							</cells>
 						</ColumnListItem>
