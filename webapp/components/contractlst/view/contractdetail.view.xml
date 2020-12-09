@@ -1,53 +1,64 @@
-<mvc:View 
-	xmlns="sap.uxap"
-	xmlns:m="sap.m"
-	xmlns:f="sap.f"
-	xmlns:form="sap.ui.layout.form"
-	xmlns:mvc="sap.ui.core.mvc"
+<mvc:View xmlns="sap.uxap" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc"
 	controllerName="refx.leaseuix.components.contractlst.controller.contractdetail">
-	<ObjectPageLayout
-		id="ContractDetail"
-		showTitleInHeaderContent="true"
-		alwaysShowContentHeader="false"
-		preserveHeaderStateOnScroll="false"
-		headerContentPinnable="true"
-		isChildPage="true"
-		upperCaseAnchorBar="false">
+	<ObjectPageLayout id="ContractDetail" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<expandedHeading>
-					<m:Title text="{ContractName}" wrapping="true" class="sapUiSmallMarginEnd"/>
+					<m:Title text="{ContractName}" wrapping="true"/>
 				</expandedHeading>
+				<expandedContent>
+					<m:Text text="Contract No: {ContractNo}"/>
+				</expandedContent>
+				<snappedHeading>
+					<m:FlexBox fitContainer="true" alignItems="Center">
+						<m:Avatar displayShape="Square" class="sapUiTinyMarginEnd"/>
+						<m:Title text="{ContractName}" wrapping="true"/>
+					</m:FlexBox>
+				</snappedHeading>
 				<actions>
-					<m:ToggleButton
-						text="Edit"
-						type="Emphasized"/>
-					<m:Button
-						text="Copy"
-						type="Transparent"/>
-					<m:Button
-						icon="sap-icon://action"
-						type="Transparent"/>
+					<!--<m:OverflowToolbarButton icon="sap-icon://edit" text="Edit" type="Emphasized" tooltip="edit"/>-->
+					<!--<m:OverflowToolbarButton icon="sap-icon://copy" text="Copy " type="Emphasized" tooltip="copy"/>-->
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
 		<headerContent>
 			<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
-				<f:Avatar
-					displaySize="L"
-					displayShape="Square"
-					class="sapUiTinyMarginEnd">
-				</f:Avatar>
+				<f:Avatar displaySize="L" displayShape="Square" class="sapUiTinyMarginEnd"></f:Avatar>
 				<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
-					<m:Label text="{"/>
+					<m:Label text="{i18n>ContractType}" design="Bold"/>
+					<m:Label text="{ContractType} - {ContractTypeText}"/>
+					<m:Label text="{i18n>Industry}" design="Bold"/>
+					<m:Label text="{IndustryText}"/>
 				</m:VBox>
 				<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
-					<m:Label text="Subcategory"/>
+					<!--<m:Label text="{i18n>EndTerm}" design="Bold"/>-->
+					<!--<m:Label text="{path: 'EndTermDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"/>-->
 				</m:VBox>
 				<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
-					<m:Label text="Price"/>
+					<m:HBox>
+						<m:VBox class="sapUiSmallMarginEnd">
+							<m:Label text="{i18n>From} {i18n>Date}" design="Bold"/>
+							<m:Label text="{path: 'StartDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"/>
+						</m:VBox>
+						<m:VBox>
+							<m:Label text="{i18n>EndTerm}" design="Bold"/>
+							<m:Label text="{path: 'EndTermDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"/>
+						</m:VBox>
+					</m:HBox>
+					<m:HBox>
+						<m:VBox class="sapUiSmallMarginEnd">
+							<m:Label text="{i18n>To} {i18n>Date}" design="Bold"/>
+							<m:Label text="{path: 'EndDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"/>
+						</m:VBox>
+						<m:VBox>
+							<m:ProgressIndicator state="Warning" percentValue="{= 100 - ( ${DaysToExpire} / ${Duration} * 100 ) }"
+								displayValue="{= Math.floor( 100 - ${DaysToExpire} / ${Duration} * 100 ) }%"/>
+						</m:VBox>
+					</m:HBox>
 				</m:VBox>
+				<m:VBox class="sapUiSmallMarginEnd"></m:VBox>
 			</m:FlexBox>
 		</headerContent>
-	</ObjectPageLayout>	
+	</ObjectPageLayout>
 </mvc:View>

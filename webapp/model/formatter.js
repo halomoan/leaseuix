@@ -36,7 +36,7 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			return oPercentFormat.format(iNumber);
 		},
 
-		diffYear: function(oSDate, oEDate) {
+		diffYearPart: function(oSDate, oEDate) {
 
 			var endDate = moment(oEDate).add(1,'days');
 			var startDate = moment(oSDate);
@@ -46,7 +46,7 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			
 			return Math.abs(years);
 		},
-		diffMonth: function(oSDate, oEDate) {
+		diffMonthPart: function(oSDate, oEDate) {
 		
 			var endDate = moment(oEDate).add(1,'days');
 			var startDate = moment(oSDate);
@@ -60,7 +60,7 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			return Math.abs(months);
 		},
 
-		diffDay: function(oSDate, oEDate) {
+		diffDayPart: function(oSDate, oEDate) {
 		
 			var endDate = moment(oEDate).add(1,'days');
 			var startDate = moment(oSDate);
@@ -76,7 +76,6 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 
 			return Math.abs(days);
 		},
-		
 		diffDateState:  function(oSDate, oEDate) {
 		
 			var endDate = moment(oEDate).add(1,'days');
@@ -92,6 +91,7 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 
 			
 		},
+		
 		ddMMyyyy: function(oDate) {
 			// var oDateFormat = DateFormat.getDateTimeInstance({
 			// 	pattern: "dd/MMM/yyyy HH:mm"

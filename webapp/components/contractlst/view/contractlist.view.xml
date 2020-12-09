@@ -50,8 +50,8 @@
 								<HBox>
 									<HBox justifyContent="End">
 										<VBox alignItems="End">
-											<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffYear' }" class="gold fontSize1_5"></Text>
-											<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffMonth' }" class="gold fontSize1_5"></Text>
+											<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffYearPart' }" class="gold fontSize1_5"></Text>
+											<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffMonthPart' }" class="gold fontSize1_5"></Text>
 										</VBox>
 									</HBox>
 									<HBox justifyContent="End">
@@ -66,11 +66,11 @@
 									<HBox justifyContent="End">
 										<VBox alignItems="End">
 											
-											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffYear' }" icon=""
+											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffYearPart' }" icon=""
 												state="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDateState' }"/>
-											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffMonth' }" icon=""
+											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffMonthPart' }" icon=""
 												state="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDateState' }"/>
-											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDay' }" icon=""
+											<ObjectStatus class="fontSize1_5" text="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDayPart' }" icon=""
 												state="{parts: [ 'viewData>/KeyDate','EndTermDate' ], formatter: '.formatter.diffDateState' }"/>
 										</VBox>
 									</HBox>
