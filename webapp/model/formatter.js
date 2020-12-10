@@ -88,10 +88,8 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			} else {
 				return 'Success';
 			}
-
-			
 		},
-		
+	
 		ddMMyyyy: function(oDate) {
 			// var oDateFormat = DateFormat.getDateTimeInstance({
 			// 	pattern: "dd/MMM/yyyy HH:mm"

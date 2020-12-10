@@ -1,9 +1,8 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
-	"refx/leaseuix/model/models",
-	'sap/f/library'
-], function(UIComponent, Device, models,fioriLibrary) {
+	"refx/leaseuix/model/models"
+], function(UIComponent, Device, models) {
 	"use strict";
 
 	return UIComponent.extend("refx.leaseuix.Component", {
@@ -47,6 +46,7 @@ sap.ui.define([
 			
 		},
 		
+
 		exit : function() {
 			
 		}

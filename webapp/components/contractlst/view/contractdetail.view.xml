@@ -1,4 +1,6 @@
-<mvc:View xmlns="sap.uxap" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc"
+<mvc:View xmlns="sap.uxap" 
+	xmlns:core="sap.ui.core" 
+	xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" 
 	controllerName="refx.leaseuix.components.contractlst.controller.contractdetail">
 	<ObjectPageLayout id="ContractDetail" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false"
 		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
@@ -17,6 +19,9 @@
 					</m:FlexBox>
 				</snappedHeading>
 				<actions>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="onFullScreen"  tooltip="Enter Full Screen Mode" visible="{= !${viewData>/FullScreen}  }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode" visible="{= ${viewData>/FullScreen} }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="onClose"  tooltip="Close"/>
 					<!--<m:OverflowToolbarButton icon="sap-icon://edit" text="Edit" type="Emphasized" tooltip="edit"/>-->
 					<!--<m:OverflowToolbarButton icon="sap-icon://copy" text="Copy " type="Emphasized" tooltip="copy"/>-->
 				</actions>
@@ -57,7 +62,10 @@
 						</m:VBox>
 					</m:HBox>
 				</m:VBox>
-				<m:VBox class="sapUiSmallMarginEnd"></m:VBox>
+				<m:VBox class="sapUiMediumMarginBegin">
+						<m:Label text="{i18n>Status}" design="Bold"/>
+						<m:Label text="{ContractStatus}"/>
+					</m:VBox>
 			</m:FlexBox>
 		</headerContent>
 	</ObjectPageLayout>
