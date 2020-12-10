@@ -30,7 +30,7 @@ sap.ui.define([
 			
 			oViewModel.setProperty("/FullScreen",false);
 			var oFCL = this.getView().getParent().getParent();
-			oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsBeginExpanded);
+			oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
 		},
 		onClose: function(oEvent) {
 			var oFCL = this.getView().getParent().getParent();

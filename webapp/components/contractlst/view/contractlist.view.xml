@@ -82,7 +82,10 @@
 										</VBox>
 									</HBox>
 								</HBox>
+								<VBox>
 								<ObjectIdentifier title="{ContractStatus}" text="{= ${RelSalesRule} ? 'Relevant To Sales': '' }"/>
+								<ObjectStatus  text="{i18n>FutureContract}" inverted="true" icon="sap-icon://date-time" state="Success" visible="{= (${viewData>/KeyDate} &lt; ${StartDate}) }"/>
+								</VBox>
 							</cells>
 						</ColumnListItem>
 					</items>

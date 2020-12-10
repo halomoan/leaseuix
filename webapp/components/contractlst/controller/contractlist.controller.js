@@ -40,7 +40,7 @@ sap.ui.define([
 
 			this.CompanyCode = "1001";
 			this.BusinessEntity = "1001";
-			this.ContractType = "L001";
+			this.ContractType = "L002";
 
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
 			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity); // Filter BE
@@ -53,6 +53,9 @@ sap.ui.define([
 			this.aSort = [new sap.ui.model.Sorter('IndustryText', false, true), new sap.ui.model.Sorter('ContractName', false, false)];
 
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
+			
+			//this.oGlobalData = this.getModel("globalData");
+			
 
 			this.getOwnerComponent().getModel().metadataLoaded().then(function() {
 				var oModel = this.getOwnerComponent().getModel();
@@ -70,9 +73,9 @@ sap.ui.define([
 		},
 		onKeyDateChange: function(oEvent) {
 			// var oViewModel = this.getView().getModel("viewData");
-			// var oDate = new Date(oEvent.getParameter("value"));
+			//var oDate = new Date(oEvent.getParameter("value"));
 			// oViewModel.setProperty("/KeyDate", oDate);
-
+			//this.oGlobalData.setProperty("/KeyDate",oDate);
 			this._updateBinding();
 		},
 		onSearch: function(oEvent) {

@@ -1,7 +1,6 @@
-<mvc:View xmlns="sap.uxap" 
-	xmlns:core="sap.ui.core" 
-	xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" 
-	controllerName="refx.leaseuix.components.contractlst.controller.contractdetail">
+<mvc:View xmlns="sap.uxap" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form"
+	xmlns:blocks="refx.leaseuix.components.contractlst.controller"
+	xmlns:mvc="sap.ui.core.mvc" controllerName="refx.leaseuix.components.contractlst.controller.contractdetail">
 	<ObjectPageLayout id="ContractDetail" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false"
 		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
 		<headerTitle>
@@ -10,7 +9,11 @@
 					<m:Title text="{ContractName}" wrapping="true"/>
 				</expandedHeading>
 				<expandedContent>
-					<m:Text text="Contract No: {ContractNo}"/>
+					<m:HBox>
+						
+						<m:Text text="Contract No: {ContractNo}" class="sapUiSmallMarginEnd"/> 
+						<m:ObjectStatus text="{i18n>FutureContract}" inverted="true" icon="sap-icon://date-time" state="Success" visible="{= (${Duration} &lt; ${DaysToExpire}) }"/>
+					</m:HBox>
 				</expandedContent>
 				<snappedHeading>
 					<m:FlexBox fitContainer="true" alignItems="Center">
@@ -19,9 +22,11 @@
 					</m:FlexBox>
 				</snappedHeading>
 				<actions>
-					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="onFullScreen"  tooltip="Enter Full Screen Mode" visible="{= !${viewData>/FullScreen}  }"/>
-					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode" visible="{= ${viewData>/FullScreen} }"/>
-					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="onClose"  tooltip="Close"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="onFullScreen" tooltip="Enter Full Screen Mode"
+						visible="{= !${viewData>/FullScreen} }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode"
+						visible="{= ${viewData>/FullScreen} }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="onClose" tooltip="Close"/>
 					<!--<m:OverflowToolbarButton icon="sap-icon://edit" text="Edit" type="Emphasized" tooltip="edit"/>-->
 					<!--<m:OverflowToolbarButton icon="sap-icon://copy" text="Copy " type="Emphasized" tooltip="copy"/>-->
 				</actions>
@@ -63,10 +68,22 @@
 					</m:HBox>
 				</m:VBox>
 				<m:VBox class="sapUiMediumMarginBegin">
-						<m:Label text="{i18n>Status}" design="Bold"/>
-						<m:Label text="{ContractStatus}"/>
-					</m:VBox>
+					<m:Label text="{i18n>Status}" design="Bold"/>
+					<m:ObjectStatus class="sapUiSmallMarginBottom" text="{ContractStatus}" 	icon="sap-icon://message-information" state="Information" visible="{RelSalesRule}"/>
+					<m:ObjectStatus class="sapUiSmallMarginBottom" text="{i18n>RefSales}" icon="sap-icon://lead" state="Success" visible="{RelSalesRule}"/>
+				</m:VBox>
 			</m:FlexBox>
 		</headerContent>
+		<sections>
+				<ObjectPageSection title="Rental Unit(s)">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<blocks:unitsblock id="unitsblk"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>	
 	</ObjectPageLayout>
 </mvc:View>
