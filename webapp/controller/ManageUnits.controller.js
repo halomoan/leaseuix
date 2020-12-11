@@ -24,16 +24,17 @@ sap.ui.define([
 		
 		onInit: function() {
 
+
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("manageunits").attachMatched(this.__onRouteMatched, this);
-
+			
 		},
 
 		__onRouteMatched: function(oEvent) {
 			this._oMultiInput = this.getView().byId("rentalUnits");
 			this._oMultiInput.addValidator(this._onMultiInputValidate);
-
 			this.initData();
+			
 		},
 
 		initData: function() {
@@ -97,7 +98,8 @@ sap.ui.define([
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model/") + "/rentalunitcolumns.json");
 
-			var oFloorBinding = this.byId("Floor").getBinding("items");
+			var oFloorBinding = this.getView().byId("Floor").getBinding("items");
+			
 			oFloorBinding.filter([
 				this.oFilterCoCode,
 				this.oFilterBE
@@ -600,14 +602,15 @@ sap.ui.define([
 
 				var oUnitGridBindingInfo = oGridList.getBindingInfo("items");
 
+
 				if (!oUnitGridBindingInfo.parameters) {
 					oUnitGridBindingInfo.parameters = { };
+				} else {
 					oUnitGridBindingInfo.parameters.custom = {};
-					
 				}
 
 				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
-			
+				
 				oUnitGridBindingInfo.filters = aFilters;
 				oUnitGridBindingInfo.sorter = this.aSort;
 				

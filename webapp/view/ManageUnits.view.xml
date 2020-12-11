@@ -101,8 +101,8 @@
 	</Panel>
 	<ScrollContainer height="95%" width="100%" vertical="true" focusable="true">
 		<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
-		<f:GridList id="unitGrid" items="{ path: '/RentalUnitSet', groupHeaderFactory: '.getGroupHeader' }"
-			
+		<f:GridList id="unitGrid"
+			items="{ path: '/RentalUnitSet', sorter: { path: 'Floor', descending: false, group: true }, parameters: { expand: 'OccupancySet',custom: { } } }"
 			selectionChange="onGridSelectChange" growingThreshold="50" growing="true" class="sapUiResponsiveContentPadding customCSS">
 			<f:customLayout>
 				<grid:GridBoxLayout boxWidth="15rem"/>
