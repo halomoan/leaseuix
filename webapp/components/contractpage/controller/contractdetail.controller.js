@@ -5,7 +5,7 @@ sap.ui.define([
 ], function(BaseController,JSONModel,fioriLibrary) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.components.contractlst.controller.contractdetail", {
+	return BaseController.extend("refx.leaseuix.components.contractpage.controller.contractdetail", {
 
 		onInit: function() {
 			this.initData();

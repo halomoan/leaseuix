@@ -5,7 +5,7 @@ sap.ui.define([
 ], function(BaseController, JSONModel, formatter) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.components.contractlst.controller.unitsblock", {
+	return BaseController.extend("refx.leaseuix.components.contractpage.controller.unitsblock", {
 		formatter: formatter,
 		
 		onInit: function() {

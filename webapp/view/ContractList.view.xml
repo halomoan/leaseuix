@@ -12,7 +12,7 @@
 			<mvc:XMLView id="beginView" viewName="refx.leaseuix.components.contractlst.view.contractlist"/>
 		</beginColumnPages>
 		<midColumnPages>
-			<mvc:XMLView id="detailView" viewName="refx.leaseuix.components.contractlst.view.contractdetail"/>
+			<mvc:XMLView id="detailView" viewName="refx.leaseuix.components.contractpage.view.contractdetail"/>
 		</midColumnPages>
 		</FlexibleColumnLayout>
 </mvc:View>

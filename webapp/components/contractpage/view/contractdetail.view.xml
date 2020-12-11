@@ -1,6 +1,6 @@
 <mvc:View xmlns="sap.uxap" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form"
-	xmlns:blocks="refx.leaseuix.components.contractlst.controller"
-	xmlns:mvc="sap.ui.core.mvc" controllerName="refx.leaseuix.components.contractlst.controller.contractdetail">
+	xmlns:blocks="refx.leaseuix.components.contractpage.controller"
+	xmlns:mvc="sap.ui.core.mvc" controllerName="refx.leaseuix.components.contractpage.controller.contractdetail">
 	<ObjectPageLayout id="ContractDetail" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false"
 		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
 		<headerTitle>
@@ -10,7 +10,6 @@
 				</expandedHeading>
 				<expandedContent>
 					<m:HBox>
-						
 						<m:Text text="Contract No: {ContractNo}" class="sapUiSmallMarginEnd"/> 
 						<m:ObjectStatus text="{i18n>FutureContract}" inverted="true" icon="sap-icon://date-time" state="Success" visible="{= (${Duration} &lt; ${DaysToExpire}) }"/>
 					</m:HBox>

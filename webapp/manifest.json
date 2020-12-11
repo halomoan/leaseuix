@@ -95,7 +95,7 @@
 			},
 			"routes": [
 				{
-					"pattern": "",
+					"pattern": "contractlist",
 					"name": "contractlist",
 					"target": "contractlist"
 				},
@@ -106,7 +106,7 @@
 					"target": "contractpage"
 				},
 				{
-					"pattern": "manageunits",
+					"pattern": "",
 					"name": "manageunits",
 					"target": "manageunits"
 				}

@@ -163,7 +163,7 @@ sap.ui.define([
 
 			oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
 			var sPath = oEvent.getSource().getBindingContext().getPath();
-
+			
 			var oControl = sap.ui.getCore().byId("__xmlview1--detailView--ContractDetail");
 
 			oControl.bindElement(sPath);
