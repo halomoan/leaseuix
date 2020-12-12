@@ -1,9 +1,10 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<Popover showHeader="false" contentWidth="380px" contentHeight="500px" placement="Right" ariaLabelledBy="master-title">
 		<NavContainer id="navCon">
-			<Page id="unitmaster" class="sapUiResponsivePadding--header customCSS" title="{i18n>ContractDetail}"  busy="{viewData>/busy/popcontract}" busyIndicatorDelay="{viewData>/delay}">
+			<Page id="unitmaster" class="sapUiResponsivePadding--header customCSS" title="{i18n>ContractDetail}" busy="{viewData>/busy/popcontract}"
+				busyIndicatorDelay="{viewData>/delay}">
 				<content>
-					<ObjectHeader title="{Contractname}">
+					<ObjectHeader title="{ContractName}">
 						<attributes>
 							<ObjectAttribute text="Contract No.: {ContractNo}"/>
 							<ObjectAttribute text="Type : {ContractType} - {ContractTypeText}"/>
@@ -11,33 +12,45 @@
 							<ObjectAttribute text="Status : {ContractStatus}"/>
 						</attributes>
 					</ObjectHeader>
-					<HBox class="sapUiSmallMargin" justifyContent="SpaceBetween">
+					<HBox class="sapUiSmallMarginBeginEnd" justifyContent="SpaceBetween">
 						<VBox>
 							<ObjectIdentifier title="Start Date" text="{ path: 'StartDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
-							<ObjectIdentifier title="Term End Date" text="{ path: 'EndTermDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
+							<ObjectIdentifier title="Term End Date"
+								text="{ path: 'EndTermDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
 							<ObjectIdentifier title="End Date" text="{ path: 'EndDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' } }"/>
 						</VBox>
-						
-						
-						<VBox>	
-							<HBox justifyContent="End"><Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffYearPart' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Year(s)"/> </HBox>
-							<HBox justifyContent="End"><Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffMonthPart' }" class="gold sapUiTinyMarginEnd fontSize1_5"></Text><Text text="Mth(s)"/> </HBox>
-							<!--<Label  text="{parts: [ 'Startdate','EndTermDate' ], formatter: '.formatter.diffDays' }" />-->
+						<VBox>
+							<HBox>
+								<HBox justifyContent="End">
+									<VBox alignItems="End">
+										<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffYearPart' }" class="gold fontSize1_5"></Text>
+										<Text text="{parts: [ 'StartDate','EndTermDate' ], formatter: '.formatter.diffMonthPart' }" class="gold fontSize1_5"></Text>
+									</VBox>
+								</HBox>
+								<HBox justifyContent="End">
+									<VBox alignItems="End">
+										<Text text="Year(s)" class="sapUiSmallMarginBottom"/>
+										<Text text=" Mth(s)"/>
+									</VBox>
+								</HBox>
+							</HBox>
 						</VBox>
-						
 					</HBox>
-					
-					<HBox justifyContent="End" class="sapUiSmallMargin">
+					<HBox justifyContent="SpaceBetween" class="sapUiSmallMargin">
 						
+						<HBox>
 						<Text id="NoOfUnits" text="" class="sapUiSmallMarginTop"/>
-						<Button id="UnitIcon" icon="{= ${Contracttype} === 'L001' ? 'sap-icon://building': 'sap-icon://retail-store'}" type="Transparent" tooltip="{i18n>Units}" press="onShowContractUnits(${REContractKey})" />
+						<Button id="UnitIcon" icon="{= ${Contracttype} === 'L001' ? 'sap-icon://building': 'sap-icon://retail-store'}" type="Transparent"
+							tooltip="{i18n>Units}" press="onShowContractUnits(${REContractKey})"/>
+						</HBox>
+						<ObjectStatus class="sapUiSmallMarginTop" text="{i18n>FutureContract}" inverted="true" icon="sap-icon://date-time" state="Success" visible="{= (${viewData>/KeyDate} &lt; ${StartDate}) }"/>
 					</HBox>
 					<!--<OverflowToolbar design="Solid">-->
 					<!--	<ToolbarSpacer />-->
 					<!--</OverflowToolbar>-->
 				</content>
 			</Page>
-			<Page id="detail" class="sapUiResponsivePadding--header" showNavButton="true" navButtonPress="onNavBack" title="Product">
+			<Page id="unitdetail" class="sapUiResponsivePadding--header" showNavButton="true" navButtonPress="onNavBack" title="Product">
 				<content></content>
 			</Page>
 		</NavContainer>

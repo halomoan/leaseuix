@@ -1,5 +1,6 @@
 <mvc:View controllerName="refx.leaseuix.controller.ManageUnits" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f"
-	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd"
+	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
+	xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd"
 	xmlns:dnd-grid="sap.f.dnd" class="customCSS">
 	<Panel headerText="Units Management" class="padding5" expandable="true">
 		<l:VerticalLayout width="100%" class="">
@@ -112,7 +113,7 @@
 				<!--<dnd-grid:GridDropInfo targetAggregation="items" dropPosition="Between" dropLayout="Horizontal" drop="onDrop"/>-->
 				<dnd-grid:GridDropInfo targetAggregation="items" drop="onDrop"/>
 			</f:dragDropConfig>
-			<f:GridListItem detailPress="onDetailPress" highlight="{= ${REContractKey} ? 'Error' : 'Success' }" type="{type}">
+			<f:GridListItem detailPress="onDetailPress" highlight="{= ${Available} ? 'Success' : 'Error' }" type="{type}">
 				<VBox height="100%" justifyContent="SpaceBetween">
 					<layoutData>
 						<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. --></layoutData>
@@ -128,13 +129,17 @@
 						<HBox justifyContent="SpaceBetween">
 							<VBox>
 								<Title text="{UnitText}" wrapping="true"/>
-								<Link text="{ContractNo}" press=".onContractDetail">
-									<customData>
-										<core:CustomData key="REContractKey" value="{REContractKey}"/>
-									</customData>
-								</Link>
+								
+								<VBox items="{OccupancySet}">
+									<Link text="{ContractNo}" press=".onContractDetail">
+										<customData>
+											<core:CustomData key="REContractKey" value="{REContractKey}"/>
+										</customData>
+									</Link>
+								</VBox> 	
+							
 							</VBox>
-							<tnt:InfoLabel text="Occupied" colorScheme="5" class="" visible="{= ${REContractKey} ? true: false }"/>
+							<tnt:InfoLabel text="Occupied" colorScheme="5" class="" visible="{= ! ${Available} }"/>
 						</HBox>
 					</VBox>
 				</VBox>

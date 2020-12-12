@@ -124,6 +124,8 @@ sap.ui.define([
 
 			var oThis = this;
 			var sREContractKey = oEvent.getSource().data('REContractKey');
+			
+			
 			var oViewModel = this.getView().getModel("viewData");
 			var oSource = oEvent.getSource();
 
@@ -133,12 +135,12 @@ sap.ui.define([
 
 			var oPopOver = sap.ui.core.Fragment.byId(this.getView().getId(), "unitmaster");
 
+			
 			var sPath = oCtx.getPath() + "/Contract";
 
 			var oDate = oViewModel.getProperty("/KeyDate");
 			var sDate = formatter.yyyyMMdd(oDate);
-
-		
+			
 			oPopOver.bindElement({
 				path: sPath,
 				parameters: {

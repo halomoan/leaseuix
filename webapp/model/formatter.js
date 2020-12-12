@@ -1,15 +1,16 @@
 sap.ui.define(["sap/ui/core/format/NumberFormat", 
 	//"sap/ui/core/format/DateFormat",
-	"refx/leaseuix/libs/moment"], function(NumberFormat,momentjs) {
+	"sap/ui/core/ValueState",
+	"refx/leaseuix/libs/moment"], function(NumberFormat,ValueState,momentjs) {
 	"use strict";
 	/* global moment:true */
 	return {
 		TGFRStatus: function(bStatus) {
 
 			if (bStatus) {
-				return "Success";
+				return ValueState.Success;
 			} else {
-				return "Error";
+				return ValueState.Error;
 			}
 		},
 		NumberFormat: function(iNumber) {
@@ -84,9 +85,9 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			var days = endDate.diff(startDate, 'days');
 			
 			if (days <= 60) {
-				return 'Error';
+				return ValueState.Error;
 			} else {
-				return 'Success';
+				return ValueState.Success;
 			}
 		},
 	
