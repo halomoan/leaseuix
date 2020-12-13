@@ -25,8 +25,8 @@ sap.ui.define([
 		onInit: function() {
 
 
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.getRoute("manageunits").attachMatched(this.__onRouteMatched, this);
+			this.oRouter = this.getRouter();
+			this.oRouter.getRoute("manageunits").attachMatched(this.__onRouteMatched, this);
 			
 		},
 
@@ -538,6 +538,9 @@ sap.ui.define([
 			});
 			this._updateGridBinding();
 		},
+		onShowContract: function(sREContractKey){
+			this.oRouter.navTo("contractpage",{contractId: sREContractKey});
+		},
 		onFloorChange: function(oEvent) {
 			var oViewModel = this.getView().getModel("viewData");
 			var sFloor = oViewModel.getProperty("/Floor");
@@ -959,7 +962,9 @@ sap.ui.define([
 		// #endregion
 
 		onExit: function() {
+			
 			this.removeFragment(this._formFragments);
+			this.oRouter.detachRouteMatched(this.__onRouteMatched, this);
 		}
 
 	});

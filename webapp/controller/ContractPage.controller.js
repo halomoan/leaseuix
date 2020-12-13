@@ -8,13 +8,24 @@ sap.ui.define([
 
 	
 			onInit: function() {
-				this.oSelectedUnits = this.getModel("rentalUnits");
-				this.getView().setModel(this.oSelectedUnits);
+				this.oRouter = this.getRouter();
+				this.oRouter.getRoute("contractpage").attachPatternMatched(this.__onRouteMatched, this);
 			},
-
+			
+			
+			__onRouteMatched: function(oEvent){
+				var sRouteName = oEvent.getParameter("name"),
+					oArguments = oEvent.getParameter("arguments");
+				this._contract = oArguments.contractId || this._contract || "0";
+				
+				this.getView().bindElement({
+					path: "/ContractSet('" + this._contract + "')"
+					
+				});
+			},
 	
 			onExit: function() {
-		
+				this.oRouter.detachRouteMatched(this.__onRouteMatched, this);
 			}
 
 	});

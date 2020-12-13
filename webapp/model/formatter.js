@@ -114,6 +114,10 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			if (yyyMMdd) {
 				return yyyMMdd.substring(0, 4) + "-" + yyyMMdd.substring(4, 6) + "-" + yyyMMdd.substring(6, 8);
 			}
+		},
+		ODataDate: function(oDate){
+			var oMoment = moment(oDate);
+			return oMoment.format("YYYY-MM-DDTHH:MM:SS");
 		}
 
 	};

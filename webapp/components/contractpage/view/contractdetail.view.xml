@@ -74,11 +74,36 @@
 			</m:FlexBox>
 		</headerContent>
 		<sections>
-				<ObjectPageSection title="Rental Unit(s)">
+			<ObjectPageSection title="Business Partner">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<blocks:bpblock id="bpblk"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Rental Unit(s)">
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks>
 							<blocks:unitsblock id="unitsblk"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+				<ObjectPageSection title="{i18n>Revenues}">
+				<subSections>
+					<ObjectPageSubSection title="{i18n>RecurringRev}">
+						<blocks>
+							<blocks:conditionblock1 id="conditionblk1"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+				<subSections>
+					<ObjectPageSubSection title="{i18n>OneTimeRev}">
+						<blocks>
+							<blocks:conditionblock2 id="conditionblk2"/>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>

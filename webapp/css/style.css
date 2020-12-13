@@ -23,6 +23,10 @@
     font-style: italic;
 }
 
+.customCSS .fontSize1 {
+    font-size: 1rem;
+}
+
 .customCSS .fontSize1_5 {
     font-size: 1.5rem;
 }

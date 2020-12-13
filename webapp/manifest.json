@@ -99,9 +99,13 @@
 					"name": "contractlist",
 					"target": "contractlist"
 				},
-			
 				{
-					"pattern": "contractpage",
+					"pattern": "contractform",
+					"name": "contractform",
+					"target": "contractform"
+				},
+				{
+					"pattern": "contractpage/{contractId}",
 					"name": "contractpage",
 					"target": "contractpage"
 				},
@@ -117,6 +121,9 @@
 				},
 				"contractpage": {
 					"viewName": "ContractPage"
+				},
+				"contractform": {
+					"viewName": "ContractForm"
 				},
 				"manageunits": {
 					"viewName": "ManageUnits"

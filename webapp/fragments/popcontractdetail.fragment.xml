@@ -42,6 +42,8 @@
 						<Text id="NoOfUnits" text="" class="sapUiSmallMarginTop"/>
 						<Button id="UnitIcon" icon="{= ${Contracttype} === 'L001' ? 'sap-icon://building': 'sap-icon://retail-store'}" type="Transparent"
 							tooltip="{i18n>Units}" press="onShowContractUnits(${REContractKey})"/>
+						<Button icon="sap-icon://document-text" type="Transparent"
+							tooltip="{i18n>Contract}" press="onShowContract(${REContractKey})"/>
 						</HBox>
 						<ObjectStatus class="sapUiSmallMarginTop" text="{i18n>FutureContract}" inverted="true" icon="sap-icon://date-time" state="Success" visible="{= (${viewData>/KeyDate} &lt; ${StartDate}) }"/>
 					</HBox>

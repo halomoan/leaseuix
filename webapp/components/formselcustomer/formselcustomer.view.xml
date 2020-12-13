@@ -19,7 +19,7 @@
 					</core:Icon>
 					<Title text="{i18n>Customer} : {/SelectedCustomer/CustomerId}"/>
 					<ToolbarSpacer />
-					<Button icon="sap-icon://edit" press=".onValueHelpRequested"/>
+					<Button icon="sap-icon://edit" press=".onValueHelpRequested" visible="{viewData>/EditMode}"/>
 				</Toolbar>
 			</form:toolbar>
 			<form:layout>
@@ -58,7 +58,7 @@
 						</form:FormElement>
 						<form:FormElement label="BP No.">
 							<form:fields>
-								<Text text="{/SelectedCustomer/BP}" id="BP" />
+								<Text text="{BPID}" id="BP" />
 							</form:fields>
 						</form:FormElement>
 					</form:formElements>

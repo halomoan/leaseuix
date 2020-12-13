@@ -1,4 +1,4 @@
-<mvc:View height="100%" controllerName="refx.leaseuix.components.tableselcontact.tableselcontact"
+<mvc:View height="100%" 
 		  xmlns:layout="sap.ui.layout"
 		  xmlns="sap.ui.table"
 		  xmlns:mvc="sap.ui.core.mvc"
@@ -6,13 +6,11 @@
 		  xmlns:m="sap.m"
 		  xmlns:core="sap.ui.core">
 
-	<layout:Grid defaultSpan="L12 M12 S12" class="customCSS">
-		<layout:content>
+	
 		<Table  
-				id="Table1"
-				rows="{/SelectedCustomers}"
-				selectionMode="MultiToggle"
-				visibleRowCount="7"
+				rows="{ path: 'BusinessPartnerSet', filters: [{path: 'BPRole', operator: 'NE', value1: 'BPR101'}] }"
+				selectionMode="None"
+				visibleRowCount="3"
 				ariaLabelledBy="title">
 				<extension>
 					<m:OverflowToolbar>
@@ -29,32 +27,31 @@
 				</extension>
 				<columns>
 					<Column width="7rem" >
-						<m:Label text="Customer Id" />
+						<m:Label text="BP No" />
 						<template>
-							<m:Text text="{CustomerId}" wrapping="false" />
+							<m:Text text="{BPID}" wrapping="false" />
 						</template>
 					</Column>
 					<Column >
 						<m:Label text="{i18n>Name}" />
 						<template>
-							<m:Text text="{Name}"/>
+							<m:Text text="{FullName}"/>
 						</template>
 					</Column>
 					<Column >
 						<m:Label text="{i18n>Address}" />
 						<template>
-							<m:Text text="{Address}"/>
+							<m:Text text="{StreetName}, {CityName} / {PostalCode}"/>
 						</template>
 					</Column>
 					<Column >
 						<m:Label text="{i18n>Email}" />
 						<template>
-							<m:Text text="{Email}"/>
+							<m:Text text="{EmailAddress}"/>
 						</template>
 					</Column>
 				
 				</columns>
 			</Table>
-		</layout:content>
-	</layout:Grid>
+	
 </mvc:View>

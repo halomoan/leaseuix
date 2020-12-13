@@ -1,0 +1,11 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	xmlns:layout="sap.ui.layout"
+	controllerName="refx.leaseuix.components.contractpage.controller.bpblock">
+	<layout:Grid defaultSpan="L12 M12 S12">
+		<layout:content>
+		<mvc:XMLView viewName="refx.leaseuix.components.bpncontacts.view.mainbp" id="mainbp" async="true"></mvc:XMLView>
+		<mvc:XMLView viewName="refx.leaseuix.components.bpncontacts.view.bpcontact" id="bpcontact" async="true"></mvc:XMLView>
+		</layout:content>
+	</layout:Grid>
+	
+</mvc:View>
