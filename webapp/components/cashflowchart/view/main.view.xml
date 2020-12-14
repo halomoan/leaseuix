@@ -5,30 +5,32 @@
 	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
 	xmlns:viz.data="sap.viz.ui5.data" height="100%">
 	 <layout:FixFlex id='chartFixFlex' minFlexSize="250">
-	 	<layout:fixContent>
-	 		<viz:Popover id="idPopOver"></viz:Popover>
+	 <layout:flexContent>
+            <viz:Popover id="idPopOver"></viz:Popover>
             <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
-                height='100%' width="100%" vizType='line'>
+                height='100%' width="100%" vizType='bar'>
                 <viz:dataset>
-                    <viz.data:FlattenedDataset data="{CashFlowSet}">
+                    <viz.data:FlattenedDataset data="{/milk}">
                         <viz.data:dimensions>
-                            <viz.data:DimensionDefinition name="Period"
-                                value="{DueDate}" />
+                            <viz.data:DimensionDefinition name="Store Name"
+                                value="{Store Name}" />
                         </viz.data:dimensions>
                         <viz.data:measures>
-                            <viz.data:MeasureDefinition name="Amount"
-                                value="{ConditionAmount}" />
+                            <viz.data:MeasureDefinition name="Revenue"
+                                value="{Revenue}" />
+                            <viz.data:MeasureDefinition name="Cost"
+                                value="{Cost}" />
                         </viz.data:measures>
                     </viz.data:FlattenedDataset>
                 </viz:dataset>
 
                 <viz:feeds>
-                    <viz.feeds:FeedItem uid="valueAxis" type="Measure"
-                        values="Amount" />
+                    <viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure"
+                        values="Revenue" />
                     <viz.feeds:FeedItem uid="categoryAxis" type="Dimension"
-                        values="Period" />
+                        values="Store Name" />
                 </viz:feeds>
             </viz:VizFrame>
-	 	</layout:fixContent>	
+        </layout:flexContent>	
 	 </layout:FixFlex> 	
 </mvc:View>

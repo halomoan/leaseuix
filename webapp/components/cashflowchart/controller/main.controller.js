@@ -1,14 +1,18 @@
 sap.ui.define([
 	"refx/leaseuix/controller/BaseController",
 	'sap/viz/ui5/format/ChartFormatter',
-	'sap/viz/ui5/api/env/Format'
-], function(BaseController,ChartFormatter,Format) {
+	'sap/viz/ui5/api/env/Format',
+	'sap/ui/model/BindingMode',
+    'sap/ui/model/json/JSONModel',
+    './InitPage'
+], function(BaseController,ChartFormatter,Format,BindingMode,JSONModel,InitPageUtil) {
 	"use strict";
 
 	return BaseController.extend("refx.leaseuix.components.cashflowchart.controller.main", {
 	
-		oVizFrame : null,
-		settingsModel : {
+	 dataPath : "test-resources/sap/viz/demokit/dataset/milk_production_testing_data/revenue_cost_consume",
+
+        settingsModel : {
             dataset : {
                 name: "Dataset",
                 defaultSelected : 1,
@@ -44,18 +48,17 @@ sap.ui.define([
             }
         },
 
-		onInit: function() {
-			this.oRouter = this.getRouter();
-			this.oRouter.getRoute("cashflow").attachPatternMatched(this.__onRouteMatched, this);
-			this._configureVizFrame();
-	    			
-		},
-		
-		_configureVizFrame: function(){
-			Format.numericFormatter(ChartFormatter.getInstance());
+        oVizFrame : null,
+
+        onInit : function (evt) {
+            Format.numericFormatter(ChartFormatter.getInstance());
             var formatPattern = ChartFormatter.DefaultPattern;
-            
-			var oVizFrame = this.oVizFrame = this.getView().byId("idVizFrame");
+            // set explored app's demo model on this sample
+            var oModel = new JSONModel(this.settingsModel);
+            oModel.setDefaultBindingMode(BindingMode.OneWay);
+            this.getView().setModel(oModel);
+
+            var oVizFrame = this.oVizFrame = this.getView().byId("idVizFrame");
             oVizFrame.setVizProperties({
                 plotArea: {
                     dataLabel: {
@@ -81,21 +84,20 @@ sap.ui.define([
                     text: 'Revenue by City and Store Name'
                 }
             });
-		},
+            var dataModel = new JSONModel(this.dataPath + "/medium.json");
+            oVizFrame.setModel(dataModel);
 
-		__onRouteMatched : function(oEvent){
-			var oArguments = oEvent.getParameter("arguments");
-			this._contract = oArguments.contractId || this._contract || "0";
-			
-			this.getView().bindElement({
-				path: "/ContractSet('" + this._contract + "')"
-			});
-			
-			var	oFilter = new sap.ui.model.Filter("ConditionType",sap.ui.model.FilterOperator.EQ,"L101");
+            var oPopOver = this.getView().byId("idPopOver");
+            oPopOver.connect(oVizFrame.getVizUid());
+            oPopOver.setFormatString(formatPattern.STANDARDFLOAT);
 
-			this.getView().byId("idVizFrame").getDataset().getBinding("data").filter([oFilter]);
-
-		},
+            InitPageUtil.initPageSettings(this.getView());
+            var that = this;
+            dataModel.attachRequestCompleted(function() {
+                that.dataSort(this.getData());
+            });
+        },
+        
 		onExit: function() {
 			this.oRouter.detachRouteMatched(this.__onRouteMatched, this);
 		}

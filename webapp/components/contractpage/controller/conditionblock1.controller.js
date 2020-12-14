@@ -31,6 +31,7 @@ sap.ui.define([
 		},
 		
 		onCashFlow: function(oEvent){
+			console.log(this._contract);
 			this.oRouter.navTo('cashflow',{contractId: this._contract});
 		},
 		
