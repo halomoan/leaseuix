@@ -110,6 +110,11 @@
 					"target": "contractpage"
 				},
 				{
+					"pattern": "cashflow/{contractId}",
+					"name": "cashflow",
+					"target": "cashflow"
+				},
+				{
 					"pattern": "",
 					"name": "manageunits",
 					"target": "manageunits"
@@ -124,6 +129,9 @@
 				},
 				"contractform": {
 					"viewName": "ContractForm"
+				},
+				"cashflow": {
+					"viewName": "CashFlow"
 				},
 				"manageunits": {
 					"viewName": "ManageUnits"

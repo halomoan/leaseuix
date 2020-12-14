@@ -34,7 +34,7 @@ sap.ui.define([
 			
 			if (sPeriod === 'Current'){
 				oFilterSDate = new Filter('validfrom', FilterOperator.LE, sDate);
-    			oFilterEDate = new Filter('validto', FilterOperator.G, sDate);
+    			oFilterEDate = new Filter('validto', FilterOperator.GE, sDate);
 			} else if (sPeriod === 'Future'){
 				oFilterSDate = new Filter('validfrom', FilterOperator.GT, sDate);
 			} else if (sPeriod === 'Past'){
@@ -47,6 +47,7 @@ sap.ui.define([
 			if (oFilterEDate){
 				aFilters.push(oFilterEDate);
 			}
+			
 			oBinding.filter(aFilters);
 		},
 		

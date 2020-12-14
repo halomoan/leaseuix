@@ -14,7 +14,7 @@ sap.ui.define([
 		_formFragments: {},
 
 		onInit: function() {
-			this.oRouter = this.getOwnerComponent().getRouter();
+			this.oRouter = this.getRouter();
 			this.oRouter.getRoute("contractlist").attachMatched(this.__onRouteMatched, this);
 		},
 
@@ -25,6 +25,8 @@ sap.ui.define([
 		initData: function() {
 			var oViewData = {
 				"KeyDate": new Date(),
+				"FCLMode": true,
+				"FullScreen" : false, 
 				"ContractType": "L002",
 				"ContractTypeText": "Tenancy Retail Contract",
 				"NoOfContracts": 0,

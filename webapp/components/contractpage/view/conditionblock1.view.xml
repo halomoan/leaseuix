@@ -8,7 +8,7 @@
 		<headerToolbar>
 			<OverflowToolbar>
 				<content>
-		
+					<Button text="{i18n>CashFlow}" type="Transparent" press="onCashFlow"/>
 					<ToolbarSpacer />
 					<Label text="{i18n>Show} :"/>
 					<ComboBox 

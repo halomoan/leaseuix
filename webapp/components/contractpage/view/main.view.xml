@@ -1,6 +1,6 @@
 <mvc:View xmlns="sap.uxap" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form"
 	xmlns:blocks="refx.leaseuix.components.contractpage.controller"
-	xmlns:mvc="sap.ui.core.mvc" controllerName="refx.leaseuix.components.contractpage.controller.contractdetail">
+	xmlns:mvc="sap.ui.core.mvc" controllerName="refx.leaseuix.components.contractpage.controller.main">
 	<ObjectPageLayout id="ContractDetail" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false"
 		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
 		<headerTitle>
@@ -22,9 +22,9 @@
 				</snappedHeading>
 				<actions>
 					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="onFullScreen" tooltip="Enter Full Screen Mode"
-						visible="{= !${viewData>/FullScreen} }"/>
+						visible="{= ${viewData>/FCLMode} &amp;&amp; !${viewData>/FullScreen} }"/>
 					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode"
-						visible="{= ${viewData>/FullScreen} }"/>
+						visible="{= ${viewData>/FCLMode} &amp;&amp; ${viewData>/FullScreen} }"/>
 					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="onClose" tooltip="Close"/>
 					<!--<m:OverflowToolbarButton icon="sap-icon://edit" text="Edit" type="Emphasized" tooltip="edit"/>-->
 					<!--<m:OverflowToolbarButton icon="sap-icon://copy" text="Copy " type="Emphasized" tooltip="copy"/>-->
@@ -46,7 +46,7 @@
 				</m:VBox>
 				<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
 					<m:HBox>
-						<m:VBox class="sapUiSmallMarginEnd">
+						<m:VBox class="sapUiMediumMarginEnd">
 							<m:Label text="{i18n>From} {i18n>Date}" design="Bold"/>
 							<m:Label text="{path: 'StartDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"/>
 						</m:VBox>
@@ -56,7 +56,7 @@
 						</m:VBox>
 					</m:HBox>
 					<m:HBox>
-						<m:VBox class="sapUiSmallMarginEnd">
+						<m:VBox class="sapUiMediumMarginEnd">
 							<m:Label text="{i18n>To} {i18n>Date}" design="Bold"/>
 							<m:Label text="{path: 'EndDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"/>
 						</m:VBox>

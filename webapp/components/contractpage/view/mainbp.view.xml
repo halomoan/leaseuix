@@ -2,7 +2,7 @@
 	xmlns:core="sap.ui.core">
 	<VBox items="{ path: 'BusinessPartnerSet', filters: [{path: 'BPRole', operator: 'EQ', value1: 'BPR101'}] }">
 		<form:SimpleForm editable="false" layout="ColumnLayout">
-			<core:Title text="Customer" level="H2"/>
+			<core:Title text="Customer" level="H2"  icon="sap-icon://customer"/>
 			<Label text="Name"/>
 			<Text text="{FullName}"/>
 			<Label text="Address"/>

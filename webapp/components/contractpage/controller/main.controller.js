@@ -5,7 +5,7 @@ sap.ui.define([
 ], function(BaseController,JSONModel,fioriLibrary) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.components.contractpage.controller.contractdetail", {
+	return BaseController.extend("refx.leaseuix.components.contractpage.controller.main", {
 
 		onInit: function() {
 			this.initData();
@@ -13,7 +13,8 @@ sap.ui.define([
 		
 		initData: function(){
 			var oViewData = {
-				"FullScreen": false
+				"FullScreen" : false,
+				"FCLMode": false
 			};
 			
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
@@ -33,8 +34,16 @@ sap.ui.define([
 			oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
 		},
 		onClose: function(oEvent) {
-			var oFCL = this.getView().getParent().getParent();
-			oFCL.setLayout(fioriLibrary.LayoutType.OneColumn);
+			var oViewModel = this.getView().getModel("viewData");
+			var bFCLMode = oViewModel.getProperty("/FCLMode");
+			
+			
+			if (bFCLMode) {
+				var oFCL = this.getView().getParent().getParent();
+				oFCL.setLayout(fioriLibrary.LayoutType.OneColumn);
+			} else {
+				this.onNavBack();
+			}
 		},
 		onExit: function() {
 		

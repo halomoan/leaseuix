@@ -1,0 +1,4 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" 
+	controllerName="refx.leaseuix.controller.CashFlow">
+	<mvc:XMLView id="chart" viewName="refx.leaseuix.components.cashflowchart.view.main"/>
+</mvc:View>
