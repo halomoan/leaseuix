@@ -6,7 +6,7 @@ sap.ui.define([
 ], function(BaseController,Filter,FilterOperator,formatter) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.components.contractpage.controller.conditionblock", {
+	return BaseController.extend("refx.leaseuix.components.contractpage.controller.conditionblock1", {
 		
 		
 		formatter: formatter,
@@ -19,6 +19,8 @@ sap.ui.define([
 		
 		__onRouteMatched: function(oEvent){
 			var oArguments = oEvent.getParameter("arguments");
+			
+			console.log(oArguments);
 			this._contract = oArguments.contractId || this._contract || "0";
 			
 		},
@@ -31,7 +33,7 @@ sap.ui.define([
 		},
 		
 		onCashFlow: function(oEvent){
-			console.log(this._contract);
+			
 			this.oRouter.navTo('cashflow',{contractId: this._contract});
 		},
 		

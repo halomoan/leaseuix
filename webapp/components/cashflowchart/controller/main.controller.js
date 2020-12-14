@@ -32,10 +32,10 @@ sap.ui.define([
                 defaultSelected : 0,
                 values : [{
                     name : "1 Series",
-                    value : ["Revenue"]
+                    value : ["Amount"]
                 }, {
                     name : '2 Series',
-                    value : ["Revenue", "Cost"]
+                    value : ["Amount", "Amount"]
                 }]
             },
             dataLabel : {
@@ -50,10 +50,13 @@ sap.ui.define([
 
         oVizFrame : null,
 
-        onInit : function (evt) {
+        onInit : function () {
+        	
+            this.oRouter = this.getRouter();
+			this.oRouter.getRoute("cashflow").attachPatternMatched(this.__onRouteMatched, this);
+			
             Format.numericFormatter(ChartFormatter.getInstance());
             var formatPattern = ChartFormatter.DefaultPattern;
-            // set explored app's demo model on this sample
             var oModel = new JSONModel(this.settingsModel);
             oModel.setDefaultBindingMode(BindingMode.OneWay);
             this.getView().setModel(oModel);
@@ -84,20 +87,28 @@ sap.ui.define([
                     text: 'Revenue by City and Store Name'
                 }
             });
-            var dataModel = new JSONModel(this.dataPath + "/medium.json");
-            oVizFrame.setModel(dataModel);
-
+          
             var oPopOver = this.getView().byId("idPopOver");
             oPopOver.connect(oVizFrame.getVizUid());
             oPopOver.setFormatString(formatPattern.STANDARDFLOAT);
 
             InitPageUtil.initPageSettings(this.getView());
-            var that = this;
-            dataModel.attachRequestCompleted(function() {
-                that.dataSort(this.getData());
-            });
+          
+            
         },
         
+        __onRouteMatched: function(oEvent)  {
+        	 var oArguments = oEvent.getParameter("arguments");
+			 this._contract = oArguments.contractId || this._contract || "0";
+			
+			// var oModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ContractSet('" + this._contract + "')");
+			// this.getView().setModel(oModel);
+			
+			console.log(this._contract);
+        	this.getView().bindElement({
+				path: "/ContractSet('" + this._contract + "')"
+			});
+        },
 		onExit: function() {
 			this.oRouter.detachRouteMatched(this.__onRouteMatched, this);
 		}

@@ -10,25 +10,23 @@
             <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
                 height='100%' width="100%" vizType='bar'>
                 <viz:dataset>
-                    <viz.data:FlattenedDataset data="{/milk}">
+                    <viz.data:FlattenedDataset data="{CashFlowSet}">
                         <viz.data:dimensions>
-                            <viz.data:DimensionDefinition name="Store Name"
-                                value="{Store Name}" />
+                            <viz.data:DimensionDefinition name="ConditionType"
+                                value="{ConditionTypeText}" />
                         </viz.data:dimensions>
                         <viz.data:measures>
-                            <viz.data:MeasureDefinition name="Revenue"
-                                value="{Revenue}" />
-                            <viz.data:MeasureDefinition name="Cost"
-                                value="{Cost}" />
+                            <viz.data:MeasureDefinition name="Amount"
+                                value="{ConditionAmount}" />
                         </viz.data:measures>
                     </viz.data:FlattenedDataset>
                 </viz:dataset>
 
                 <viz:feeds>
                     <viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure"
-                        values="Revenue" />
+                        values="Amount" />
                     <viz.feeds:FeedItem uid="categoryAxis" type="Dimension"
-                        values="Store Name" />
+                        values="ConditionType" />
                 </viz:feeds>
             </viz:VizFrame>
         </layout:flexContent>	
