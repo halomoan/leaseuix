@@ -22,8 +22,8 @@
 								icon="{= ${Available} ? '' : 'sap-icon://alert' }" state="{= ${Available} ? 'Success': 'Error' }"/>
 						</VBox>
 						<FlexBox alignItems="End" direction="Column" width="80%" class="sapUiSmallMargin">
-							<Label text="{ path: 'UnitSize',type: 'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2,groupingEnabled: true} }"></Label>
-							<Label text="{SizeUnit}" class="sapMObjectNumberUnit"></Label>
+							<Label text="{ path: 'UnitSize',type: 'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2,groupingEnabled: true} }" class="green"></Label>
+							<Label text="{SizeUnit}" class="sapMObjectNumberUnit gold"></Label>
 						</FlexBox>
 					</HBox>
 				</CustomListItem>

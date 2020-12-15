@@ -1,10 +1,13 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-	controllerName="refx.leaseuix.components.contractpage.controller.conditionblock1">
+	controllerName="refx.leaseuix.components.contractpage.controller.conditionblock3">
 	<Table
-		id="tableCondition1"
+		id="tableCondition3"
 		items="{ path: 'ConditionSet', 
-		sorter: [ { path: 'ConditionType', descending: false, group: false}, { path: 'validfrom', descending: true, group: false}],
-		filters: [ {path: 'ConditionType', operator: 'LT', value1: 'L160'}, {path: 'ConditionPurpose', operator: 'NE', value1: 'B'}, {path: 'InfoCondition', operator: 'EQ', value1: false}] }">
+		sorter: [ { path: 'ConditionType', descending: true, group: false}, { path: 'validfrom', descending: true, group: false}],
+		filters: [ 
+			{path: 'OneTimeCondition', operator: 'EQ', value1: false},
+			{path: 'InfoCondition', operator: 'EQ', value1: false},
+			{path: 'ConditionType', operator: 'BT', value1: 'L160', value2: 'L199'}] }">
 		<headerToolbar>
 			<OverflowToolbar>
 				<content>
@@ -78,16 +81,16 @@
 						type: 'sap.ui.model.type.Currency',
 						formatOptions: {showMeasure: false}
 					}"
-					unit="{Curr}"
-					/>
+					unit="{Curr}" 
+					state="Success"/>
 			<ObjectNumber
 					number="{
 						parts:[{path:'ConditionAmount'},{path:'Curr'}],
 						type: 'sap.ui.model.type.Currency',
 						formatOptions: {showMeasure: false}
 					}"
-					unit="{Curr}"
-					state="{= ${ConditionAmount} &lt; 0 ? 'Error': 'Success' }"/>
+					unit="{Curr}" 
+					state="Success"/>
 			<ObjectNumber
 					number="{
 						parts:[{path:'TaxAmount'},{path:'Curr'}],
@@ -95,7 +98,7 @@
 						formatOptions: {showMeasure: false}
 					}"
 					unit="{Curr}"
-					state="{= ${ConditionAmount} &lt; 0 ? 'Error': 'Success' }"/>		
+					state="Success" />			
 		</ColumnListItem>
 	</Table>
 </mvc:View>

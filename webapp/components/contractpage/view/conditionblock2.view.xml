@@ -4,7 +4,7 @@
 		id="tableCondition2"
 		items="{ path: 'ConditionSet', 
 		sorter: [ { path: 'ConditionType', descending: false, group: false}, { path: 'validfrom', descending: true, group: false}],
-		filters: [{path: 'OneTimeCondition', operator: 'EQ', value1: true},{path: 'InfoCondition', operator: 'EQ', value1: false}] }">
+		filters: { filters: [{path: 'ConditionPurpose', operator: 'EQ', value1: 'B'} ],  and: false } }">
 		<headerToolbar>
 			<OverflowToolbar>
 				<content>
@@ -66,7 +66,8 @@
 						type: 'sap.ui.model.type.Currency',
 						formatOptions: {showMeasure: false}
 					}"
-					unit="{Curr}" />
+					unit="{Curr}"
+					state="Success"/>
 		</ColumnListItem>
 	</Table>
 </mvc:View>

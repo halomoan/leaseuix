@@ -1,4 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" 
 	controllerName="refx.leaseuix.controller.CashFlow">
+	<Page showNavButton="true" navButtonPress="onNavPress">
 	<mvc:XMLView id="chart" viewName="refx.leaseuix.components.cashflowchart.view.main"/>
+	</Page>
 </mvc:View>

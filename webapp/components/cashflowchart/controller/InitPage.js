@@ -24,7 +24,7 @@ sap.ui.define([
                 var vizframe = oView.byId("idVizFrame");
                 var oChartContainerContent = new sap.suite.ui.commons.ChartContainerContent({
                     icon : "sap-icon://horizontal-bar-chart",
-                    title : "vizFrame Bar Chart Sample",
+                    title : "Cash Flow Chart",
                     content : [ vizframe ]
                 });
                 var oChartContainer = new sap.suite.ui.commons.ChartContainer({

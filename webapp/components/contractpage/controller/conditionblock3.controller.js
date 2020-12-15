@@ -6,15 +6,12 @@ sap.ui.define([
 ], function(BaseController,Filter,FilterOperator,formatter) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.components.contractpage.controller.conditionblock1", {
-		
-		
+	return BaseController.extend("refx.leaseuix.components.contractpage.controller.conditionblock3", {
+
 		formatter: formatter,
-		
 		onInit: function() {
-		
+			
 		},
-		
 		
 		onPeriodChange: function(oEvent){
 			var sValue = oEvent.getParameter("value");
@@ -28,12 +25,12 @@ sap.ui.define([
 			var oGlobalModel = this.getModel("globalData");
 			var sContractId = oGlobalModel.getProperty("/ContractId");
 			
-			this.getRouter().navTo('cashflow',{contractId: sContractId});
+			this.getRouter().navTo('cashflow',{contractId: sContractId, type: "SL"});
 		},
 		
 		_updatePeriod: function(sPeriod){
 			
-			var oTable = this.getView().byId("tableCondition1");
+			var oTable = this.getView().byId("tableCondition3");
 			
 			var sDate = formatter.ODataDate(new Date());                         
 			var oBinding = oTable.getBinding("items");
@@ -58,6 +55,7 @@ sap.ui.define([
 			if (oFilterEDate){
 				aFilters.push(oFilterEDate);
 			}
+			
 			oBinding.filter(aFilters);
 		},
 		

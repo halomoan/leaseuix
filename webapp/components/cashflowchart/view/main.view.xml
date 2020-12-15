@@ -8,12 +8,14 @@
 	 <layout:flexContent>
             <viz:Popover id="idPopOver"></viz:Popover>
             <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
-                height='100%' width="100%" vizType='bar'>
+                height='100%' width="100%" vizType='stacked_column'>
                 <viz:dataset>
-                    <viz.data:FlattenedDataset data="{CashFlowSet}">
+                    <viz.data:FlattenedDataset data="{ path: 'CashFlowSet' }">
                         <viz.data:dimensions>
                             <viz.data:DimensionDefinition name="ConditionType"
                                 value="{ConditionTypeText}" />
+                            <viz.data:DimensionDefinition name="Period"
+                                value="{path :'DueDate', type: 'sap.ui.model.type.Date' }" />
                         </viz.data:dimensions>
                         <viz.data:measures>
                             <viz.data:MeasureDefinition name="Amount"
@@ -26,7 +28,9 @@
                     <viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure"
                         values="Amount" />
                     <viz.feeds:FeedItem uid="categoryAxis" type="Dimension"
-                        values="ConditionType" />
+                        values="Period" />
+                    <viz.feeds:FeedItem uid="color" type="Dimension"
+                        values="ConditionType" />    
                 </viz:feeds>
             </viz:VizFrame>
         </layout:flexContent>	

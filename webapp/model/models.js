@@ -14,10 +14,12 @@ sap.ui.define([
 		
 		globalDataModel: function(){
 			var oData = {
-				"KeyDate": null
+				"KeyDate": null,
+				"ContractId": null
 			};
-			
-			return new JSONModel(oData);
+			var oModel = new JSONModel(oData);
+			oModel.setDefaultBindingMode("OneWay");
+			return oModel;
 		},
 		
 		postingParamModel: function(){

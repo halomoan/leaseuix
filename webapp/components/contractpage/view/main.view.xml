@@ -107,6 +107,14 @@
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
+				
+				<subSections>
+					<ObjectPageSubSection title="{i18n>RevRecog}">
+						<blocks>
+							<blocks:conditionblock3 id="conditionblk3"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
 			</ObjectPageSection>
 		</sections>	
 	</ObjectPageLayout>

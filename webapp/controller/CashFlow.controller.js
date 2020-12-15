@@ -1,9 +1,9 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function(Controller) {
+	"refx/leaseuix/controller/BaseController"
+], function(BaseController) {
 	"use strict";
 
-	return Controller.extend("refx.leaseuix.controller.CashFlow", {
+	return BaseController.extend("refx.leaseuix.controller.CashFlow", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -39,6 +39,9 @@ sap.ui.define([
 		//	onExit: function() {
 		//
 		//	}
+		onNavPress: function(oEvent){
+			this.onNavBack();
+		}
 
 	});
 
