@@ -67,6 +67,12 @@
 					</m:HBox>
 				</m:VBox>
 				<m:VBox class="sapUiMediumMarginBegin">
+					<m:Label text="{i18n>Frequency}" design="Bold"/>
+					<!--<m:ObjectStatus class="sapUiSmallMarginBottom" text="{Frequency} {FrequencyUnit}" 	icon="sap-icon://message-information" state="Information" visible="{RelSalesRule}"/>-->
+					<m:Label text="{ parts: [ 'Frequency', 'FrequencyUnit'], formatter: '.formatter.Frequency' }"/>
+				</m:VBox>
+				
+				<m:VBox class="sapUiMediumMarginBegin">
 					<m:Label text="{i18n>Status}" design="Bold"/>
 					<m:ObjectStatus class="sapUiSmallMarginBottom" text="{ContractStatus}" 	icon="sap-icon://message-information" state="Information" visible="{RelSalesRule}"/>
 					<m:ObjectStatus class="sapUiSmallMarginBottom" text="{i18n>RefSales}" icon="sap-icon://lead" state="Success" visible="{RelSalesRule}"/>

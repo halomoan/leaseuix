@@ -3,9 +3,13 @@ sap.ui.define([
 	'sap/viz/ui5/format/ChartFormatter',
 	'sap/viz/ui5/api/env/Format',
 	'sap/ui/model/BindingMode',
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
 	'sap/ui/model/json/JSONModel',
+	"refx/leaseuix/model/formatter",
 	'./InitPage'
-], function(BaseController, ChartFormatter, Format, BindingMode, JSONModel, InitPageUtil) {
+], function(BaseController, ChartFormatter, Format, BindingMode, Filter, FilterOperator, 
+		JSONModel, formatter, InitPageUtil) {
 	"use strict";
 
 	return BaseController.extend("refx.leaseuix.components.cashflowchart.controller.main", {
@@ -58,7 +62,9 @@ sap.ui.define([
 		__onRouteMatched: function(oEvent) {
 			var oArguments = oEvent.getParameter("arguments");
 			this._contract = oArguments.contractId || this._contract || "0";
-			this._type = oArguments.type;
+			var stype = oArguments.type;
+			var sPeriod = oArguments.period;
+			var sDate = formatter.ODataDate(new Date());   
 
 			this.getView().bindElement({
 				path: "/ContractSet('" + this._contract + "')"
@@ -71,11 +77,14 @@ sap.ui.define([
 				sap.ui.core.BusyIndicator.hide();
 			});
 
-			var oFilter = null;
+			var oFilterCond = null;
+			var oFilterSDate = null;
+			var oFilterEDate = null;
 			var aSorter = null;
+			var aFilters = [];
 
-			if (this._type === "SL") {
-				oFilter = new sap.ui.model.Filter("ConditionType", sap.ui.model.FilterOperator.BT, 'L160', 'L199');
+			if (stype === "SL") {
+				oFilterCond = new Filter("ConditionType", sap.ui.model.FilterOperator.BT, 'L160', 'L199');
 				aSorter = [
 					new sap.ui.model.Sorter({
 						path: "DueDate",
@@ -101,10 +110,29 @@ sap.ui.define([
 						group: false
 					})
 				];
-				oFilter = new sap.ui.model.Filter("ConditionType", sap.ui.model.FilterOperator.BT, 'L101', 'L110');
+				oFilterCond = new Filter("ConditionType", sap.ui.model.FilterOperator.BT, 'L101', 'L110');
 			}
 
-			this.getView().byId("idVizFrame").getDataset().getBinding("data").filter([oFilter]);
+			aFilters.push(oFilterCond);
+
+			if (sPeriod === 'Current'){
+				oFilterSDate = new Filter('validfrom', FilterOperator.LE, sDate);
+				oFilterEDate = new Filter('validto', FilterOperator.GE, sDate);
+			} else if (sPeriod === 'Future'){
+				oFilterSDate = new Filter('validfrom', FilterOperator.GT, sDate);
+			} else if (sPeriod === 'Past'){
+				oFilterEDate = new Filter('validto', FilterOperator.LT, sDate);
+			} 
+			
+			if (oFilterSDate) {
+				aFilters.push(oFilterSDate);
+			}
+			
+			if (oFilterEDate) {
+				aFilters.push(oFilterEDate);
+			}
+						
+			this.getView().byId("idVizFrame").getDataset().getBinding("data").filter(aFilters);
 			this.getView().byId("idVizFrame").getDataset().getBinding("data").sort(aSorter);
 		},
 

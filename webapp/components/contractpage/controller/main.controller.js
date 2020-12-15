@@ -1,12 +1,16 @@
 sap.ui.define([
 	'refx/leaseuix/controller/BaseController',
 	'sap/ui/model/json/JSONModel',
+	"refx/leaseuix/model/formatter",
 	'sap/f/library'
-], function(BaseController,JSONModel,fioriLibrary) {
+	
+], function(BaseController,JSONModel,formatter,fioriLibrary) {
 	"use strict";
 
+	
 	return BaseController.extend("refx.leaseuix.components.contractpage.controller.main", {
-
+		
+		formatter : formatter,
 		onInit: function() {
 			this.initData();
 		},

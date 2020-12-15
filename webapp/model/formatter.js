@@ -28,6 +28,20 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 			}
 
 		},
+		Frequency: function(sFreq, sFreqUnit){
+		
+			if (sFreqUnit === 'Months' && sFreq === '001'){
+				return "Monthly";
+			} else if (sFreqUnit === 'Months' && sFreq === '003'){
+				return "Quarterly";
+			} else if (sFreqUnit === 'Months' && sFreq === '006'){
+				return "Half-Yearly";
+			} else if (sFreqUnit === 'Years' && sFreq === '001'){
+				return "Yearly";
+			} else {
+				return parseInt(sFreq,0) + " " + sFreqUnit;
+			}
+		},
 		PercentageFormat: function(iNumber) {
 			var oPercentFormat = NumberFormat.getPercentInstance({
 				maxFractionDigits: 0,
