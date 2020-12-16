@@ -116,12 +116,12 @@ sap.ui.define([
 			aFilters.push(oFilterCond);
 
 			if (sPeriod === 'Current'){
-				oFilterSDate = new Filter('validfrom', FilterOperator.LE, sDate);
-				oFilterEDate = new Filter('validto', FilterOperator.GE, sDate);
+				oFilterSDate = new Filter('CondValidFrom', FilterOperator.LE, sDate);
+				oFilterEDate = new Filter('CondValidTo', FilterOperator.GE, sDate);
 			} else if (sPeriod === 'Future'){
-				oFilterSDate = new Filter('validfrom', FilterOperator.GT, sDate);
+				oFilterSDate = new Filter('CondValidFrom', FilterOperator.GT, sDate);
 			} else if (sPeriod === 'Past'){
-				oFilterEDate = new Filter('validto', FilterOperator.LT, sDate);
+				oFilterEDate = new Filter('CondValidTo', FilterOperator.LT, sDate);
 			} 
 			
 			if (oFilterSDate) {

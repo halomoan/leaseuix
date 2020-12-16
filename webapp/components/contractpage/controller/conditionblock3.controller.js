@@ -10,12 +10,13 @@ sap.ui.define([
 
 		formatter: formatter,
 		onInit: function() {
-			
+			this._showPeriod = 'All';
 		},
 		
 		onPeriodChange: function(oEvent){
 			var sValue = oEvent.getParameter("value");
-		
+			this._showPeriod = sValue;
+			
 			this._updatePeriod(sValue);
 			
 		},
@@ -25,7 +26,7 @@ sap.ui.define([
 			var oGlobalModel = this.getModel("globalData");
 			var sContractId = oGlobalModel.getProperty("/ContractId");
 			
-			this.getRouter().navTo('cashflow',{contractId: sContractId, type: "SL"});
+			this.getRouter().navTo('cashflow',{contractId: sContractId, type: "SL",period: 'All'});
 		},
 		
 		_updatePeriod: function(sPeriod){
@@ -55,7 +56,6 @@ sap.ui.define([
 			if (oFilterEDate){
 				aFilters.push(oFilterEDate);
 			}
-			
 			oBinding.filter(aFilters);
 		},
 		

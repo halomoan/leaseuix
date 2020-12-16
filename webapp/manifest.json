@@ -110,7 +110,7 @@
 					"target": "contractpage"
 				},
 				{
-					"pattern": "cashflow/{contractId}/:type:",
+					"pattern": "cashflow/{contractId}/:type:/:period:",
 					"name": "cashflow",
 					"target": "cashflow"
 				},

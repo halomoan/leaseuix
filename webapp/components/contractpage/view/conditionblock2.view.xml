@@ -67,7 +67,7 @@
 						formatOptions: {showMeasure: false}
 					}"
 					unit="{Curr}"
-					state="Success"/>
+				state="{= ${UnitPrice} &lt; 0 ? 'Error': 'Success' }"/>
 		</ColumnListItem>
 	</Table>
 </mvc:View>

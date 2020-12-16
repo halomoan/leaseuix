@@ -11,8 +11,9 @@
 		<headerToolbar>
 			<OverflowToolbar>
 				<content>
-					<Button text="{i18n>CashFlow}" type="Transparent" press="onCashFlow" icon="sap-icon://bar-chart"/>
+					
 					<ToolbarSpacer />
+					<Button text="{i18n>CashFlow}" type="Transparent" press="onCashFlow" icon="sap-icon://bar-chart"/>
 					<Label text="{i18n>Show} :"/>
 					<ComboBox 
 						selectedKey="All"
