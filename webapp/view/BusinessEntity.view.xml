@@ -1,0 +1,15 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="refx.leaseuix.controller.BusinessEntity"
+	displayBlock="true" height="100%">
+	<FlexBox height="100%" alignItems="Center" justifyContent="Center" wrap="Wrap" items="{ path: '/BusinessEntitySet', filters: [{path: 'CompanyCode', operator: 'EQ',value1: '1002'}] }">
+		<FlexBox class="sapUiSmallMargin customCSS" alignItems="Center" justifyContent="Center" direction="Column">
+			<Title text="{BusEntityName} - {BusEntity}" wrapping="true"/>
+			<Image src="http://decap01.h800.local:8080/sap/public/bsp/sap/public/bc/bsp/images/{CompanyCode}{BusEntity}.jpg" 
+				decorative="false" width="350px" densityAware="false" class="sapUiTinyMargin" press="onSelectBE(${CompanyCode},${BusEntity})">
+			</Image>
+				<Label
+					text="{CompanyName}"
+					class="green fontSize1"></Label>
+		
+		</FlexBox>
+	</FlexBox>
+</mvc:View>

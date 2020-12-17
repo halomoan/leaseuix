@@ -95,7 +95,12 @@
 			},
 			"routes": [
 				{
-					"pattern": "contractlist",
+					"pattern": "",
+					"name": "businessentity",
+					"target": "businessentity"
+				},
+				{
+					"pattern": "contractlist/{CompanyCode}/{BusinessEntity}",
 					"name": "contractlist",
 					"target": "contractlist"
 				},
@@ -115,12 +120,15 @@
 					"target": "cashflow"
 				},
 				{
-					"pattern": "",
+					"pattern": "manageunits/{CompanyCode}/{BusinessEntity}",
 					"name": "manageunits",
 					"target": "manageunits"
 				}
 			],
 			"targets": {
+				"businessentity": {
+					"viewName": "BusinessEntity"
+				},
 				"contractlist": {
 					"viewName": "ContractList"
 				},

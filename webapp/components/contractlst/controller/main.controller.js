@@ -9,7 +9,7 @@ sap.ui.define([
 ], function(BaseController, JSONModel, Filter, FilterOperator, GroupHeaderListItem, fioriLibrary, formatter) {
 	"use strict";
 
-	return BaseController.extend("refx.leaseuix.components.contractlst.controller.contractlist", {
+	return BaseController.extend("refx.leaseuix.components.contractlst.controller.main", {
 		formatter: formatter,
 		_formFragments: {},
 
@@ -19,6 +19,12 @@ sap.ui.define([
 		},
 
 		__onRouteMatched: function(oEvent) {
+			
+			var oArguments = oEvent.getParameter("arguments");
+			
+			this.CompanyCode = oArguments.CompanyCode;
+			this.BusinessEntity = oArguments.BusinessEntity;
+			
 			this.initData();
 		},
 
@@ -40,8 +46,6 @@ sap.ui.define([
 				}
 			};
 
-			this.CompanyCode = "1001";
-			this.BusinessEntity = "1001";
 			this.ContractType = "L002";
 
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code

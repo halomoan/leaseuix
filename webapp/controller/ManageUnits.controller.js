@@ -31,6 +31,11 @@ sap.ui.define([
 		},
 
 		__onRouteMatched: function(oEvent) {
+			
+			var oArguments = oEvent.getParameter("arguments");
+			
+			this.CompanyCode = oArguments.CompanyCode;
+			this.BusinessEntity = oArguments.BusinessEntity;
 			this._oMultiInput = this.getView().byId("rentalUnits");
 			this._oMultiInput.addValidator(this._onMultiInputValidate);
 			this.initData();
@@ -82,9 +87,10 @@ sap.ui.define([
 
 			};
 
-			this.CompanyCode = "1002";
-			this.BusinessEntity = "00001002";
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
+			if (this.CompanyCode === this.BusinessEntity){
+				this.BusinessEntity = "0000" + this.BusinessEntity;
+			}
 			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity); // Filter BE
 			this.aFilterUnits = []; //Filter Unit Key
 			this.oFilterAvail = null; //Filter Available
@@ -120,6 +126,9 @@ sap.ui.define([
 
 		},
 
+		onGoBack: function(){
+			this.onNavBack();          	
+		},
 		onContractDetail: function(oEvent) {
 
 			var oThis = this;

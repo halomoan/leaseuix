@@ -8,10 +8,10 @@
 			restoreFocusOnBackNavigation="true"
 			 layout="{viewData>/layout}">
 			<beginColumnPages>
-			<mvc:XMLView id="beginView" viewName="refx.leaseuix.components.contractlst.view.contractlist"/>
+			<mvc:XMLView id="beginView" viewName="refx.leaseuix.components.contractlst.view.main"/>
 		</beginColumnPages>
 		<midColumnPages>
-			<mvc:XMLView id="detailView" viewName="refx.leaseuix.components.contractpage.view.contractdetail"/>
+			<mvc:XMLView id="detailView" viewName="refx.leaseuix.components.contractpage.view.main"/>
 		</midColumnPages>
 		</FlexibleColumnLayout>
 </mvc:View>

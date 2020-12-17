@@ -1,5 +1,5 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f"
-	controllerName="refx.leaseuix.components.contractlst.controller.contractlist" xmlns:html="http://www.w3.org/1999/xhtml">
+	controllerName="refx.leaseuix.components.contractlst.controller.main" xmlns:html="http://www.w3.org/1999/xhtml">
 	<f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false" class="customCSS">
 		<f:title>
 			<f:DynamicPageTitle>

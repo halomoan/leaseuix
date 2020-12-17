@@ -13,6 +13,14 @@ sap.ui.define([
 		formatter : formatter,
 		onInit: function() {
 			this.initData();
+			this.oRouter = this.getRouter();
+			this.oRouter.getRoute("contractlist").attachPatternMatched(this.__onRouteMatched, this);
+		},
+		
+		__onRouteMatched: function(oEvent){
+			var oViewModel = this.getView().getModel("viewData");
+			oViewModel.setProperty("/FCLMode", true);
+			console.log("ABC");	
 		},
 		
 		initData: function(){
@@ -22,6 +30,15 @@ sap.ui.define([
 			};
 			
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
+			
+			// var oObjectPageLayout = this.getView().byId("ContractDetail");
+			// var oBindContext = oObjectPageLayout.getElementBinding();
+			// console.log(oBindContext);
+			// // var oBinding = oObjectPageLayout.getBinding("/");
+
+			// oBinding.attachChange(function() {
+			//   console.log('AC');
+			// });
 		},
 		onFullScreen: function(oEvent){
 			var oViewModel = this.getView().getModel("viewData");
@@ -50,7 +67,7 @@ sap.ui.define([
 			}
 		},
 		onExit: function() {
-		
+			this.oRouter.detachRouteMatched(this.__onRouteMatched, this);
 		}
 	});
 

@@ -2,6 +2,7 @@
 	xmlns:grid="sap.ui.layout.cssgrid" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
 	xmlns:tnt="sap.tnt" xmlns:dnd="sap.ui.core.dnd"
 	xmlns:dnd-grid="sap.f.dnd" class="customCSS">
+	<Page showNavButton="true" navButtonPress="onGoBack">
 	<Panel headerText="Units Management" class="padding5" expandable="true">
 		<l:VerticalLayout width="100%" class="">
 			<l:Grid containerQuery="true" hSpacing="1" vSpacing="0">
@@ -100,7 +101,6 @@
 			</l:Grid>
 		</l:VerticalLayout>
 	</Panel>
-	<ScrollContainer height="95%" width="100%" vertical="true" focusable="true">
 		<!--<f:GridList id="unitGrid" mode="None" items="{ path: '/RentalUnitSet', parameters : { 'expand' : 'Contract', custom: { } }  }" selectionChange="onSelectionChange" delete="onDelete"-->
 		<f:GridList id="unitGrid"
 			items="{ path: '/RentalUnitSet', sorter: { path: 'Floor', descending: false, group: true }, parameters: { expand: 'OccupancySet',custom: { } } }"
@@ -145,5 +145,6 @@
 				</VBox>
 			</f:GridListItem>
 		</f:GridList>
-	</ScrollContainer>
+	
+	</Page>
 </mvc:View>
