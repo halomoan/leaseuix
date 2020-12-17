@@ -20,7 +20,6 @@ sap.ui.define([
 		__onRouteMatched: function(oEvent){
 			var oViewModel = this.getView().getModel("viewData");
 			oViewModel.setProperty("/FCLMode", true);
-			console.log("ABC");	
 		},
 		
 		initData: function(){

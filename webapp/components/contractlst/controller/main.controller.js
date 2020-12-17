@@ -84,6 +84,11 @@ sap.ui.define([
 			//this.oGlobalData.setProperty("/KeyDate",oDate);
 			this._updateBinding();
 		},
+		
+		onGoBack: function(){
+			this.onNavBack();          	
+		},
+		
 		onSearch: function(oEvent) {
 			this.oFilterSearch = [];
 			var sQuery = oEvent.getParameter("query");
@@ -169,9 +174,12 @@ sap.ui.define([
 
 			oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
 			var sPath = oEvent.getSource().getBindingContext().getPath();
+			var oData = oEvent.getSource().getBindingContext().getObject();
 			
-			var oControl = sap.ui.getCore().byId("__xmlview1--detailView--ContractDetail");
-
+			var oGlobalModel = this.getModel("globalData");
+			oGlobalModel.setProperty("/ContractId",oData.REContractKey);
+			
+			var oControl = this.getView().getParent().getParent().getParent().byId("detailView--ContractDetail");
 			oControl.bindElement(sPath);
 
 		},

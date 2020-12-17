@@ -4,8 +4,9 @@
 	xmlns="sap.f"
 	xmlns:mvc="sap.ui.core.mvc"
 	controllerName="refx.leaseuix.controller.ContractList">
+	
 		<FlexibleColumnLayout id="fcl" backgroundDesign="Translucent" 
-			restoreFocusOnBackNavigation="true"
+			restoreFocusOnBackNavigation="true" showNavButton="true"
 			 layout="{viewData>/layout}">
 			<beginColumnPages>
 			<mvc:XMLView id="beginView" viewName="refx.leaseuix.components.contractlst.view.main"/>
