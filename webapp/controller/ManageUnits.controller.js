@@ -13,37 +13,36 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/m/GroupHeaderListItem",
 	"refx/leaseuix/model/formatter"
-], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label, 
-	SearchField, Token, Filter, FilterOperator, MessageBox,MessageToast,GroupHeaderListItem,
+], function(compLibrary, BaseController, JSONModel, typeString, ColumnListItem, Label,
+	SearchField, Token, Filter, FilterOperator, MessageBox, MessageToast, GroupHeaderListItem,
 	formatter) {
 	"use strict";
 
 	return BaseController.extend("refx.leaseuix.controller.ManageUnits", {
 		formatter: formatter,
 		_formFragments: {},
-		
-		onInit: function() {
 
+		onInit: function() {
 
 			this.oRouter = this.getRouter();
 			this.oRouter.getRoute("manageunits").attachMatched(this.__onRouteMatched, this);
-			
+
 		},
 
 		__onRouteMatched: function(oEvent) {
-			
+
 			var oArguments = oEvent.getParameter("arguments");
-			
+
 			this.CompanyCode = oArguments.CompanyCode;
 			this.BusinessEntity = oArguments.BusinessEntity;
 			this._oMultiInput = this.getView().byId("rentalUnits");
 			this._oMultiInput.addValidator(this._onMultiInputValidate);
 			this.initData();
-			
+
 		},
 
 		initData: function() {
-			
+
 			var oViewData = {
 				"KeyDate": new Date(),
 				"ShowIdx": 0,
@@ -63,7 +62,7 @@ sap.ui.define([
 				"Floor": "ALL",
 				"IsMultiSelect": false,
 				"IsAllowMerge": false,
-				"SizeRange": [0,10000],
+				"SizeRange": [0, 10000],
 				"IsFiltered": false,
 				"Filter": {
 					"AvailNo": {
@@ -77,18 +76,29 @@ sap.ui.define([
 					"popcontract": false
 				},
 				"delay": 0,
-				
+
 				"Merge": {
-					"Units" : [],
-					"Name" : "",
-					"UnitSize" : 0,
+					"Units": [],
+					"Name": "",
+					"UnitSize": 0,
 					"SizeUnit": ""
 				}
 
 			};
 
+			var oForm = {
+				"CompanyCode": this.CompanyCode,
+				"BusinessEntity": this.BusinessEntity,
+				"Building": 0,
+				"Floor": 0,
+				"RentalObject": 0,
+				"UnitText": ""
+			};
+
+			this.getView().setModel(new JSONModel(oForm), "formData");
+
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
-			if (this.CompanyCode === this.BusinessEntity){
+			if (this.CompanyCode === this.BusinessEntity) {
 				this.BusinessEntity = "0000" + this.BusinessEntity;
 			}
 			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity); // Filter BE
@@ -98,14 +108,13 @@ sap.ui.define([
 			this.oFilterContract = null;
 			this.oFilterSize = null;
 			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
-			
+
 			this.aSort = [new sap.ui.model.Sorter('Floor', false, true)];
-		
 
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model/") + "/rentalunitcolumns.json");
 
 			var oFloorBinding = this.getView().byId("Floor").getBinding("items");
-			
+
 			oFloorBinding.filter([
 				this.oFilterCoCode,
 				this.oFilterBE
@@ -126,15 +135,88 @@ sap.ui.define([
 
 		},
 
-		onGoBack: function(){
-			this.onNavBack();          	
+		onAddUnit: function() {
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.createunit", this);
+
+			var oBuilding = sap.ui.core.Fragment.byId(this.getView().getId(), "selectBuilding");
+			var aFilters = [
+				new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode),
+				new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity)
+			];
+			oBuilding.bindAggregation("items", {
+				path: "/BuildingSet",
+				template: new sap.ui.core.Item({
+					key: "{BuildingID}",
+					text: "{BuildingName}"
+				}),
+				filters: aFilters
+			});
+			//oBuilding.setSelectedKey("formData>/BuildingKey");
+
+		},
+
+		onCreateUnit: function() {
+			var oThis = this;
+			var oModel = this.getModel();
+			var oData = this.getView().getModel("formData").getData();
+
+			oData.UnitText = "#" + oData.Floor + " - " + oData.RentalObject;
+			
+			
+			
+			if (this._validateCreateUnit(oData)) {
+				
+				oData.UnitSize = oData.UnitSize + "";
+				
+				oModel.create("/RentalUnitSet", oData, {
+					method: "POST",
+					success: function(data) {
+						console.log(data);
+						oThis.byId("createUnitDialog").close();
+					},
+					error: function(e) {
+						console.log(e);
+					}
+				});
+			}
+		},
+		
+		_validateCreateUnit: function(oData) {
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			
+			if ( oData.RentalObject < 1) {
+				MessageBox.error(oBundle.getText("msgErrUnitNo"));
+				return false;
+			}
+			if ( oData.Floor < 1) {
+				MessageBox.error(oBundle.getText("msgErrFloor"));
+				return false;
+			}
+			if ( ! oData.UnitSize > 0 ) {
+				MessageBox.error(oBundle.getText("msgErrUnitSize"));
+				return false;
+			}
+			
+			if ( oData.Building === "" || ! oData.Building) {
+				MessageBox.error(oBundle.getText("msgErrBuilding"));
+				return false;
+			}
+			
+			return true;
+		},
+
+		onCancelCreateUnit: function(){
+			this.byId("createUnitDialog").close();
+		},
+		
+		onGoBack: function() {
+			this.onNavBack();
 		},
 		onContractDetail: function(oEvent) {
 
 			var oThis = this;
 			var sREContractKey = oEvent.getSource().data('REContractKey');
-			
-			
+
 			var oViewModel = this.getView().getModel("viewData");
 			var oSource = oEvent.getSource();
 
@@ -144,12 +226,11 @@ sap.ui.define([
 
 			var oPopOver = sap.ui.core.Fragment.byId(this.getView().getId(), "unitmaster");
 
-			
 			var sPath = oCtx.getPath() + "/Contract";
 
 			var oDate = oViewModel.getProperty("/KeyDate");
 			var sDate = formatter.yyyyMMdd(oDate);
-			
+
 			oPopOver.bindElement({
 				path: sPath,
 				parameters: {
@@ -166,21 +247,23 @@ sap.ui.define([
 					}
 				}
 			});
-			
+
 			var oModel = this.getModel();
 			oModel.read("/ContractSet('" + sREContractKey + "')/RentalUnitSet/$count", {
-					urlParameters : {"at" : sDate },
-                    success: function (oEvt, oResponse) {
-                    if(isNaN(oResponse.data)){
-                     	oThis.getView().byId("NoOfUnits").setText('');
-                     	oThis.getView().byId("UnitIcon").setVisible(false);
-                    } else {
-                    	oThis.getView().byId("NoOfUnits").setText(oResponse.data);
-                     	oThis.getView().byId("UnitIcon").setVisible(true);
-                    	
-                    }
-                }
-                });
+				urlParameters: {
+					"at": sDate
+				},
+				success: function(oEvt, oResponse) {
+					if (isNaN(oResponse.data)) {
+						oThis.getView().byId("NoOfUnits").setText('');
+						oThis.getView().byId("UnitIcon").setVisible(false);
+					} else {
+						oThis.getView().byId("NoOfUnits").setText(oResponse.data);
+						oThis.getView().byId("UnitIcon").setVisible(true);
+
+					}
+				}
+			});
 
 		},
 
@@ -196,114 +279,112 @@ sap.ui.define([
 			oViewModel.setProperty("/Tenancy/POccupiedUnits", Math.round((oData.TOccupiedUnits / oData.TotalUnits) * 100));
 			oViewModel.setProperty("/Tenancy/POccupiedSize", Math.round((oData.TOccupiedSize / oData.TotalSize) * 100));
 		},
-		
+
 		getGroupHeader: function(oGroup) {
-			
+
 			return new GroupHeaderListItem({
-				title : oGroup.key
+				title: oGroup.key
 			});
 		},
 		onGridSelect: function(oEvent) {
 			var oViewModel = this.getView().getModel("viewData");
 			var oSource = oEvent.getSource();
 			var sMode = oSource.getText();
-			
+
 			if (sMode === 'Select') {
 				this.byId("unitGrid").setMode('MultiSelect');
 				oSource.setText('Deselect');
-				oViewModel.setProperty("/IsMultiSelect",true); 
-				
+				oViewModel.setProperty("/IsMultiSelect", true);
+
 				if (this.oFilterFloor) {
-					oViewModel.setProperty("/IsAllowMerge",true); 
+					oViewModel.setProperty("/IsAllowMerge", true);
 				} else {
-					oViewModel.setProperty("/IsAllowMerge",false); 
+					oViewModel.setProperty("/IsAllowMerge", false);
 				}
 			} else {
 				this.byId("unitGrid").setMode('None');
 				oSource.setText('Select');
-				oViewModel.setProperty("/IsMultiSelect",false);
-				oViewModel.setProperty("/IsAllowMerge",false); 
+				oViewModel.setProperty("/IsMultiSelect", false);
+				oViewModel.setProperty("/IsAllowMerge", false);
 			}
 
 		},
-		
-		onGridSelectChange: function(oEvent){
+
+		onGridSelectChange: function(oEvent) {
 			var bSelected = oEvent.getParameter("selected");
 			var oViewModel = this.getView().getModel("viewData");
-			var aUnits = oViewModel.getProperty("/Merge/Units");		
+			var aUnits = oViewModel.getProperty("/Merge/Units");
 			var oUnit = oEvent.getParameter("listItem").getBindingContext().getObject();
 			if (bSelected) {
 				aUnits.push(oUnit);
-			} else{
-				aUnits = aUnits.filter(function(unit){
+			} else {
+				aUnits = aUnits.filter(function(unit) {
 					return unit.UnitKey !== oUnit.UnitKey;
 				});
 			}
-			
-			oViewModel.setProperty("/Merge/Units",aUnits);
-		
-		},
-		
-		onCreateContract: function(oEvent){
-			
+
+			oViewModel.setProperty("/Merge/Units", aUnits);
+
 		},
 
-		onGridViewSetting: function(oEvent){
+		onCreateContract: function(oEvent) {
+
+		},
+
+		onGridViewSetting: function(oEvent) {
 			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsviewsetting", this);
 		},
-		
-		onSizeRangeChange: function(oEvent){
-			
+
+		onSizeRangeChange: function(oEvent) {
+
 			var aRange = oEvent.getSource().getRange();
-			
-				this.oFilterSize = new Filter({
-					path: "UnitSize",
-					operator: FilterOperator.BT,
-					value1: aRange[0],
-					value2: aRange[1]
-				});
+
+			this.oFilterSize = new Filter({
+				path: "UnitSize",
+				operator: FilterOperator.BT,
+				value1: aRange[0],
+				value2: aRange[1]
+			});
 		},
-		
-		onGridViewSetConfirm: function(oEvent){
-			
+
+		onGridViewSetConfirm: function(oEvent) {
+
 			var oSortItem = oEvent.getParameters().sortItem;
-		
+
 			var sSortBy = oSortItem.getKey();
 			var bDescending = oEvent.getParameters().sortDescending;
-		
-			 if (sSortBy === 'Floor') {
-			 	this.aSort = [	new sap.ui.model.Sorter('Floor', bDescending, true)];
-			 } else {
-			 	
-			 	this.aSort = [	new sap.ui.model.Sorter('Floor', false, true), new sap.ui.model.Sorter(sSortBy, bDescending,false) ];
-			 }
-			
-			
+
+			if (sSortBy === 'Floor') {
+				this.aSort = [new sap.ui.model.Sorter('Floor', bDescending, true)];
+			} else {
+
+				this.aSort = [new sap.ui.model.Sorter('Floor', false, true), new sap.ui.model.Sorter(sSortBy, bDescending, false)];
+			}
+
 			// var oRangeSlider = oSource.getFilterItems()[0].getCustomControl();
 			// var aRange = oRangeSlider.getRange();
-				
-			this._updateGridBinding();	
+
+			this._updateGridBinding();
 		},
-		
-		onGridViewSetReset: function(oEvent){
+
+		onGridViewSetReset: function(oEvent) {
 			var oViewModel = this.getView().getModel("viewData");
-			
-			oViewModel.setProperty("/SizeRange",[0,10000]);
+
+			oViewModel.setProperty("/SizeRange", [0, 10000]);
 			this.oFilterSize = null;
-			
-			
+
 		},
-		onMergeUnits : function(){
+		onMergeUnits: function() {
 			var oViewModel = this.getView().getModel("viewData");
 			var aUnits = oViewModel.getProperty("/Merge/Units");
-			
-			if (aUnits.length > 0){
-				var sNewName ="";
+
+			if (aUnits.length > 0) {
+				var sNewName = "";
 				var sFloor = "";
 				var iUnitSize = 0;
 				var sSizeUnit = "";
-			
-				for(var i = 0; i < aUnits.length; i++){
+
+				for (var i = 0; i < aUnits.length; i++) {
 					var aName = aUnits[i].UnitText.split('-');
 					if (i === 0) {
 						sNewName = aName[1];
@@ -311,23 +392,23 @@ sap.ui.define([
 						sNewName += ' & ' + aName[1];
 					}
 					sFloor = aName[0];
-					iUnitSize += parseInt(aUnits[i].UnitSize,0);
-					if (aUnits[i].UnitSize !== ''){
+					iUnitSize += parseInt(aUnits[i].UnitSize, 0);
+					if (aUnits[i].UnitSize !== '') {
 						sSizeUnit = aUnits[i].SizeUnit;
 					}
 				}
 				sNewName = sFloor + '-' + sNewName;
-			
-				oViewModel.setProperty("/Merge/Name",sNewName);
-				oViewModel.setProperty("/Merge/UnitSize",iUnitSize);
-				oViewModel.setProperty("/Merge/SizeUnit",sSizeUnit);
-				this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge",this);
+
+				oViewModel.setProperty("/Merge/Name", sNewName);
+				oViewModel.setProperty("/Merge/UnitSize", iUnitSize);
+				oViewModel.setProperty("/Merge/SizeUnit", sSizeUnit);
+				this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge", this);
 			}
 		},
 		onDrop: function(oInfo) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oViewModel = this.getView().getModel("viewData");
-			
+
 			var oDragged = oInfo.getParameter("draggedControl"),
 				oDropped = oInfo.getParameter("droppedControl"),
 				sInsertPosition = oInfo.getParameter("dropPosition"),
@@ -336,46 +417,43 @@ sap.ui.define([
 				aItems = oModel.getProperty("/items"),
 				iDragPosition = oGrid.indexOfItem(oDragged),
 				iDropPosition = oGrid.indexOfItem(oDropped);
-				
-			if ( ! oDragged.getBindingContext() ) {
+
+			if (!oDragged.getBindingContext()) {
 				return;
-			}	
+			}
 
 			var oDraggedData = oDragged.getBindingContext().getObject();
 			var oDroppedData = oDropped.getBindingContext().getObject();
-			
-			
-			
+
 			if (oDraggedData.UnitKey === oDroppedData.UnitKey) {
 				return;
 			}
-			
-			if (! (oDraggedData.Available && oDroppedData.Available  ) ) {
+
+			if (!(oDraggedData.Available && oDroppedData.Available)) {
 				MessageBox.error(oBundle.getText("msgErrMergeUnits"));
 				return;
 			}
-	
+
 			// var fragId = this.getView().getId();
 			// var sDragBindPath = oDragged.getBindingContext().getPath();
 			// var sDropBindPath = oDropped.getBindingContext().getPath();
-			
+
 			// var oUnitsDragForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrag');
 			// oUnitsDragForm.bindElement(sDragBindPath);
 			// var oUnitsDropForm = sap.ui.core.Fragment.byId(fragId,'UnitsDrop');
 			// oUnitsDropForm.bindElement(sDropBindPath);
-			
+
 			var aName1 = oDraggedData.UnitText.split('-');
 			var aName2 = oDroppedData.UnitText.split('-');
-			
-			
+
 			var sNewName = aName1[0] + '-' + aName1[1] + ' & ' + aName2[1];
-			 oViewModel.setProperty("/Merge/Units",[oDraggedData,oDroppedData]);
-			 oViewModel.setProperty("/Merge/Name",sNewName);
-			 oViewModel.setProperty("/Merge/UnitSize", parseInt(oDraggedData.UnitSize,0) +  parseInt(oDroppedData.UnitSize,0));
-			 oViewModel.setProperty("/Merge/SizeUnit",oDraggedData.SizeUnit === '' ? oDroppedData.SizeUnit : oDraggedData.SizeUnit );
-			
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge",this);
-			
+			oViewModel.setProperty("/Merge/Units", [oDraggedData, oDroppedData]);
+			oViewModel.setProperty("/Merge/Name", sNewName);
+			oViewModel.setProperty("/Merge/UnitSize", parseInt(oDraggedData.UnitSize, 0) + parseInt(oDroppedData.UnitSize, 0));
+			oViewModel.setProperty("/Merge/SizeUnit", oDraggedData.SizeUnit === '' ? oDroppedData.SizeUnit : oDraggedData.SizeUnit);
+
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.unitsmerge", this);
+
 			// remove the item
 			// var oItem = aItems[iDragPosition];
 			// aItems.splice(iDragPosition, 1);
@@ -398,7 +476,7 @@ sap.ui.define([
 			MessageBox.confirm("Are You Sure To Merge These Units?", {
 				actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
 				emphasizedAction: MessageBox.Action.CANCEL,
-				onClose: function (sAction) {
+				onClose: function(sAction) {
 					MessageToast.show("Action selected: " + sAction);
 				}
 			});
@@ -407,6 +485,7 @@ sap.ui.define([
 		cancelMergeUnits: function() {
 			this.byId("mergeUnitsDialog").close();
 		},
+		
 
 		// #region - Select Unit Panel
 
@@ -538,17 +617,19 @@ sap.ui.define([
 			// this.oGlobalData.setProperty("/KeyDate",oDate);
 			this._updateGridBinding();
 		},
-		
-		onShowContractUnits: function(sREContractKey){
+
+		onShowContractUnits: function(sREContractKey) {
 			this.oFilterContract = new Filter({
-					path: "REContractKey",
-					operator: FilterOperator.EQ,
-					value1: sREContractKey
+				path: "REContractKey",
+				operator: FilterOperator.EQ,
+				value1: sREContractKey
 			});
 			this._updateGridBinding();
 		},
-		onShowContract: function(sREContractKey){
-			this.oRouter.navTo("contractpage",{contractId: sREContractKey});
+		onShowContract: function(sREContractKey) {
+			this.oRouter.navTo("contractpage", {
+				contractId: sREContractKey
+			});
 		},
 		onFloorChange: function(oEvent) {
 			var oViewModel = this.getView().getModel("viewData");
@@ -616,18 +697,17 @@ sap.ui.define([
 
 				var oUnitGridBindingInfo = oGridList.getBindingInfo("items");
 
-
 				if (!oUnitGridBindingInfo.parameters) {
-					oUnitGridBindingInfo.parameters = { };
+					oUnitGridBindingInfo.parameters = {};
 				} else {
 					oUnitGridBindingInfo.parameters.custom = {};
 				}
 
 				oUnitGridBindingInfo.parameters.custom.at = formatter.yyyyMMdd(oDate);
-				
+
 				oUnitGridBindingInfo.filters = aFilters;
 				oUnitGridBindingInfo.sorter = this.aSort;
-				
+
 				oGridList.bindItems(oUnitGridBindingInfo);
 
 			}
@@ -679,41 +759,41 @@ sap.ui.define([
 				}
 
 			}
-			
+
 			var oViewModel = this.getView().getModel("viewData");
-				
+
 			oViewModel.setProperty("/IsFiltered", false);
-			
+
 			if (this.aFilterUnits.length > 0) {
 				for (i = 0; i < this.aFilterUnits.length; i++) {
 					aFilters.push(this.aFilterUnits[i]);
 				}
-			
+
 				oViewModel.setProperty("/IsFiltered", true);
 			}
 
 			if (this.oFilterAvail) {
 				aFilters.push(this.oFilterAvail);
 				oViewModel.setProperty("/IsFiltered", true);
-			
+
 			}
 
 			if (this.oFilterFloor) {
 				aFilters.push(this.oFilterFloor);
 				oViewModel.setProperty("/IsFiltered", true);
-			
+
 			}
-			
+
 			if (this.oFilterSize) {
 				aFilters.push(this.oFilterSize);
 				oViewModel.setProperty("/IsFiltered", true);
-				
+
 			}
-			
-			if (this.oFilterContract){
+
+			if (this.oFilterContract) {
 				aFilters.push(this.oFilterContract);
 				oViewModel.setProperty("/IsFiltered", true);
-			
+
 			}
 
 			return aFilters;
@@ -765,9 +845,9 @@ sap.ui.define([
 			oViewModel.setProperty("/Filter/AvailUnit", "0");
 			oViewModel.setProperty("/ShowIdx", 0);
 			oViewModel.setProperty("/Floor", "ALL");
-			oViewModel.setProperty("/SizeRange", [0,10000]);
+			oViewModel.setProperty("/SizeRange", [0, 10000]);
 			oViewModel.setProperty("/IsFiltered", false);
-			
+
 			this._oMultiInput.removeAllTokens();
 			oViewModel.setProperty("/UnitsName", "-None-");
 
@@ -776,7 +856,7 @@ sap.ui.define([
 			this.oFilterFloor = null;
 			this.oFilterSize = null;
 			this.oFilterContract = null;
-			
+
 			this._updateGridBinding();
 		},
 
@@ -971,7 +1051,7 @@ sap.ui.define([
 		// #endregion
 
 		onExit: function() {
-			
+
 			this.removeFragment(this._formFragments);
 			this.oRouter.detachRouteMatched(this.__onRouteMatched, this);
 		}

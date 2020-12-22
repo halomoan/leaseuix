@@ -14,8 +14,8 @@ sap.ui.define([
 			
 		},
 		onSelectBE: function(sCoCode,sBE){
-			//this.oRouter.navTo("manageunits",{'CompanyCode': sCoCode,'BusinessEntity': sBE });	
-			this.oRouter.navTo("contractlist",{'CompanyCode': sCoCode,'BusinessEntity': sBE });	
+			this.oRouter.navTo("manageunits",{'CompanyCode': sCoCode,'BusinessEntity': sBE });	
+			//this.oRouter.navTo("contractlist",{'CompanyCode': sCoCode,'BusinessEntity': sBE });	
 		},
 		onExit: function() {
 			this.oRouter.detachRouteMatched(this.__onRouteMatched, this);

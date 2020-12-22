@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog id="createUnitDialog" title="{i18n>CreateUnit}">
+		<content>
+			<VBox class="sapUiSmallMargin">
+			<Title titleStyle="H1" text="{i18n>UnitName} : #{formData>/Floor} - {formData>/RentalObject}" class="sapUiSmallMarginBottom"></Title>
+			<HBox class="sapUiSmallMarginBottom">
+				<VBox class="sapUiTinyMarginEnd">
+					<Label text="{i18n>Building} :"/>
+					<Select id="selectBuilding" selectedKey="{formData>/Building}"></Select>
+				</VBox>
+				<VBox class="sapUiTinyMarginEnd">
+					<Label text="{i18n>Floor}:"/>
+					<Input value="{formData>/Floor}" type="Tel" width="4rem" maxLength="2" />
+				</VBox>
+					<VBox>
+					<Label text="{i18n>UnitNo}:"/>
+					<Input value="{formData>/RentalObject}" type="Tel" width="4rem" maxLength="2" />
+				</VBox>
+			</HBox>
+			
+			<Label text="{i18n>UnitSize}"></Label>
+			<Input value="{ path: 'formData>/UnitSize',  type : 'sap.ui.model.type.Float' }"  description="SF"/>
+			
+			</VBox>
+		</content>
+		<beginButton>
+			<Button text="{i18n>Create}" press="onCreateUnit"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>Cancel}" press="onCancelCreateUnit"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

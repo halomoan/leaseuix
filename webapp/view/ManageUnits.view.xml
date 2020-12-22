@@ -86,6 +86,7 @@
 				</VBox>
 				<Toolbar style="Clear" class="sapUiNoMarginBottom">
 					<Label text="United Investment / Tower B" class="fontSize1_5"/>
+					<Button icon="sap-icon://add" type="Transparent" press="onAddUnit"/>
 					<ToolbarSpacer/>
 					<Text text="(Filtered)" visible="{viewData>/IsFiltered}"/>
 					<Button text="{i18n>Reset}" press="onReset" type="Transparent" class="sapUiTinyMarginBegin"/>
