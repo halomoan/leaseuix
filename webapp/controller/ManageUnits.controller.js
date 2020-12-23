@@ -89,6 +89,8 @@ sap.ui.define([
 			var oForm = {
 				"CompanyCode": this.CompanyCode,
 				"BusinessEntity": this.BusinessEntity,
+				"ROType" : "",
+				"UsageType" : "", 
 				"Building": 0,
 				"Floor": 0,
 				"RentalObject": 0,
@@ -96,6 +98,11 @@ sap.ui.define([
 			};
 
 			this.getView().setModel(new JSONModel(oForm), "formData");
+			
+			var oMessageManager = sap.ui.getCore().getMessageManager();
+			this.getView().setModel(oMessageManager.getMessageModel(), "message");
+			oMessageManager.registerObject(this.getView(), true);
+			
 
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
 			if (this.CompanyCode === this.BusinessEntity) {
@@ -205,6 +212,15 @@ sap.ui.define([
 			return true;
 		},
 
+		onMessagePopoverPress: function(oEvent){
+			var oSource = oEvent.getSource();
+			
+			this.showPopOverFragment(this.getView(), oSource, this._formFragments, "refx.leaseuix.fragments.messagepopover", this);
+			
+		},
+		
+		
+		
 		onCancelCreateUnit: function(){
 			this.byId("createUnitDialog").close();
 		},

@@ -3,6 +3,19 @@
 		<content>
 			<VBox class="sapUiSmallMargin">
 			<Title titleStyle="H1" text="{i18n>UnitName} : #{formData>/Floor} - {formData>/RentalObject}" class="sapUiSmallMarginBottom"></Title>
+			
+			<HBox>
+				<VBox class="sapUiTinyMarginEnd">
+					<Label text="{i18n>UnitType}"/>
+					<Select id="selectUnitType" selectedKey="{formData>/ROType}">
+						<core:Item key="RU" text="Rental Unit" />
+					</Select>
+				</VBox>
+				<RadioButtonGroup id="usageType" columns="1" selectedIndex="2">
+					<RadioButton id="rRetail" text="Retail" />
+					<RadioButton id="rOffice" text="Office" />
+				</RadioButtonGroup>
+			</HBox>
 			<HBox class="sapUiSmallMarginBottom">
 				<VBox class="sapUiTinyMarginEnd">
 					<Label text="{i18n>Building} :"/>
