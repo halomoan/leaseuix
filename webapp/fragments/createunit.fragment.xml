@@ -2,37 +2,54 @@
 	<Dialog id="createUnitDialog" title="{i18n>CreateUnit}">
 		<content>
 			<VBox class="sapUiSmallMargin">
-			<Title titleStyle="H1" text="{i18n>UnitName} : #{formData>/Floor} - {formData>/RentalObject}" class="sapUiSmallMarginBottom"></Title>
+			<Title titleStyle="H1" text="{i18n>UnitName} : {formData>/UnitText}" class="sapUiSmallMarginBottom"></Title>
 			
-			<HBox>
-				<VBox class="sapUiTinyMarginEnd">
-					<Label text="{i18n>UnitType}"/>
+			<HBox justifyContent="SpaceBetween">
+				<VBox class="sapUiTinyMarginTop">
+					<Label text="{i18n>Type}"/>
 					<Select id="selectUnitType" selectedKey="{formData>/ROType}">
 						<core:Item key="RU" text="Rental Unit" />
 					</Select>
 				</VBox>
 				<RadioButtonGroup id="usageType" columns="1" selectedIndex="2">
-					<RadioButton id="rRetail" text="Retail" />
-					<RadioButton id="rOffice" text="Office" />
+					<RadioButton id="rRetail" text="Retail Unit" selected="{formData>/isRetail}"/>
+					<RadioButton id="rOffice" text="Office Unit" selected="{formData>/isOffice}"/>
 				</RadioButtonGroup>
 			</HBox>
-			<HBox class="sapUiSmallMarginBottom">
+			<HBox class="sapUiSmallMarginTopBottom">
 				<VBox class="sapUiTinyMarginEnd">
 					<Label text="{i18n>Building} :"/>
 					<Select id="selectBuilding" selectedKey="{formData>/Building}"></Select>
 				</VBox>
 				<VBox class="sapUiTinyMarginEnd">
 					<Label text="{i18n>Floor}:"/>
-					<Input value="{formData>/Floor}" type="Tel" width="4rem" maxLength="2" />
+					<Input id="iFloor" value="{path: 'formData>/Floor', type : 'sap.ui.model.type.Integer' }" type="Tel" width="4rem" maxLength="2" change="onFloorUnitChange"/>
 				</VBox>
-					<VBox>
-					<Label text="{i18n>UnitNo}:"/>
-					<Input value="{formData>/RentalObject}" type="Tel" width="4rem" maxLength="2" />
+				<VBox class="sapUiTinyMarginEnd">
+					<Label text="{i18n>UnitNo} 1:"/>
+					<Input id="iUnitNo1" value="{ path:'formData>/UnitNo1', type : 'sap.ui.model.type.Integer' }" type="Tel" width="4rem" maxLength="2" change="onFloorUnitChange"/>
+				</VBox>
+				<VBox class="sapUiMediumMarginTop sapUiTinyMarginEnd">
+				<Label text=" - "/>
+				</VBox>
+				<VBox>
+					<Label text="{i18n>UnitNo} 2:"/>
+					<Input id="iUnitNo2" value="{ path: 'formData>/UnitNo2'}" type="Tel" width="4rem" maxLength="2" change="onFloorUnitChange"/>
 				</VBox>
 			</HBox>
 			
-			<Label text="{i18n>UnitSize}"></Label>
-			<Input value="{ path: 'formData>/UnitSize',  type : 'sap.ui.model.type.Float' }"  description="SF"/>
+			<HBox justifyContent="End">
+				
+				<VBox>
+					<Label text="Or"></Label>	
+					<Label text="Manually Enter The {i18n>UnitName} :"/>
+					<Input id="iUnitName" value="{ path: 'formData>/UnitName'}" width="14rem" maxLength="20" change="onFloorUnitChange"/>
+					<Label text="{i18n>UnitSize}"></Label>
+			<Input id="iUnitSize" value="{ path: 'formData>/UnitSize',  type : 'sap.ui.model.type.Float' }"  description="SF"/>
+				</VBox>
+			</HBox>
+			
+			
 			
 			</VBox>
 		</content>

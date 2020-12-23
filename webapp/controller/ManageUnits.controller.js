@@ -89,20 +89,22 @@ sap.ui.define([
 			var oForm = {
 				"CompanyCode": this.CompanyCode,
 				"BusinessEntity": this.BusinessEntity,
-				"ROType" : "",
-				"UsageType" : "", 
+				"ROType": "RU",
+				"UsageType": "",
 				"Building": 0,
 				"Floor": 0,
-				"RentalObject": 0,
-				"UnitText": ""
+				"UnitNo1": 0,
+				"UnitNo2": 0,
+				"UnitText": "",
+				"isRetail": false,
+				"isOffice": true
 			};
 
 			this.getView().setModel(new JSONModel(oForm), "formData");
-			
+
 			var oMessageManager = sap.ui.getCore().getMessageManager();
 			this.getView().setModel(oMessageManager.getMessageModel(), "message");
 			oMessageManager.registerObject(this.getView(), true);
-			
 
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
 			if (this.CompanyCode === this.BusinessEntity) {
@@ -158,73 +160,128 @@ sap.ui.define([
 				}),
 				filters: aFilters
 			});
-			//oBuilding.setSelectedKey("formData>/BuildingKey");
+
+		},
+
+		onFloorUnitChange: function(oEvent) {
+
+			var oFormModel = this.getView().getModel("formData");
+
+			var sFloor = sap.ui.core.Fragment.byId(this.getView().getId(), "iFloor").getValue();
+			var sUnitNo1 = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo1").getValue();
+			var sUnitNo2 = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo2").getValue();
+
+			if (sFloor < 10) {
+				sFloor = "0" + sFloor;
+			}
+			if (sUnitNo1 < 10) {
+				sUnitNo1 = "0" + sUnitNo1;
+			}
+
+			if (sUnitNo2 < 10) {
+				sUnitNo2 = "0" + sUnitNo2;
+			}
+
+			if (sUnitNo2 > 0) {
+				oFormModel.setProperty("/UnitText", "#" + sFloor + "-" + sUnitNo1 + " to " + sUnitNo2);
+			} else {
+				oFormModel.setProperty("/UnitText", "#" + sFloor + "-" + sUnitNo1);
+			}
 
 		},
 
 		onCreateUnit: function() {
 			var oThis = this;
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oModel = this.getModel();
-			var oData = this.getView().getModel("formData").getData();
+			var oFormData = this.getView().getModel("formData").getData();
 
-			oData.UnitText = "#" + oData.Floor + " - " + oData.RentalObject;
-			
-			
-			
-			if (this._validateCreateUnit(oData)) {
-				
-				oData.UnitSize = oData.UnitSize + "";
-				
-				oModel.create("/RentalUnitSet", oData, {
-					method: "POST",
-					success: function(data) {
-						console.log(data);
-						oThis.byId("createUnitDialog").close();
-					},
-					error: function(e) {
-						console.log(e);
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+
+			if (this._validateCreateUnit(oFormData)) {
+
+				MessageBox.confirm(oBundle.getText("msgCfrmCreateUnit"), {
+					actions: ["Create", MessageBox.Action.CANCEL],
+					emphasizedAction: "CANCEL",
+					onClose: function(sAction) {
+						if (sAction === 'Create') {
+							
+							oThis.byId("createUnitDialog").close();
+							
+							var oData = {
+								"CompanyCode": oFormData.CompanyCode,
+								"BusinessEntity": oFormData.BusinessEntity,
+								"ROType": oFormData.ROType,
+								"UsageType": oFormData.isRetail ? "0002" : "0001",
+								"Building": oFormData.Building,
+								"Floor": oFormData.Floor + "",
+								"UnitText": oFormData.UnitText,
+								"UnitSize": oFormData.UnitSize + ""
+
+							};
+
+							oModel.create("/RentalUnitSet", oData, {
+								method: "POST",
+								success: function(data) {
+									MessageToast.show("New Unit Successfully Created");
+								},
+								error: function(e) {
+									MessageToast.show("Error Detected");
+								}
+							});
+
+							
+						}
+						
 					}
 				});
+
 			}
 		},
-		
+
 		_validateCreateUnit: function(oData) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
-			
-			if ( oData.RentalObject < 1) {
+
+			var oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo1");
+
+			if (oInput.getValue() < 1) {
+
 				MessageBox.error(oBundle.getText("msgErrUnitNo"));
 				return false;
 			}
-			if ( oData.Floor < 1) {
+			oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iFloor");
+			if (oInput.getValue() < 1) {
+
 				MessageBox.error(oBundle.getText("msgErrFloor"));
 				return false;
 			}
-			if ( ! oData.UnitSize > 0 ) {
+			oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitSize");
+
+			if (oInput.getValue() < 1) {
+
 				MessageBox.error(oBundle.getText("msgErrUnitSize"));
 				return false;
 			}
-			
-			if ( oData.Building === "" || ! oData.Building) {
+
+			if (oData.Building === "" || !oData.Building) {
 				MessageBox.error(oBundle.getText("msgErrBuilding"));
 				return false;
 			}
-			
+
 			return true;
 		},
 
-		onMessagePopoverPress: function(oEvent){
+		onMessagePopoverPress: function(oEvent) {
 			var oSource = oEvent.getSource();
-			
+
 			this.showPopOverFragment(this.getView(), oSource, this._formFragments, "refx.leaseuix.fragments.messagepopover", this);
-			
+
 		},
-		
-		
-		
-		onCancelCreateUnit: function(){
+
+		onCancelCreateUnit: function() {
 			this.byId("createUnitDialog").close();
 		},
-		
+
 		onGoBack: function() {
 			this.onNavBack();
 		},
@@ -501,7 +558,6 @@ sap.ui.define([
 		cancelMergeUnits: function() {
 			this.byId("mergeUnitsDialog").close();
 		},
-		
 
 		// #region - Select Unit Panel
 
@@ -663,6 +719,39 @@ sap.ui.define([
 			this._updateGridBinding();
 		},
 
+		onEditUnit: function(oEvent) {
+			var oCtx = oEvent.getSource().getBindingContext();
+			var oData = oCtx.getObject();
+			var oFormModel = this.getView().getModel("formData");
+			oFormModel.setProperty("/CompanyCode",oData.CompanyCode);
+			oFormModel.setProperty("/BusinessEntity",oData.BusinessEntity);
+			oFormModel.setProperty("/ROType",oData.ROType);
+			oFormModel.setProperty("/UsageType",oData.UsageType);
+			oFormModel.setProperty("/Building",oData.Building);
+			oFormModel.setProperty("/Floor",oData.Floor);
+			
+			var arrUnit = oData.UnitText.match(/\w+/g);
+			
+			if (arrUnit.length === 4) {
+				oFormModel.setProperty("/UnitNo1",arrUnit[1]);
+				oFormModel.setProperty("/UnitNo2",arrUnit[3]);	
+			} if (arrUnit.length === 2){
+				oFormModel.setProperty("/UnitNo1",arrUnit[1]);
+				oFormModel.setProperty("/UnitNo2","");	
+			}
+			
+			oFormModel.setProperty("/UnitText",oData.UnitText);
+			
+			
+			if (oData.UsageType === '0002') {
+				oFormModel.setProperty("/isRetail",true );
+				oFormModel.setProperty("/isOffice",false);
+			} else {
+				oFormModel.setProperty("/isRetail",false);
+				oFormModel.setProperty("/isOffice",true);
+			}
+			
+		},
 		onKeyDateChange: function(oEvent) {
 			// var oViewModel = this.getView().getModel("viewData");
 			// var oDate = new Date(oEvent.getParameter("value"));
@@ -694,6 +783,8 @@ sap.ui.define([
 			//var sParams = this._getUrlFilters();
 			var aFilters = this._mergeFilters();
 
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+			
 			oModel.read("/RentalUnitStatSet", {
 				urlParameters: {
 					"at": formatter.yyyyMMdd(oDate)

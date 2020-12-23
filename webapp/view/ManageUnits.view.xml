@@ -122,11 +122,21 @@
 				<!--<dnd-grid:GridDropInfo targetAggregation="items" dropPosition="Between" dropLayout="Horizontal" drop="onDrop"/>-->
 				<dnd-grid:GridDropInfo targetAggregation="items" drop="onDrop"/>
 			</f:dragDropConfig>
-			<f:GridListItem detailPress="onDetailPress" highlight="{= ${Available} ? 'Success' : 'Error' }" type="{type}">
+				<!--<f:GridListItem detailPress="onDetailPress" highlight="{= ${Available} ? 'Success' : 'Error' }" type="{type}">-->
+				<f:GridListItem detailPress="onDetailPress"  type="{type}">
 				<VBox height="100%" justifyContent="SpaceBetween">
 					<layoutData>
-						<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. --></layoutData>
+						<FlexItemData growFactor="1" shrinkFactor="0"/><!-- Don't shrink below minimum size. Fill space if available. -->
+					</layoutData>
+						
+					<OverflowToolbar design="Info" class="sapContrast">
+						<Title text="{UnitText}" class="sapUiTinyMarginBegin"/>
+						<ToolbarSpacer />
+						<Button icon="sap-icon://edit" type="Transparent" press="onEditUnit" visible="{= ${Available} }"/>
+					</OverflowToolbar>
+					
 					<VBox class="sapUiSmallMargin">
+							
 						<HBox justifyContent="SpaceBetween">
 							<core:Icon src="{= ${UsageType} === '0001' ? 'sap-icon://building': 'sap-icon://retail-store'}" size="2rem" color="Default"
 								class="sapUiTinyMarginBottom"/>
@@ -137,7 +147,7 @@
 						</HBox>
 						<HBox justifyContent="SpaceBetween">
 							<VBox>
-								<Title text="{UnitText}" wrapping="true"/>
+								<!--<Title text="{UnitText}" wrapping="true"/>-->
 								
 								<VBox items="{OccupancySet}">
 									<Link text="{ContractNo}" press=".onContractDetail">
@@ -151,6 +161,8 @@
 							<tnt:InfoLabel text="Occupied" colorScheme="5" class="" visible="{= ! ${Available} }"/>
 						</HBox>
 					</VBox>
+					
+				
 				</VBox>
 			</f:GridListItem>
 		</f:GridList>
