@@ -167,9 +167,9 @@ sap.ui.define([
 
 			var oFormModel = this.getView().getModel("formData");
 
-			var sFloor = sap.ui.core.Fragment.byId(this.getView().getId(), "iFloor").getValue();
-			var sUnitNo1 = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo1").getValue();
-			var sUnitNo2 = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo2").getValue();
+			var sFloor = parseInt(sap.ui.core.Fragment.byId(this.getView().getId(), "iFloor").getValue(),0);
+			var sUnitNo1 = parseInt(sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo1").getValue(),0);
+			var sUnitNo2 = parseInt(sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo2").getValue(),0);
 
 			if (sFloor < 10) {
 				sFloor = "0" + sFloor;
@@ -189,7 +189,31 @@ sap.ui.define([
 			}
 
 		},
-
+		
+		onUnitNameChange: function(oEvent) {
+			var sName = oEvent.getSource().getValue();
+			var oFormModel = this.getView().getModel("formData");
+			
+			if(sName.charAt(0) === "#") {
+				var aName = sName.match(/\w+/g);	
+				oFormModel.setProperty("/Floor", aName[0]);
+				if (aName.length === 2) {
+					oFormModel.setProperty("/UnitNo1", aName[1]);
+				} else if (aName.length === 4 && aName[2].toUpperCase() === "TO") {
+					oFormModel.setProperty("/UnitNo1", aName[1]);
+					oFormModel.setProperty("/UnitNo2", aName[3]);
+				} else {
+					oFormModel.setProperty("/UnitNo1", "");
+					oFormModel.setProperty("/UnitNo2", "");		
+				}
+			} else {
+				oFormModel.setProperty("/Floor", "");
+				oFormModel.setProperty("/UnitNo1", "");
+				oFormModel.setProperty("/UnitNo2", "");	
+			}
+			
+			oFormModel.setProperty("/UnitText", sName);
+		},
 		onCreateUnit: function() {
 			var oThis = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -242,20 +266,29 @@ sap.ui.define([
 		_validateCreateUnit: function(oData) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 
-			var oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo1");
+			// var oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitNo1");
 
-			if (oInput.getValue() < 1) {
+			// if (oInput.getValue() < 1) {
 
-				MessageBox.error(oBundle.getText("msgErrUnitNo"));
+			// 	MessageBox.error(oBundle.getText("msgErrUnitNo"));
+			// 	return false;
+			// }
+			// oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iFloor");
+			// if (oInput.getValue() < 1) {
+
+			// 	MessageBox.error(oBundle.getText("msgErrFloor"));
+			// 	return false;
+			// }
+			
+			
+			
+			if (oData.UnitText.length < 1) {
+
+				MessageBox.error(oBundle.getText("msgErrUnitText"));
 				return false;
 			}
-			oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iFloor");
-			if (oInput.getValue() < 1) {
-
-				MessageBox.error(oBundle.getText("msgErrFloor"));
-				return false;
-			}
-			oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitSize");
+			
+			var oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iUnitSize");
 
 			if (oInput.getValue() < 1) {
 
@@ -730,14 +763,18 @@ sap.ui.define([
 			oFormModel.setProperty("/Building",oData.Building);
 			oFormModel.setProperty("/Floor",oData.Floor);
 			
-			var arrUnit = oData.UnitText.match(/\w+/g);
-			
-			if (arrUnit.length === 4) {
-				oFormModel.setProperty("/UnitNo1",arrUnit[1]);
-				oFormModel.setProperty("/UnitNo2",arrUnit[3]);	
-			} if (arrUnit.length === 2){
-				oFormModel.setProperty("/UnitNo1",arrUnit[1]);
-				oFormModel.setProperty("/UnitNo2","");	
+			if (oData.UnitText.charAt(0) === "#") {
+				var aName = oData.UnitText.match(/\w+/g);
+				
+				oFormModel.setProperty("/Floor", aName[0]);
+				
+				if (aName.length === 4 && aName[2].toUpperCase() === "TO") {
+					oFormModel.setProperty("/UnitNo1",aName[1]);
+					oFormModel.setProperty("/UnitNo2",aName[3]);	
+				} if (aName.length === 2){
+					oFormModel.setProperty("/UnitNo1",aName[1]);
+					oFormModel.setProperty("/UnitNo2","");	
+				}
 			}
 			
 			oFormModel.setProperty("/UnitText",oData.UnitText);
@@ -751,6 +788,26 @@ sap.ui.define([
 				oFormModel.setProperty("/isOffice",true);
 			}
 			
+			oFormModel.setProperty("/UnitSize",oData.UnitSize);
+		
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.createunit", this);
+			this._buildBuildingSelect();
+		},
+		
+		_buildBuildingSelect: function(){
+			var oBuilding = sap.ui.core.Fragment.byId(this.getView().getId(), "selectBuilding");
+			var aFilters = [
+				new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode),
+				new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity)
+			];
+			oBuilding.bindAggregation("items", {
+				path: "/BuildingSet",
+				template: new sap.ui.core.Item({
+					key: "{BuildingID}",
+					text: "{BuildingName}"
+				}),
+				filters: aFilters
+			});	
 		},
 		onKeyDateChange: function(oEvent) {
 			// var oViewModel = this.getView().getModel("viewData");
