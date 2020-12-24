@@ -32,7 +32,8 @@ sap.ui.define([
 		__onRouteMatched: function(oEvent) {
 
 			var oArguments = oEvent.getParameter("arguments");
-
+			
+			this.BEKey = oArguments.Key;
 			this.CompanyCode = oArguments.CompanyCode;
 			this.BusinessEntity = oArguments.BusinessEntity;
 			this._oMultiInput = this.getView().byId("rentalUnits");
@@ -129,6 +130,10 @@ sap.ui.define([
 				this.oFilterBE
 			]);
 
+			var oPanelHeader = this.getView().byId("pnlHeader");
+			console.log(oPanelHeader,this.BEKey);
+			oPanelHeader.bindElement("/BusinessEntitySet('" + this.BEKey + "')");
+			
 			this.getOwnerComponent().getModel().metadataLoaded().then(function() {
 				var oModel = this.getOwnerComponent().getModel();
 

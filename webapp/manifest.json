@@ -120,7 +120,7 @@
 					"target": "cashflow"
 				},
 				{
-					"pattern": "manageunits/{CompanyCode}/{BusinessEntity}",
+					"pattern": "manageunits/{Key}/{CompanyCode}/{BusinessEntity}",
 					"name": "manageunits",
 					"target": "manageunits"
 				}

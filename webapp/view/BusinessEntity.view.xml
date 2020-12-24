@@ -4,7 +4,7 @@
 		<FlexBox class="sapUiSmallMargin customCSS" alignItems="Center" justifyContent="Center" direction="Column">
 			<Title text="{BusEntityName} - {BusEntity}" wrapping="true"/>
 			<Image src="http://decap01.h800.local:8080/sap/public/bsp/sap/public/bc/bsp/images/{CompanyCode}{BusEntity}.jpg" 
-				decorative="false" width="350px" densityAware="false" class="sapUiTinyMargin" press="onSelectBE(${CompanyCode},${BusEntity})">
+				decorative="false" width="350px" densityAware="false" class="sapUiTinyMargin" press="onSelectBE(${Intreno},${CompanyCode},${BusEntity})">
 			</Image>
 				<Label
 					text="{CompanyName}"

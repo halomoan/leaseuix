@@ -44,7 +44,7 @@
 						<Label text="Manually Enter The {i18n>UnitName} :"/>
 						<Input id="iUnitName" value="{ path: 'formData>/UnitName'}" placeholder="e.q. #01-02 / #02-02 to 03" width="14rem" change="onUnitNameChange"/>
 						<Label text="{i18n>UnitSize}"></Label>
-						<Input id="iUnitSize" value="{ path: 'formData>/UnitSize', type : 'sap.ui.model.type.Float' }" description="SF"/>
+						<Input id="iUnitSize" value="{ path: 'formData>/UnitSize', type : 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 0 ,maxFractionDigits: 2 } }" description="SF"/>
 					</VBox>
 				</HBox>
 			</VBox>
