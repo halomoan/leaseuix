@@ -87,25 +87,14 @@ sap.ui.define([
 
 			};
 
-			var oForm = {
-				"CompanyCode": this.CompanyCode,
-				"BusinessEntity": this.BusinessEntity,
-				"ROType": "RU",
-				"UsageType": "",
-				"Building": 0,
-				"Floor": 0,
-				"UnitNo1": 0,
-				"UnitNo2": 0,
-				"UnitText": "",
-				"isRetail": false,
-				"isOffice": true
-			};
-
-			this.getView().setModel(new JSONModel(oForm), "formData");
-
+			
+			
 			var oMessageManager = sap.ui.getCore().getMessageManager();
+			
+			//oMessageManager.registerObject(this.getView(), false);
+			oMessageManager.registerMessageProcessor(this.getModel()) ;
+			
 			this.getView().setModel(oMessageManager.getMessageModel(), "message");
-			oMessageManager.registerObject(this.getView(), true);
 
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
 			if (this.CompanyCode === this.BusinessEntity) {
@@ -131,17 +120,20 @@ sap.ui.define([
 			]);
 
 			var oPanelHeader = this.getView().byId("pnlHeader");
-			console.log(oPanelHeader,this.BEKey);
+			
 			oPanelHeader.bindElement("/BusinessEntitySet('" + this.BEKey + "')");
 			
 			this.getOwnerComponent().getModel().metadataLoaded().then(function() {
 				var oModel = this.getOwnerComponent().getModel();
 
+				oModel.setRefreshAfterChange(true);
 				this.getView().setModel(oModel);
 			}.bind(this));
 
 			this.getView().setModel(new JSONModel(oViewData), "viewData");
 
+			this._initFormData();
+			
 			// this.oGlobalData = this.getModel("globalData");
 			// this.getView().setModel(this.oGlobalData, "globalData");
 
@@ -150,7 +142,10 @@ sap.ui.define([
 		},
 
 		onAddUnit: function() {
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.createunit", this);
+			
+			this._initFormData();
+			
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.manageunit", this);
 
 			var oBuilding = sap.ui.core.Fragment.byId(this.getView().getId(), "selectBuilding");
 			var aFilters = [
@@ -165,9 +160,73 @@ sap.ui.define([
 				}),
 				filters: aFilters
 			});
+			
+			
 
 		},
-
+		
+		onEditUnit: function(oEvent) {
+			var oCtx = oEvent.getSource().getBindingContext();
+			var oData = oCtx.getObject();
+			var oFormModel = this.getView().getModel("formData");
+			oFormModel.setProperty("/CompanyCode",oData.CompanyCode);
+			oFormModel.setProperty("/BusinessEntity",oData.BusinessEntity);
+			oFormModel.setProperty("/UnitKey",oData.UnitKey);
+			oFormModel.setProperty("/ROType",oData.ROType);
+			oFormModel.setProperty("/UsageType",oData.UsageType);
+			oFormModel.setProperty("/Building",oData.Building);
+			oFormModel.setProperty("/Floor",oData.Floor);
+			
+			
+			if (oData.UnitText.charAt(0) === "#") {
+				var aName = oData.UnitText.match(/\w+/g);
+				
+				oFormModel.setProperty("/Floor", aName[0]);
+				
+				if (aName.length === 4 && aName[2].toUpperCase() === "TO") {
+					oFormModel.setProperty("/UnitNo1",aName[1]);
+					oFormModel.setProperty("/UnitNo2",aName[3]);	
+				} if (aName.length === 2){
+					oFormModel.setProperty("/UnitNo1",aName[1]);
+					oFormModel.setProperty("/UnitNo2","");	
+				}
+			}
+			
+			oFormModel.setProperty("/UnitText",oData.UnitText);
+			oFormModel.setProperty("/_UnitText","");
+			
+			
+			if (oData.UsageType === '0002') {
+				oFormModel.setProperty("/isRetail",true );
+				oFormModel.setProperty("/isOffice",false);
+			} else {
+				oFormModel.setProperty("/isRetail",false);
+				oFormModel.setProperty("/isOffice",true);
+			}
+			
+			oFormModel.setProperty("/UnitSize",oData.UnitSize);
+			
+			oFormModel.setProperty("/CreateMode",false);
+			oFormModel.setProperty("/ValidFrom",oData.validfrom);
+			oFormModel.setProperty("/ValidTo",oData.validto);
+			
+		
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.manageunit", this);
+			this._buildBuildingSelect();
+		},
+		
+		
+		onUnitDeactivate: function(oEvent){
+			var oFormModel = this.getView().getModel("formData");
+			var bState = oEvent.getParameters().state;
+			if (bState) {
+				oFormModel.setProperty("/ValidTo","99991231");
+				oFormModel.setProperty("/isDisabled",false);
+			} else {
+				oFormModel.setProperty("/ValidTo",this.formatter.yyyyMMdd(this.formatter.AddDay(new Date(),-1)));
+				oFormModel.setProperty("/isDisabled",true);
+			}
+		},
 		onFloorUnitChange: function(oEvent) {
 
 			var oFormModel = this.getView().getModel("formData");
@@ -219,7 +278,15 @@ sap.ui.define([
 			
 			oFormModel.setProperty("/UnitText", sName);
 		},
-		onCreateUnit: function() {
+		
+		onUnitCRUD: function(bCreateMode) {
+			if (bCreateMode) {
+				this.onSRVCreateUnit();
+			} else {
+				this.onSRVEditUnit();
+			}
+		},
+		onSRVCreateUnit: function() {
 			var oThis = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oModel = this.getModel();
@@ -245,7 +312,9 @@ sap.ui.define([
 								"Building": oFormData.Building,
 								"Floor": oFormData.Floor + "",
 								"UnitText": oFormData.UnitText,
-								"UnitSize": oFormData.UnitSize + ""
+								"UnitSize": oFormData.UnitSize + "",
+								"validfrom" : oThis.formatter.ODataDate(oFormData.ValidFrom),
+								"validto": oThis.formatter.ODataDate(oFormData.ValidTo)
 
 							};
 
@@ -267,7 +336,81 @@ sap.ui.define([
 
 			}
 		},
+		
+		onSRVEditUnit: function() {
+			var oThis = this;
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			var oModel = this.getModel();
+			var oFormData = this.getView().getModel("formData").getData();
 
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+
+			if (this._validateCreateUnit(oFormData)) {
+
+				MessageBox.confirm(oBundle.getText("msgCfrmEditUnit"), {
+					actions: ["Edit", MessageBox.Action.CANCEL],
+					emphasizedAction: "CANCEL",
+					onClose: function(sAction) {
+						if (sAction === 'Edit') {
+							
+							oThis.byId("createUnitDialog").close();
+							
+							var oData = {
+								"CompanyCode": oFormData.CompanyCode,
+								"BusinessEntity": oFormData.BusinessEntity,
+								"ROType": oFormData.ROType,
+								"UsageType": oFormData.isRetail ? "0002" : "0001",
+								"Building": oFormData.Building,
+								"Floor": oFormData.Floor + "",
+								"UnitText": oFormData.UnitText,
+								"UnitSize": oFormData.UnitSize + "",
+								//"validfrom" : oThis.formatter.ODataDate(oFormData.ValidFrom),
+								"validto": oThis.formatter.ODataDate(oFormData.ValidTo)
+
+							};
+
+							oModel.update("/RentalUnitSet('" + oFormData.UnitKey + "')", oData, {
+							
+								method: "POST",
+								success: function(data) {
+									MessageToast.show("New Unit Successfully Edited");
+								},
+								error: function(e) {
+									MessageToast.show("Error Detected");
+								}
+							});
+
+							
+						}
+						
+					}
+				});
+
+			}
+		},
+		_initFormData: function(){
+			var oForm = {
+				"CreateMode" : true,
+				"CompanyCode": this.CompanyCode,
+				"BusinessEntity": this.BusinessEntity,
+				"UnitKey" : "",
+				"ROType": "RU",
+				"UsageType": "",
+				"Building": 0,
+				"Floor": 0,
+				"UnitNo1": 0,
+				"UnitNo2": 0,
+				"UnitText": "",
+				"_UnitText" : "",
+				"ValidFrom": this.formatter.yyyyMMdd(new Date()),
+				"ValidTo": "99991231",
+				"isRetail": false,
+				"isOffice": true,
+				"isDisabled" : false
+			};
+			
+			this.getView().setModel(new JSONModel(oForm), "formData");
+		},
 		_validateCreateUnit: function(oData) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 
@@ -285,9 +428,7 @@ sap.ui.define([
 			// 	return false;
 			// }
 			
-			
-			
-			if (oData.UnitText.length < 1) {
+			if (!oData.isDisable && oData.UnitText.length < 1) {
 
 				MessageBox.error(oBundle.getText("msgErrUnitText"));
 				return false;
@@ -301,10 +442,20 @@ sap.ui.define([
 				return false;
 			}
 
+			//oInput = sap.ui.core.Fragment.byId(this.getView().getId(), "iValidFrom");
+			
+			if (!oData.ValidFrom && oData.CreateMode) {
+
+			 	MessageBox.error(oBundle.getText("msgErrValidFrom"));
+			 	return false;
+			}
+			
 			if (oData.Building === "" || !oData.Building) {
 				MessageBox.error(oBundle.getText("msgErrBuilding"));
 				return false;
 			}
+			
+			
 
 			return true;
 		},
@@ -406,8 +557,9 @@ sap.ui.define([
 				this.byId("unitGrid").setMode('MultiSelect');
 				oSource.setText('Deselect');
 				oViewModel.setProperty("/IsMultiSelect", true);
-
+	
 				if (this.oFilterFloor) {
+					oViewModel.setProperty("/Merge/Units",[]);
 					oViewModel.setProperty("/IsAllowMerge", true);
 				} else {
 					oViewModel.setProperty("/IsAllowMerge", false);
@@ -756,49 +908,6 @@ sap.ui.define([
 			}
 			this._updateGridBinding();
 		},
-
-		onEditUnit: function(oEvent) {
-			var oCtx = oEvent.getSource().getBindingContext();
-			var oData = oCtx.getObject();
-			var oFormModel = this.getView().getModel("formData");
-			oFormModel.setProperty("/CompanyCode",oData.CompanyCode);
-			oFormModel.setProperty("/BusinessEntity",oData.BusinessEntity);
-			oFormModel.setProperty("/ROType",oData.ROType);
-			oFormModel.setProperty("/UsageType",oData.UsageType);
-			oFormModel.setProperty("/Building",oData.Building);
-			oFormModel.setProperty("/Floor",oData.Floor);
-			
-			if (oData.UnitText.charAt(0) === "#") {
-				var aName = oData.UnitText.match(/\w+/g);
-				
-				oFormModel.setProperty("/Floor", aName[0]);
-				
-				if (aName.length === 4 && aName[2].toUpperCase() === "TO") {
-					oFormModel.setProperty("/UnitNo1",aName[1]);
-					oFormModel.setProperty("/UnitNo2",aName[3]);	
-				} if (aName.length === 2){
-					oFormModel.setProperty("/UnitNo1",aName[1]);
-					oFormModel.setProperty("/UnitNo2","");	
-				}
-			}
-			
-			oFormModel.setProperty("/UnitText",oData.UnitText);
-			
-			
-			if (oData.UsageType === '0002') {
-				oFormModel.setProperty("/isRetail",true );
-				oFormModel.setProperty("/isOffice",false);
-			} else {
-				oFormModel.setProperty("/isRetail",false);
-				oFormModel.setProperty("/isOffice",true);
-			}
-			
-			oFormModel.setProperty("/UnitSize",oData.UnitSize);
-		
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.fragments.createunit", this);
-			this._buildBuildingSelect();
-		},
-		
 		_buildBuildingSelect: function(){
 			var oBuilding = sap.ui.core.Fragment.byId(this.getView().getId(), "selectBuilding");
 			var aFilters = [

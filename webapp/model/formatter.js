@@ -132,7 +132,11 @@ sap.ui.define(["sap/ui/core/format/NumberFormat",
 		ODataDate: function(oDate){
 			var oMoment = moment(oDate);
 			//return oMoment.format("YYYY-MM-DDTHH:MM:SSZ");
-			return oMoment.format("YYYY-MM-DDT00:00:00Z");
+			return oMoment.format("YYYY-MM-DDT00:00:00");
+		},
+		AddDay: function(oDate,iDay){
+			var oMoment = moment(oDate).add(iDay,'days');
+			return oMoment;
 		}
 
 	};

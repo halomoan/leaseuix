@@ -45,6 +45,7 @@
 		]
 	},
 	"sap.ui5": {
+		"handleValidation": true,
 		"rootView": {
 			"viewName": "refx.leaseuix.view.App",
 			"type": "XML"

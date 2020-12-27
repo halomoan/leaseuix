@@ -36,7 +36,7 @@
 			</Page>
 		</NavContainer>
 		<beginButton>
-			<Button text="OK" press="confirmMergeUnits"/>
+			<Button text="Merge" press="confirmMergeUnits"/>
 		</beginButton>
 		<endButton>
 			<Button text="Cancel" press="cancelMergeUnits"/>
