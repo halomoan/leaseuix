@@ -32,7 +32,15 @@
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
-	
+			<ObjectPageSection titleUppercase="false" id="section2" title="Customer">
+				<subSections>
+					<ObjectPageSubSection id="customer" title="Customer" titleUppercase="false">
+						<blocks>
+							<contract:CustomerBlock1 id="blk2"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
 		</sections>
 	</ObjectPageLayout>
 

@@ -27,7 +27,9 @@ sap.ui.define([
 				
 			},
 
-	
+			fromDateChanged: function(oEvent){
+				console.log(this.oContractForm);
+			},
 			onExit: function() {
 		
 			}

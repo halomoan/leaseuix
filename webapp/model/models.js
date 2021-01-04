@@ -40,7 +40,7 @@ sap.ui.define([
 				
 			};
 			var oModel = new JSONModel(oData);
-			oModel.setDefaultBindingMode("OneWay");
+			oModel.setDefaultBindingMode("TwoWay");
 			return oModel;
 		},
 		postingParamModel: function(){
