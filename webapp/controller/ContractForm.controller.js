@@ -6,40 +6,32 @@ sap.ui.define([
 
 	return BaseController.extend("refx.leaseuix.controller.ContractForm", {
 
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf refx.leaseuix.view.ContractForm
-		 */
-		//	onInit: function() {
-		//
-		//	},
+	
+		onInit: function() {
+			this.oRouter = this.getRouter();
+			this.oRouter.getRoute("contractform").attachMatched(this.__onRouteMatched, this);
+		},
 
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf refx.leaseuix.view.ContractForm
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf refx.leaseuix.view.ContractForm
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf refx.leaseuix.view.ContractForm
-		 */
-		//	onExit: function() {
-		//
-		//	}
+		__onRouteMatched: function(oEvent) {
+			var oArguments = oEvent.getParameter("arguments");
+			
+			this.BEKey = oArguments.Key;
+			this.CompanyCode = oArguments.CompanyCode;
+			this.BusinessEntity = oArguments.BusinessEntity;
+			
+			var oGlobalModel = this.getModel("globalData");
+			
+			oGlobalModel.setProperty("/BEKey",this.BEKey);
+			oGlobalModel.setProperty("/CompanyCode",this.CompanyCode);
+			oGlobalModel.setProperty("/BusinessEntity",this.BusinessEntity);
+			
+			var oFormModel = this.getModel("contractForm");
+			oFormModel.setProperty("/CompanyCode",this.CompanyCode);
+			oFormModel.setProperty("/BusinessEntity",this.BusinessEntity);
+		},
+		onExit: function() {
+		
+		}
 
 	});
 

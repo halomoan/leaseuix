@@ -25,6 +25,7 @@ sap.ui.define([
 		},
 
 		initData: function() {
+			
 			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, "1002"); // Filter Company Code
 			this.aFilterUnits = []; //Filter Unit Key
 			this.oFilter2 = null; //Filter Available
@@ -49,7 +50,7 @@ sap.ui.define([
 			this.getView().setModel(new JSONModel(viewData), "viewData");
 			
 		
-			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
+			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model") + "/rentalunitcolumns.json");
 			
 			var oModel = this.getOwnerComponent().getModel();
 			this.getView().setModel(oModel);

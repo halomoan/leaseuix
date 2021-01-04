@@ -106,7 +106,7 @@
 					"target": "contractlist"
 				},
 				{
-					"pattern": "contractform",
+					"pattern": "contractform/{Key}/{CompanyCode}/{BusinessEntity}",
 					"name": "contractform",
 					"target": "contractform"
 				},

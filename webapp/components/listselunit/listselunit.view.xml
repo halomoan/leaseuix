@@ -1,28 +1,29 @@
-<mvc:View controllerName="refx.leaseuix.components.listselunit.listselunit" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core"
+<mvc:View controllerName="refx.leaseuix.components.listselunit.listselunit" 
+	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 	<HBox class="customCSS sapUiSmallMargin">
 		<VBox class="sapUiSmallMarginEnd">
 			<FlexBox alignItems="End" direction="Column" width="6rem">
-				<Label text="{ path: '/TotalSize', formatter: '.formatter.NumberFormat'}" class="sapMNCLargeFontSize green"></Label>
-				<Label text="{/SizeUnit}, Total Size"></Label>
-				<Label text="{= ${/TotalUnits} > 0 ? ${/TotalUnits} : 0 }" class="sapMNCLargeFontSize sapUiSmallMarginTop"></Label>
+				<Label text="{ path: 'unitData>/TotalSize', formatter: '.formatter.NumberFormat'}" class="sapMNCLargeFontSize green"></Label>
+				<Label text="{unitData>/SizeUnit}, Total Size"></Label>
+				<Label text="{= ${unitData>/TotalUnits} > 0 ? ${unitData>/TotalUnits} : 0 }" class="sapMNCLargeFontSize sapUiSmallMarginTop"></Label>
 				<Label text="Total Units"></Label>
 			</FlexBox>
 		</VBox>
-		<List id="selectedunit" items="{ path: '/SelectedUnits', sorter: { path: 'UnitId', descending: false} }" width="400px" mode="Delete"
+		<List id="selectedunit" items="{ path: 'unitData>/SelectedUnits', sorter: { path: 'UnitId', descending: false} }" width="400px" mode="Delete"
 			delete="onDelete">
 			<items>
 				<CustomListItem>
 					<HBox>
 						<core:Icon size="2rem" src="sap-icon://building" class="sapUiSmallMarginBegin sapUiSmallMarginTop"/>
 						<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" width="50%">
-							<Link text="{Name}" target="{UnitPicUrl}" press="handlePress"/>
-							<ObjectStatus class="sapUiSmallMarginBottom" text="{= ${Available} ? 'Available' : 'Occupied' }"
-								icon="{= ${Available} ? '' : 'sap-icon://alert' }" state="{= ${Available} ? 'Success': 'Error' }"/>
+							<Link text="{unitData>UnitText}" target="{UnitPicUrl}" press="handlePress"/>
+							<ObjectStatus class="sapUiSmallMarginBottom" text="{= ${unitData>Available} ? 'Available' : 'Occupied' }"
+								icon="{= ${unitData>Available} ? '' : 'sap-icon://alert' }" state="{= ${unitData>Available} ? 'Success': 'Error' }"/>
 						</VBox>
 						<FlexBox alignItems="End" direction="Column" width="80%" class="sapUiSmallMargin">
-							<Label text="{ path: 'Size', formatter: '.formatter.NumberFormat' }"></Label>
-							<Label text="{SizeUnit}" class="sapMObjectNumberUnit"></Label>
+							<Label text="{ path: 'unitData>UnitSize', formatter: '.formatter.NumberFormat' }"></Label>
+							<Label text="{unitData>SizeUnit}" class="sapMObjectNumberUnit"></Label>
 						</FlexBox>
 					</HBox>
 				</CustomListItem>

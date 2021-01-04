@@ -15,13 +15,34 @@ sap.ui.define([
 		globalDataModel: function(){
 			var oData = {
 				"KeyDate": null,
-				"ContractId": null
+				"BEKey": null,
+				"CompanyCode": null,
+				"BusinessEntity" : null,
+				"ContractId": null,
+				"ContractType": "L001"
 			};
 			var oModel = new JSONModel(oData);
 			oModel.setDefaultBindingMode("OneWay");
 			return oModel;
 		},
 		
+		contractFormModel: function(){
+			var oData = {
+				"CompanyCode": null,
+				"BusinessEntity" : null,
+				"SelectedUnits": [],
+				"StartDate": new Date(),
+				"EndDate": null,
+				"EndTermDate" : null,
+				"ContractName": "",
+				"Industry": "",
+				"RelSalesRule": false
+				
+			};
+			var oModel = new JSONModel(oData);
+			oModel.setDefaultBindingMode("OneWay");
+			return oModel;
+		},
 		postingParamModel: function(){
 			return new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/postingparams.json");
 		},
@@ -40,9 +61,6 @@ sap.ui.define([
 		},
 		salesRuleModel: function(){
 			return new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/salesbased.json");
-		},
-		contractFormModel: function(){
-			return new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/contractform.json");
 		}
 		
 

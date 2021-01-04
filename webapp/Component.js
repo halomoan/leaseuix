@@ -33,14 +33,14 @@ sap.ui.define([
 		createModel: function(sModelName){
 			
 			switch(sModelName) {
-				case "globalData" : this.setModel(models.globalDataModel(),"globalData"); break;	
+				case "globalData" : this.setModel(models.globalDataModel(),"globalData"); break;
+				case "contractForm" : this.setModel(models.contractFormModel(),"contractForm"); break;
 				case "postingParams" : this.setModel(models.postingParamModel(),"postingParams"); break;	
 				case "rentalUnits" : this.setModel(models.rentalUnitModel(),"rentalUnits"); break;	
 				case "conditions" : this.setModel(models.conditionModel(),"conditions"); break;	
 				case "selectedCust" : this.setModel(models.selectedCustModel(),"selectedCust"); break;	
 				case "selectedContacts" : this.setModel(models.selectedContactModel(),"selectedContacts"); break;
 				case "salesRules" : this.setModel(models.salesRuleModel(),"salesRules"); break;
-				case "contractForm" : this.setModel(models.contractFormModel(),"contractForm"); break;
 			}
 			
 			

@@ -17,40 +17,63 @@ sap.ui.define([
 		formatter: formatter,
 		onInit: function () {
 
-			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/selectunit") + "/columns.json");
-			this.oRentalUnitsModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/rentalunitvalues.json");
-			this.oSelectedUnits = this.getModel("rentalUnits");
-			this.getView().setModel(this.oSelectedUnits);
+			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model") + "/rentalunitcolumns.json");
+			
+			this._initData();
 		},
-
+	
+		_initData: function(){
+			
+			this.oSelectedUnits = new JSONModel({
+				"SelectedUnits" : [],
+				"TotalUnits" : 0,
+				"TotalSize" : 0,
+				"SizeUnit" : ""
+			});
+			
+			this.getView().setModel(this.oSelectedUnits,"unitData");
+			
+			var oGlobalModel = this.getModel("globalData");
+			this.BEKey = oGlobalModel.getProperty("/BEKey");
+			
+			this.CompanyCode = oGlobalModel.getProperty("/CompanyCode");
+			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
+			
+			this.BusinessEntity = oGlobalModel.getProperty("/BusinessEntity");
+			this.oFilterBE = new Filter("BusinessEntity", FilterOperator.EQ, this.BusinessEntity); // Filter BE
+			
+			this.aFilters = [this.oFilterCoCode, this.oFilterBE];
+		},
 
 		onDelete: function(oEvent){
 			
-			var sPath = oEvent.getParameter("listItem").getBindingContext().getPath();
+			var sPath = oEvent.getParameter("listItem").getBindingContext("unitData").getPath();
 		
 			var iLength = sPath.length;
 			var iIndex = sPath.slice(iLength - 1);
 
-			var oModel = this.getView().getModel();
+			var oModel = this.getView().getModel("unitData");
 			
-			var oData = oModel.getData(); 
+			var aSelectedUnits = oModel.getProperty("/SelectedUnits"); 
 			
-			oData.SelectedUnits.splice(iIndex, 1);
+			aSelectedUnits.splice(iIndex, 1);
 			var iTotalSize = 0;
 			var iTotalUnits = 0;
 			var sSizeUnit = "";
-			oData.SelectedUnits.map(function(unit){
-				iTotalSize += unit.Size;
+			aSelectedUnits.map(function(unit){
+				iTotalSize += parseInt(unit.UnitSize,0);
 				iTotalUnits++;
 				sSizeUnit = unit.SizeUnit;
 				
 			});
-			oData.TotalUnits = iTotalUnits;
-			oData.TotalSize = iTotalSize;
-			oData.SizeUnit = sSizeUnit;
-			oModel.setData(oData);
-		
 			
+			oModel.setProperty("/SelectedUnits",aSelectedUnits);
+			oModel.setProperty("/TotalUnits",iTotalUnits);
+			oModel.setProperty("/TotalSize",iTotalSize);
+			oModel.setProperty("/SizeUnit",sSizeUnit);
+			
+			var oFormModel = this.getModel("contractForm");
+			oFormModel.setProperty("/SelectedUnits",aSelectedUnits);
 		},
 
 	
@@ -58,40 +81,67 @@ sap.ui.define([
 		// #region
 		onValueHelpRequested: function() {
 			
+			var oDate = new Date();
+			
 			var aCols = this.oColModel.getData().cols;
 			this._oBasicSearchField = new SearchField({
 				showSearchButton: false
 			});
 
+			
 			this._oValueHelpDialog = sap.ui.xmlfragment("refx.leaseuix.components.selectunit.selectunit", this);
 			this.getView().addDependent(this._oValueHelpDialog);
 
 			this._oValueHelpDialog.setRangeKeyFields([{
-				label: "UnitId",
-				key: "UnitId",
+				label: "UnitKey",
+				key: "UnitKey",
 				type: "string",
 				typeInstance: new typeString({}, {
 					maxLength: 7
 				})
 			}]);
+			
+			this._oValueHelpDialog.setTokenDisplayBehaviour(sap.ui.comp.smartfilterbar.DisplayBehaviour.descriptionOnly);
+			this._oValueHelpDialog.setKey("UnitKey");
+			this._oValueHelpDialog.setDescriptionKey('UnitText');
 
 			var oFilterBar = this._oValueHelpDialog.getFilterBar();
 			oFilterBar.setFilterBarExpanded(false);
 			oFilterBar.setBasicSearch(this._oBasicSearchField);
-
+			
+		
+			
 			this._oValueHelpDialog.getTableAsync().then(function (oTable) {
-				oTable.setModel(this.oRentalUnitsModel);
 				oTable.setModel(this.oColModel, "columns");
 
 				if (oTable.bindRows) {
-					oTable.bindAggregation("rows", "/RentalUnits");
+					
+					oTable.bindAggregation("rows", {
+						path: "/RentalUnitSet",
+						filters: this.aFilters,
+						parameters: {
+							custom: {
+								at: formatter.yyyyMMdd(oDate)
+							}
+						}
+					});
 				}
 
 				if (oTable.bindItems) {
-					oTable.bindAggregation("items", "/RentalUnits", function () {
+					oTable.bindAggregation("items", {
+						path: "/RentalUnitSet",
+						filters: this.aFilters,
+						parameters: {
+							custom: {
+								at: formatter.yyyyMMdd(oDate)
+							}
+						}
+					}, function() {
 						return new ColumnListItem({
-							cells: aCols.map(function (column) {
-								return new Label({ text: "{" + column.template + "}" });
+							cells: aCols.map(function(column) {
+								return new Label({
+									text: "{" + column.template + "}"
+								});
 							})
 						});
 					});
@@ -100,7 +150,8 @@ sap.ui.define([
 				this._oValueHelpDialog.update();
 			}.bind(this));
 
-			this._oValueHelpDialog.setTokens(this._getListTokens());
+			//this._oValueHelpDialog.setTokens(this._getListTokens());
+			
 			this._oValueHelpDialog.open();
 		},
 
@@ -115,23 +166,27 @@ sap.ui.define([
 				var sSizeUnit = "";
 				
 				aTokens.map(function(token){
-					var sKey = token.getKey();	
-					var oUnit = oThis._getUnitByKey(sKey);
 					
+					var oObject = token.data();
+					var oUnit = oObject.row;
+				
 					if(oUnit) {
 						oThis.oSelectedUnits.getProperty("/SelectedUnits").push(oUnit);
 						iTotalUnits++;
-						iTotalSize += oUnit.Size;
+						iTotalSize += parseInt(oUnit.UnitSize,0);
 						sSizeUnit = oUnit.SizeUnit;
 					}
 				});
+				
 				
 				oThis.oSelectedUnits.setProperty("/TotalUnits",iTotalUnits);
 				oThis.oSelectedUnits.setProperty("/TotalSize",iTotalSize);
 				oThis.oSelectedUnits.setProperty("/SizeUnit",sSizeUnit);
 				
 				//this.byId("selectedunit").getModel().updateBindings(true);
-				oThis.getView().setModel(oThis.oSelectedUnits);
+				
+				var oFormModel = this.getModel("contractForm");
+				oFormModel.setProperty("/SelectedUnits",oThis.oSelectedUnits.getProperty("/SelectedUnits"));
 			}
 			 
 			this._oValueHelpDialog.close();
@@ -152,6 +207,8 @@ sap.ui.define([
 			var aFilters = aSelectionSet.reduce(function (aResult, oControl) {
 				
 				var sType = oControl.getMetadata().getName();
+				
+				
 				switch(sType){
 					case "sap.m.Switch":
 							if (oControl.getState()) {
@@ -185,39 +242,46 @@ sap.ui.define([
 							
 							break;
 				}
+				
+			
 				return aResult;
 			}, []);
 			
-		
 			
-			aFilters.push(new Filter({
-				filters: [
-					new Filter({ path: "UnitId", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "Name", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "MainCategory", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "Category", operator: FilterOperator.Contains, value1: sSearchQuery })
-					
-				],
-				and: false
-			}));
-		
+			if (sSearchQuery) {
+			
+				aFilters.push(new Filter({
+					filters: [
+						new Filter({
+							path: "UnitText",
+							operator: FilterOperator.Contains,
+							value1: sSearchQuery
+						})
+					],
+					and: false
+				}));
+			}
 
-			this._filterTable(new Filter({
-				filters: aFilters,
-				and: true
-			}));
+			if (aFilters.length > 0) {
+				this._filterTable(new Filter({
+					filters: aFilters,
+					and: true
+				}));
+			} else {
+				this._filterTable([]);
+			}
 		},
 
-		_filterTable: function (oFilter) {
+		_filterTable: function (aFilters) {
 			var oValueHelpDialog = this._oValueHelpDialog;
 
 			oValueHelpDialog.getTableAsync().then(function (oTable) {
 				if (oTable.bindRows) {
-					oTable.getBinding("rows").filter(oFilter);
+					oTable.getBinding("rows").filter(aFilters);
 				}
 
 				if (oTable.bindItems) {
-					oTable.getBinding("items").filter(oFilter);
+					oTable.getBinding("items").filter(aFilters);
 				}
 
 				oValueHelpDialog.update();
@@ -233,7 +297,7 @@ sap.ui.define([
 			oData.SelectedUnits.map(function(unit){
 				var oToken = new Token({
 					key: unit.UnitId,
-					text: unit.Name
+					text: unit.UnitText
 				});
 				
 				aTokens.push(oToken); 
@@ -274,14 +338,14 @@ sap.ui.define([
 			return null;
 		},
 		
-		_getUnitByKey: function(sKey) {
-			var oData = this.oRentalUnitsModel.getData().RentalUnits;
+		// _getUnitByKey: function(sKey) {
+		// 	var oData = this.oRentalUnitsModel.getData().RentalUnits;
 			
-			var index = $.inArray(sKey, $.map(oData, function(n){
-			    return n.UnitId;
-			}));
-			return this.oRentalUnitsModel.getProperty("/RentalUnits/" + index);
+		// 	var index = $.inArray(sKey, $.map(oData, function(n){
+		// 	    return n.UnitId;
+		// 	}));
+		// 	return this.oRentalUnitsModel.getProperty("/RentalUnits/" + index);
 			
-		},
+		// },
 	});
 });

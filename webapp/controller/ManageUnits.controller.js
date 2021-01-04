@@ -781,7 +781,7 @@ sap.ui.define([
 			oFilterBar.setBasicSearch(this._oBasicSearchField);
 
 			this._oValueHelpDialog.getTableAsync().then(function(oTable) {
-				oTable.setModel(this.oRentalUnitsModel);
+				//oTable.setModel(this.oRentalUnitsModel);
 				oTable.setModel(this.oColModel, "columns");
 
 				if (oTable.bindRows) {

@@ -1,18 +1,18 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
-	controllerName="refx.leaseuix.components.contractform.controller.contractform">
+	controllerName="refx.leaseuix.pages.contractform.controller.contractform">
 	<VBox class="customCSS sapUiSmallMarginBegin">
 		<Panel>
 			<VBox renderType="Bare">
-				<Text text="{contractform>/RecnType} ({contractform>/RecnTypeId})" class="fontSize2 sapUiNoMarginBottom"/>
-				<Label text="{contractform>/Bukrs} / {contractform>/BukrsId}" class="sapUiTinyMarginTop"/>
+				<Text id="RecnType" text="{Text} ({Id})" class="fontSize2 sapUiNoMarginBottom"/>
+				<Label id="Bukrs" text="{Butxt} / {Bukrs}" class="sapUiTinyMarginTop"/>
 			</VBox>
 		</Panel>
 		<Panel>
 			<VBox>
 				<HBox>
 					<VBox>
-						<Label text="{i18n>Contract}"/>
-						<Text id="nameText" text="{contractform>/RecnNo}"/>
+						<Label text="{i18n>ContractNo}"/>
+						<Text id="nameText" text="{formData>/RecnNo}"/>
 					</VBox>
 					<VBox class="sapUiMediumMarginBegin">
 						<Label text="{i18n>Status}"/>
@@ -36,35 +36,40 @@
 					<VBox>
 						<Label text="{i18n>Contract} {i18n>From}"/>
 						<DatePicker id="fromDate" required="true"
-							value="{path: 'contractform>/FromDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+							
+							value="{path: 'formData>/StartDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"
 							change="fromDateChanged"></DatePicker>
 					</VBox>
 					<VBox class="sapUiSmallMarginBegin">
 						<VBox>
 							<Label text="{i18n>Contract} {i18n>To}"/>
 							<DatePicker id="endDate" required="true"
-								value="{path: 'contractform>/EndDate', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+								value="{path: 'formData>/EndDate', type : 'sap.ui.model.type.Date',formatOptions:{pattern: 'MMM dd, yyyy' }}"
 								change="fromDateChanged"></DatePicker>
 							<Label text="{i18n>EndTerm}"/>
 							<DatePicker id="endTerm" required="true"
-								value="{path: 'contractform>/EndTerm', type : 'sap.ui.model.type.Date',formatOptions:{ source : { pattern: 'yyyyMMdd' }, pattern: 'MMM dd, yyyy' }}"
+								value="{path: 'formData>/EndTermDate', type : 'sap.ui.model.type.Date',formatOptions:{ pattern: 'MMM dd, yyyy' }}"
 								change="fromDateChanged"></DatePicker>
 						</VBox>
 					</VBox>
 				</HBox>
 				<VBox>
 					<Label text="{i18n>Contract} {i18n>Name}"/>
-					<Input value="{contractform>/Name}"/>
+					<Input value="{formData>/ContractName}"/>
 				</VBox>
 				<HBox>
 				<VBox>
 				<Label text="{i18n>Industry}"/>
-				<Select selectedKey="{contractform>/IndustryId}" forceSelection="false"
-					items="{ path: 'contractformvalues>/Industry', sorter: { path: 'id' } }">
-					<core:Item key="{contractformvalues>id}" text="{contractformvalues>id} {contractformvalues>text}"/>
+				<Select selectedKey="{formData>/Industry}" forceSelection="false"
+					items="{ path: '/IndustrySet', sorter: { path: 'IndustrySector' }, filters : [
+            			{ path : 'Lang', operator : 'EQ', value1 : 'EN'},
+            			{ path : 'SystemType', operator : 'EQ', value1 : '0001'},
+            			{ path : 'IndustrySector', operator : 'GE', value1 : '101'}
+        			] }">
+					<core:Item key="{IndustrySector}" text="{IndustrySector} {IndustryShortText}"/>
 				</Select>
 				</VBox>
-				<CheckBox class="sapUiSmallMarginTop" selected="{contractform>/RefSales}" text="{i18n>RefSales}"></CheckBox>
+				<CheckBox class="sapUiSmallMarginTop" selected="{formData>/RelSalesRule}" text="{i18n>RefSales}"></CheckBox>
 				</HBox>
 			</VBox>
 		</Panel>

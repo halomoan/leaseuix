@@ -12,10 +12,12 @@ sap.ui.define([
 		
 		__onRouteMatched: function(oEvent){
 			
+			
 		},
 		onSelectBE: function(sKey,sCoCode,sBE){
-			this.oRouter.navTo("manageunits",{'Key': sKey, 'CompanyCode': sCoCode,'BusinessEntity': sBE });	
-			//this.oRouter.navTo("contractlist",{'Key': sKey, 'CompanyCode': sCoCode,'BusinessEntity': sBE });	
+			
+			//this.oRouter.navTo("manageunits",{'Key': sKey, 'CompanyCode': sCoCode,'BusinessEntity': sBE });	
+			this.oRouter.navTo("contractform",{'Key': sKey, 'CompanyCode': sCoCode,'BusinessEntity': sBE });	
 		},
 		onExit: function() {
 			this.oRouter.detachRouteMatched(this.__onRouteMatched, this);
