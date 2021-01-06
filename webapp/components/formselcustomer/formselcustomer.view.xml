@@ -17,7 +17,7 @@
 						class="iconSize2"
 						color="#ff9900" >
 					</core:Icon>
-					<Title text="{i18n>Customer} : {/SelectedCustomer/CustomerId}"/>
+					<Title text="{i18n>Customer} : {customerData>/BPID}"/>
 					<ToolbarSpacer />
 					<Button icon="sap-icon://edit" press=".onValueHelpRequested" visible="{viewData>/EditMode}"/>
 				</Toolbar>
@@ -43,22 +43,22 @@
 					<form:formElements>
 						<form:FormElement label="Name">
 							<form:fields>
-								<Text text="{/SelectedCustomer/Name}" id="Name"  />
+								<Text text="{customerData>/FullName}" id="Name"  />
 							</form:fields>
 						</form:FormElement>
 						<form:FormElement label="Address">
 							<form:fields>
-								<Text text="{/SelectedCustomer/Address}" id="Address"/>
+								<Text text="{customerData>/StreetName}, {customerData>/PostalCode} - {customerData>/CityName} " id="Address"/>
 							</form:fields>
 						</form:FormElement>
 						<form:FormElement label="Email">
 							<form:fields>
-								<Text text="{/SelectedCustomer/Email}" id="Email" />
+								<Text text="{customerData>/EmailAddress}" id="Email" />
 							</form:fields>
 						</form:FormElement>
-						<form:FormElement label="BP No.">
+						<form:FormElement label="BP Role">
 							<form:fields>
-								<Text text="{BPID}" id="BP" />
+								<Text text="{customerData>/BPRole}" id="BPRole" />
 							</form:fields>
 						</form:FormElement>
 					</form:formElements>

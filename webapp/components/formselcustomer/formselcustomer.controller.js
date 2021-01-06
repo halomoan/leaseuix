@@ -28,10 +28,22 @@ sap.ui.define([
 			this.oFilterBPRole = new Filter("BPRole", FilterOperator.EQ, "BPR101"); // Filter BP Role
 			this.aFilters = [this.oFilterCoCode,this.oFilterBPRole];
 			
-			this.oContractForm = this.getModel("contractForm");
-			this.getView().setModel(this.oContractForm,"formData");
+			this._initData();
 		},
-
+		
+		_initData: function(){
+			
+			this.oSelectedCustomer = new JSONModel({
+				"BPID" : "ABC",
+				"FullName": "",
+				"EmailAddress": "",
+				"StreetName": "",
+				"CityName" : "",
+				"PostalCode" : "",
+				"BPRole": ""
+			});
+			this.getView().setModel(this.oSelectedCustomer,"customerData");
+		},
 		// #region
 		onValueHelpRequested: function() {
 			var aCols = this.oColModel.getData().cols;
@@ -93,16 +105,16 @@ sap.ui.define([
 			
 			if (aTokens.length) {	
 				
-				var sKey = aTokens[0].getKey();	
-				var oCustomer = this._getCustomerByKey(sKey);
-				//this.oCustomersModel.setProperty("/SelectedCustomer",oCustomer);
-				this.oSelectedCustomerModel.setProperty("/SelectedCustomer",oCustomer);
+				//var sKey = aTokens[0].getKey();	
+				var oObject = aTokens[0].data();
+				var oCustomer = oObject.row;
+				
+				this.oSelectedCustomer.setProperty("/",oCustomer);
+				
 				
 				
 			}
 			
-			//this.getView().setModel(this.oCustomersModel);
-			this.getView().setModel(this.oSelectedCustomerModel);
 			
 			this._oValueHelpDialog.close();
 		},
@@ -213,15 +225,5 @@ sap.ui.define([
 		},
 
 		// #endregion
-		_getCustomerByKey: function(sKey) {
-				var oData = this.oCustomersModel.getData().Customers;
-				
-				var index = $.inArray(sKey, $.map(oData, function(n){
-				    return n.BP;
-				}));
-				return this.oCustomersModel.getProperty("/Customers/" + index);
-				
-			},
-	
 	});
 });
