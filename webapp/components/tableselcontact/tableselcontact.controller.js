@@ -243,27 +243,17 @@ sap.ui.define([
 		},
 
 		// #endregion
-		_getCustomerByKey: function(sKey) {
-				var oData = this.oCustomersModel.getData().Customers;
-				
-				var index = $.inArray(sKey, $.map(oData, function(n){
-				    return n.BP;
-				}));
-				return this.oCustomersModel.getProperty("/Customers/" + index);
-				
-		},
 		
 		_getListTokens: function() {
 			var aTokens = [];
-			//var aCustomers = this.getView().getModel().getProperty("/SelectedCustomers");
-			var aCustomers = this.oSelectedContacts.getProperty("/SelectedCustomers");
+			var aCustomers = this.oSelectedContacts.getProperty("/");
 			
 			if (aCustomers) {
 				
 				aCustomers.map(function(customer){
 					var oToken = new Token({
-						key: customer.BP,
-						text: customer.Name
+						key: customer.BPID,
+						text: customer.FullName
 					});
 					
 					aTokens.push(oToken); 
