@@ -1,14 +1,12 @@
 <mvc:View height="100%" controllerName="refx.leaseuix.components.formselcustomer.formselcustomer"
 		  xmlns:mvc="sap.ui.core.mvc"
-		  xmlns:layout="sap.ui.layout"
 		  xmlns:form="sap.ui.layout.form"
 		  xmlns="sap.m"
 		  xmlns:core="sap.ui.core">
 
-	<layout:Grid defaultSpan="L12 M12 S12" class="customCSS">
-		<layout:content>
-			
+
 		<form:Form id="FormDisplay480_12120"
+			class="customCSS"
 			editable="false">
 			<form:toolbar>
 				<Toolbar id="TB1">
@@ -65,6 +63,5 @@
 				</form:FormContainer>
 			</form:formContainers>
 		</form:Form>
-		</layout:content>
-	</layout:Grid>
+	
 </mvc:View>

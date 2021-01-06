@@ -23,7 +23,7 @@
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="BP" />
+							<m:Input name="BPID" />
 						</fb:control>
 					</fb:FilterGroupItem>
 				
@@ -34,7 +34,7 @@
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="Name" />
+							<m:Input name="FullName" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
@@ -44,17 +44,17 @@
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="Email" />
+							<m:Input name="EmailAddress" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="CustomerId"
-						label="Customer Id"
+						name="Address"
+						label="Address"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="CustomerId" />
+							<m:Input name="StreetName" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					

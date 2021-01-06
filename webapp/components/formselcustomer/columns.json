@@ -9,13 +9,14 @@
 			"label": "Name",
 			"template": "FullName"
 		},
-		{
-			"label": "Role",
-			"template": "BPRole"
-		},
+		
 		{
 			"label": "Email",
 			"template": "EmailAddress"
+		},
+		{
+			"label": "Address",
+			"template": "StreetName"
 		}
 	]
 }

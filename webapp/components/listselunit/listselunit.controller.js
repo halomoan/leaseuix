@@ -17,7 +17,7 @@ sap.ui.define([
 		formatter: formatter,
 		onInit: function () {
 
-			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/model") + "/rentalunitcolumns.json");
+			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/listselunit") + "/columns.json");
 			
 			this._initData();
 		},

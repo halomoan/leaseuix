@@ -1,16 +1,14 @@
 <mvc:View height="100%" controllerName="refx.leaseuix.components.tableselcontact.tableselcontact"
-		  xmlns:layout="sap.ui.layout"
 		  xmlns="sap.ui.table"
 		  xmlns:mvc="sap.ui.core.mvc"
 		  xmlns:u="sap.ui.unified"
 		  xmlns:m="sap.m"
 		  xmlns:core="sap.ui.core">
 
-	<layout:Grid defaultSpan="L12 M12 S12" class="customCSS">
-		<layout:content>
+
 		<Table  
 				id="Table1"
-				rows="{/SelectedCustomers}"
+				rows="{customerData>/}"
 				selectionMode="MultiToggle"
 				visibleRowCount="7"
 				ariaLabelledBy="title">
@@ -29,32 +27,31 @@
 				</extension>
 				<columns>
 					<Column width="7rem" >
-						<m:Label text="Customer Id" />
+						<m:Label text="BP No." />
 						<template>
-							<m:Text text="{CustomerId}" wrapping="false" />
+							<m:Text text="{customerData>BPID}" wrapping="false" />
 						</template>
 					</Column>
 					<Column >
 						<m:Label text="{i18n>Name}" />
 						<template>
-							<m:Text text="{Name}"/>
+							<m:Text text="{customerData>FullName}"/>
 						</template>
 					</Column>
 					<Column >
 						<m:Label text="{i18n>Address}" />
 						<template>
-							<m:Text text="{Address}"/>
+							<m:Text text="{customerData>StreetName}, {customerData>CityName} - {customerData>PostalCode}"/>
 						</template>
 					</Column>
 					<Column >
 						<m:Label text="{i18n>Email}" />
 						<template>
-							<m:Text text="{Email}"/>
+							<m:Text text="{customerData>EmailAddress}"/>
 						</template>
 					</Column>
 				
 				</columns>
 			</Table>
-		</layout:content>
-	</layout:Grid>
+		
 </mvc:View>

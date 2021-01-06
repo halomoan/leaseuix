@@ -16,18 +16,35 @@ sap.ui.define([
 		onInit: function () {
 		
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/tableselcontact") + "/columns.json");
-			this.oCustomersModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/contacts.json");
-			this.getView().setModel(this.oCustomersModel);
+			// var oGlobalModel = this.getModel("globalData");
+			// this.CompanyCode = oGlobalModel.getProperty("/CompanyCode");
+			// this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
 			
-			this.oSelectedContacts = this.getModel("selectedContacts");
+			this.oFilterBPRole = new Filter("BPRole", FilterOperator.EQ, "BPL002"); // Filter BP Role
+			this.aFilters = [this.oFilterBPRole];
+			
+			this._initData();
+		},
+		
+		_initData: function(){
+			this.oSelectedContacts = new JSONModel(
+				 [ {
+				"BPID" : "ABC",
+				"FullName": "",
+				"EmailAddress": "",
+				"StreetName": "",
+				"CityName" : "",
+				"PostalCode" : "",
+				"BPRole": ""
+				} ]);
+			this.getView().setModel(this.oSelectedContacts,"customerData");
 		},
 
 		onDelete: function(oEvent){
 			
 			
 			var oTable = this.getView().byId("Table1");
-			//var aData = this.oCustomersModel.getData().SelectedCustomers;
-			var aData = this.oSelectedContacts.getData().SelectedCustomers;
+			var aData = this.oSelectedContacts.getData();
 			var aIndices = oTable.getSelectedIndices();	
 			
 			for ( var i = aIndices.length-1; i >=0; --i) {
@@ -36,8 +53,7 @@ sap.ui.define([
 			}
 			
 			oTable.clearSelection();
-			//this.oCustomersModel.setProperty('/SelectedCustomers',aData);
-			this.oSelectedContacts.setProperty('/SelectedCustomers',aData);
+			this.oSelectedContacts.setProperty('/',aData);
 			
 		},
 		
@@ -53,13 +69,17 @@ sap.ui.define([
 
 			this._oValueHelpDialog.setRangeKeyFields([{
 				label: "BP",
-				key: "BP",
+				key: "BPID",
 				type: "string",
 				typeInstance: new typeString({}, {
 					maxLength: 7
 				})
 			}]);
-
+			
+			this._oValueHelpDialog.setTokenDisplayBehaviour(sap.ui.comp.smartfilterbar.DisplayBehaviour.descriptionOnly);
+			this._oValueHelpDialog.setKey("BPID");
+			this._oValueHelpDialog.setDescriptionKey('FullName');
+			
 			var oFilterBar = this._oValueHelpDialog.getFilterBar();
 			oFilterBar.setFilterBarExpanded(false);
 			oFilterBar.setBasicSearch(this._oBasicSearchField);
@@ -69,11 +89,17 @@ sap.ui.define([
 				oTable.setModel(this.oColModel, "columns");
 
 				if (oTable.bindRows) {
-					oTable.bindAggregation("rows", "/Customers");
+						oTable.bindAggregation("rows", {
+						path: "/BusinessPartnerSet",
+						filters: this.aFilters
+					});
 				}
 
 				if (oTable.bindItems) {
-					oTable.bindAggregation("items", "/Customers", function () {
+					oTable.bindAggregation("items", {
+						path: "/BusinessPartnerSet",
+						filters: this.aFilters
+						},  function () {
 						return new ColumnListItem({
 							cells: aCols.map(function (column) {
 								return new Label({ text: "{" + column.template + "}" });
@@ -92,22 +118,21 @@ sap.ui.define([
 		onValueHelpOkPress: function (oEvent) {
 			var aTokens = oEvent.getParameter("tokens");
 			var aCustomers = [];
-			var oThis = this;
 	
 			if (aTokens.length) {	
 			
-				
 				aTokens.map(function(token){
-					var sKey = token.getKey();	
-					var oCustomer = oThis._getCustomerByKey(sKey);
+				
+					
+					var oObject = token.data();
+					var oCustomer = oObject.row;
 					
 					aCustomers.push(oCustomer);
 					
 				});
 				
-				//this.oCustomersModel.setProperty("/SelectedCustomers",aCustomers);
-				this.oSelectedContacts.setProperty('/SelectedCustomers',aCustomers);
-				this.getView().setModel(this.oSelectedContacts);
+				this.oSelectedContacts.setProperty('/',aCustomers);
+				
 			}
 			this._oValueHelpDialog.close();
 		},
@@ -165,22 +190,40 @@ sap.ui.define([
 			
 		
 			
-			aFilters.push(new Filter({
-				filters: [
-					new Filter({ path: "BP", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "Name", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "Email", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "CustomerId", operator: FilterOperator.Contains, value1: sSearchQuery })
+			// aFilters.push(new Filter({
+			// 	filters: [
+			// 		new Filter({ path: "BP", operator: FilterOperator.Contains, value1: sSearchQuery }),
+			// 		new Filter({ path: "Name", operator: FilterOperator.Contains, value1: sSearchQuery }),
+			// 		new Filter({ path: "Email", operator: FilterOperator.Contains, value1: sSearchQuery }),
+			// 		new Filter({ path: "CustomerId", operator: FilterOperator.Contains, value1: sSearchQuery })
 					
-				],
-				and: false
-			}));
+			// 	],
+			// 	and: false
+			// }));
 		
 
-			this._filterTable(new Filter({
-				filters: aFilters,
-				and: true
-			}));
+			if (sSearchQuery) {
+			
+				aFilters.push(new Filter({
+					filters: [
+						new Filter({
+							path: "FullName",
+							operator: FilterOperator.Contains,
+							value1: sSearchQuery
+						})
+					],
+					and: false
+				}));
+			}
+			
+			if (aFilters.length > 0) {
+				this._filterTable(new Filter({
+					filters: aFilters,
+					and: true
+				}));
+			} else {
+				this._filterTable([]);
+			}
 		},
 
 		_filterTable: function (oFilter) {

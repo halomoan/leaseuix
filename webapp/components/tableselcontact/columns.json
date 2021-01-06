@@ -1,21 +1,22 @@
 {
 	"cols": [
 		{
-			"label": "Customer Id",
-			"template": "CustomerId",
+			"label": "Business Partner",
+			"template": "BPID",
 			"width": "7rem"
 		},
 		{
 			"label": "Name",
-			"template": "Name"
+			"template": "FullName"
+		},
+		
+		{
+			"label": "Email",
+			"template": "EmailAddress"
 		},
 		{
 			"label": "Address",
-			"template": "Address"
-		},
-		{
-			"label": "Email",
-			"template": "Email"
+			"template": "StreetName"
 		}
 	]
 }

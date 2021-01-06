@@ -16,10 +16,7 @@ sap.ui.define([
 		onInit: function () {
 		
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/formselcustomer") + "/columns.json");
-			// this.oCustomersModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/customers.json");
-			// this.oSelectedCustomerModel = this.getModel("selectedCust");
-			// this.getView().setModel(this.oCustomersModel);
-			
+		
 			var oGlobalModel = this.getModel("globalData");
 			
 			this.CompanyCode = oGlobalModel.getProperty("/CompanyCode");
@@ -101,18 +98,15 @@ sap.ui.define([
 		onValueHelpOkPress: function (oEvent) {
 			var aTokens = oEvent.getParameter("tokens");
 			
-			//this._oInput.setSelectedKey(aTokens[0].getKey());
-			
 			if (aTokens.length) {	
 				
-				//var sKey = aTokens[0].getKey();	
 				var oObject = aTokens[0].data();
 				var oCustomer = oObject.row;
 				
 				this.oSelectedCustomer.setProperty("/",oCustomer);
 				
-				
-				
+			    var oFormModel = this.getModel("contractForm");
+				oFormModel.setProperty("/Customer",oCustomer);
 			}
 			
 			
@@ -171,18 +165,6 @@ sap.ui.define([
 			}, []);
 			
 		
-			
-			// aFilters.push(new Filter({
-			// 	filters: [
-			// 		new Filter({ path: "BP", operator: FilterOperator.Contains, value1: sSearchQuery }),
-			// 		new Filter({ path: "Name", operator: FilterOperator.Contains, value1: sSearchQuery }),
-			// 		new Filter({ path: "Email", operator: FilterOperator.Contains, value1: sSearchQuery }),
-			// 		new Filter({ path: "CustomerId", operator: FilterOperator.Contains, value1: sSearchQuery })
-					
-			// 	],
-			// 	and: false
-			// }));
-		
 
 			if (sSearchQuery) {
 			
@@ -222,7 +204,7 @@ sap.ui.define([
 
 				oValueHelpDialog.update();
 			});
-		},
+		}
 
 		// #endregion
 	});
