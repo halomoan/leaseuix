@@ -16,10 +16,20 @@ sap.ui.define([
 		onInit: function () {
 		
 			this.oColModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/components/formselcustomer") + "/columns.json");
-			this.oCustomersModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/customers.json");
+			// this.oCustomersModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/customers.json");
+			// this.oSelectedCustomerModel = this.getModel("selectedCust");
+			// this.getView().setModel(this.oCustomersModel);
 			
-			this.oSelectedCustomerModel = this.getModel("selectedCust");
-			this.getView().setModel(this.oCustomersModel);
+			var oGlobalModel = this.getModel("globalData");
+			
+			this.CompanyCode = oGlobalModel.getProperty("/CompanyCode");
+			this.oFilterCoCode = new Filter("CompanyCode", FilterOperator.EQ, this.CompanyCode); // Filter Company Code
+			
+			this.oFilterBPRole = new Filter("BPRole", FilterOperator.EQ, "BPR101"); // Filter BP Role
+			this.aFilters = [this.oFilterCoCode,this.oFilterBPRole];
+			
+			this.oContractForm = this.getModel("contractForm");
+			this.getView().setModel(this.oContractForm,"formData");
 		},
 
 		// #region
@@ -50,11 +60,17 @@ sap.ui.define([
 				oTable.setModel(this.oColModel, "columns");
 
 				if (oTable.bindRows) {
-					oTable.bindAggregation("rows", "/Customers");
+					oTable.bindAggregation("rows", {
+						path: "/BusinessPartnerSet",
+						filters: this.aFilters
+					});
 				}
 
 				if (oTable.bindItems) {
-					oTable.bindAggregation("items", "/Customers", function () {
+					oTable.bindAggregation("items", {
+						path: "/BusinessPartnerSet",
+						filters: this.aFilters
+					}, function () {
 						return new ColumnListItem({
 							cells: aCols.map(function (column) {
 								return new Label({ text: "{" + column.template + "}" });
@@ -144,22 +160,40 @@ sap.ui.define([
 			
 		
 			
-			aFilters.push(new Filter({
-				filters: [
-					new Filter({ path: "BP", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "Name", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "Email", operator: FilterOperator.Contains, value1: sSearchQuery }),
-					new Filter({ path: "CustomerId", operator: FilterOperator.Contains, value1: sSearchQuery })
+			// aFilters.push(new Filter({
+			// 	filters: [
+			// 		new Filter({ path: "BP", operator: FilterOperator.Contains, value1: sSearchQuery }),
+			// 		new Filter({ path: "Name", operator: FilterOperator.Contains, value1: sSearchQuery }),
+			// 		new Filter({ path: "Email", operator: FilterOperator.Contains, value1: sSearchQuery }),
+			// 		new Filter({ path: "CustomerId", operator: FilterOperator.Contains, value1: sSearchQuery })
 					
-				],
-				and: false
-			}));
+			// 	],
+			// 	and: false
+			// }));
 		
 
-			this._filterTable(new Filter({
-				filters: aFilters,
-				and: true
-			}));
+			if (sSearchQuery) {
+			
+				aFilters.push(new Filter({
+					filters: [
+						new Filter({
+							path: "FullName",
+							operator: FilterOperator.Contains,
+							value1: sSearchQuery
+						})
+					],
+					and: false
+				}));
+			}
+			
+			if (aFilters.length > 0) {
+				this._filterTable(new Filter({
+					filters: aFilters,
+					and: true
+				}));
+			} else {
+				this._filterTable([]);
+			}
 		},
 
 		_filterTable: function (oFilter) {

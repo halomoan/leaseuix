@@ -18,43 +18,43 @@
 				<fb:filterGroupItems>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="BP"
+						name="BPID"
 						label="BP No"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="BP" />
+							<m:Input name="BPID" />
 						</fb:control>
 					</fb:FilterGroupItem>
 				
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
 						name="Name"
-						label="Name"
+						label="FullName"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="Name" />
+							<m:Input name="FullName" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="Email"
+						name="EmailAddress"
 						label="Email"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="Email" />
+							<m:Input name="EmailAddress" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
 						groupName="__$INTERNAL$"
-						name="CustomerId"
-						label="Customer Id"
+						name="StreetName"
+						label="Street"
 						visibleInFilterBar="true"
 					>
 						<fb:control>
-							<m:Input name="CustomerId" />
+							<m:Input name="StreetName" />
 						</fb:control>
 					</fb:FilterGroupItem>
 					

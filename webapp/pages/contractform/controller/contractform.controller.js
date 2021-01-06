@@ -11,8 +11,6 @@ sap.ui.define([
 				this.oContractForm = this.getModel("contractForm");
 				this.getView().setModel(this.oContractForm,"formData");
 				
-				//this.oContractFormValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/contractformvalues.json");
-				//this.getView().setModel(this.oContractFormValuesModel,"contractformvalues");
 				var oGlobalModel = this.getModel("globalData");
 				
 				this.getView().byId("Bukrs").bindElement(
@@ -27,9 +25,6 @@ sap.ui.define([
 				
 			},
 
-			fromDateChanged: function(oEvent){
-				console.log(this.oContractForm);
-			},
 			onExit: function() {
 		
 			}
