@@ -21,11 +21,12 @@ sap.ui.define([
 		_formFragments: {},
 
 		onInit: function() {
-			this.initData();
+			this._initData();
 			this._attachDragAndDrop();
 		},
-		initData: function() {
-			var viewData = {
+		_initData: function() {
+			
+			var viewData = new JSONModel({
 				"stdwzd": {
 					"showOK": false
 				},
@@ -40,14 +41,46 @@ sap.ui.define([
 				},
 				"formdata": {},
 				"condgroup": {}
-			};
-			this.getView().setModel(new JSONModel(viewData));
+			});
+			this.getView().setModel(viewData,"viewData");
+			
+			
 
-			this.oConditionValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/condformvalues.json");
+			var oModel = this.getModel();
+			var oThis = this;
+			oModel.read("/ConditionTypeSet",{
+				filters: [new Filter("Lang", "EQ", 'EN'),new Filter("Id", "StartsWith", 'L')],
+				success: function (oData, oResponse) {
+						
+						
+				   if (oData.results && oData.results.length > 0){
+						var aResults = {
+							"condlist" : []
+						};
+				   		oData.results.map((cond) => {
+				   			var oItem = {
+				   				"id": cond.Id,
+								"title": cond.Text,
+								"rows": 4,
+								"columns": 5,
+								"cond": [
+					
+								]
+				   			};
+				   			aResults.condlist.push(oItem);
+				   		})
+				   }
+			       oThis.getView().setModel( new JSONModel(aResults) , "condformvalues");
+			    },
+			    error: function (oError) {
+			        console.log(oError);
+			    }
+			})
+			//this.oConditionValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/condformvalues.json");
 			this.oConditionModel = this.getModel("conditions");
-			this.byId("grid1").setModel(this.oConditionModel);
+			this.byId("grid1").setModel(this.oConditionModel,"gridData");
 
-			this.getView().setModel(this.oConditionValuesModel, "condformvalues");
+			//this.getView().setModel(this.oConditionValuesModel, "condformvalues");
 
 			this._DateSort = 1;
 		},
@@ -274,7 +307,7 @@ sap.ui.define([
 		// },
 		openStdWizardFrom: function() {
 
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.standardwizard");
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.standardwizard",this);
 			var navCon = this.byId("navStdWzd");
 			navCon.to(this.byId("stdForm0"), "show");
 		},
@@ -298,7 +331,7 @@ sap.ui.define([
 			oView.getModel().setProperty("/stgwzd/showOK", false);
 			oView.getModel().setProperty("/stgwzd/conds", []);
 
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.staggeredwizard");
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.staggeredwizard",this);
 			var navCon = this.byId("navStgWzd");
 			navCon.to(this.byId("stgForm0"), "show");
 		},
@@ -688,7 +721,7 @@ sap.ui.define([
 			
 
 			} else {
-				oDropModel = oDropContainer.getModel();
+				oDropModel = oDropContainer.getModel("gridData");
 				oDropModelData = oDropModel.getData();
 			
 			}
@@ -715,6 +748,7 @@ sap.ui.define([
 				iDropPosition++;
 			}
 
+			console.log(oDropModelData);
 			// insert the control in target aggregation
 			oDropModelData.splice(iDropPosition, 0, oItem);
 

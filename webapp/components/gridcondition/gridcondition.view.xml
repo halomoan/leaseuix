@@ -2,60 +2,42 @@
 	xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:card="sap.f.cards" displayBlock="true" height="100%">
 	<ScrollContainer height="100%" width="100%" vertical="true" class="customCSS">
 		<HBox renderType="Bare">
-		<VBox >
-			
-			<HBox justifyContent="SpaceBetween">
-			<Title text="Use Wizard" class="sapUiTinyMarginTop customCSS fontSize1_5"></Title>
-			<MenuButton text="Click To Select" type="Accept">
-				<menu>
-					<Menu itemSelected="onMenuAction">
-						<MenuItem id="wzd1" text="Standard Rent Wizard" icon="sap-icon://activate" />
-						<MenuItem id="wzd2" text="Staged Rent Wizard" icon="sap-icon://horizontal-waterfall-chart" />
-					</Menu>
-				</menu>
-			</MenuButton>
-			</HBox>
-			<List id="list1" class="" width="300px" items="{ path: 'condformvalues>/condlist' }"
-				growingScrollToLoad="true">
-				<StandardListItem title="{condformvalues>id} - {condformvalues>title}"/>
-				<headerToolbar>
-					<OverflowToolbar>
-						<Title text="Or Pick A Condition" level="H2"/>
-						<ToolbarSpacer/>
-						<SearchField liveChange=".onSearch" width="100%"/>
-					</OverflowToolbar>
-				</headerToolbar>
-			</List>
-		
-		</VBox>		
-	
-		
-			<f:GridContainer id="grid1" class="sapUiTinyMargin" width="100%" snapToRow="true" items="{ path: '/' }">
+			<VBox >
+				<HBox justifyContent="SpaceBetween">
+					<Title text="Use Wizard" class="sapUiTinyMarginTop customCSS fontSize1_5"></Title>
+					<MenuButton text="Click To Select" type="Accept">
+						<menu>
+							<Menu itemSelected="onMenuAction">
+								<MenuItem id="wzd1" text="Standard Rent Wizard" icon="sap-icon://activate"/>
+								<MenuItem id="wzd2" text="Staged Rent Wizard" icon="sap-icon://horizontal-waterfall-chart"/>
+							</Menu>
+						</menu>
+					</MenuButton>
+				</HBox>
+				<List id="list1" class="" width="300px" items="{ path: 'condformvalues>/condlist' }" growingScrollToLoad="true">
+					<StandardListItem title="{condformvalues>id} - {condformvalues>title}"/>
+					<headerToolbar>
+						<OverflowToolbar>
+							<Title text="Or Pick A Condition" level="H2"/>
+							<ToolbarSpacer/>
+							<SearchField liveChange=".onSearch" width="100%"/>
+						</OverflowToolbar>
+					</headerToolbar>
+				</List>
+			</VBox>
+			<f:GridContainer id="grid1" class="sapUiTinyMargin" width="100%" snapToRow="true" items="{ path: 'gridData>/' }">
 				<f:layout>
 					<f:GridContainerSettings rowSize="84px" columnSize="84px" gap="8px"/>
 				</f:layout>
 				<f:layoutXS>
 					<f:GridContainerSettings rowSize="70px" columnSize="70px" gap="8px"/>
 				</f:layoutXS>
-				<f:Card >
+				<f:Card>
 					<f:layoutData>
-						<f:GridContainerItemLayoutData minRows="{rows}" columns="{columns}"/>
+						<f:GridContainerItemLayoutData minRows="{gridData>rows}" columns="{gridData>columns}"/>
 					</f:layoutData>
 					<f:header>
-				
-						<Toolbar class="sapUiSmallMargin" id="toolbar1">
-							<core:Icon src="sap-icon://capital-projects" class="iconSize2_5" color="green"></core:Icon>
-							<VBox>
-								<Label text="{title}" design="Bold"></Label>
-								<Label text="{i18n>Condition} : {id}"></Label>
-							</VBox>
-							<ToolbarSpacer/>
-							<Link text="Delete" press="onDelete"/>
-							<Label text="|" width="5px"></Label>
-							<Link text="Add Item" press="onItemAdd"/>
-							<Button type="Transparent" tooltip="Toggle Sort By Date" icon="sap-icon://sort" press=".onDateSort"/>
-						</Toolbar>
-						<!--<card:Header title="{title}" subtitle="{i18n>Condition} : {id}" iconSrc="sap-icon://capital-projects"/>-->
+						<card:Header title="{gridData>title}" subtitle="{i18n>Condition} : {gridData>id}" iconSrc="sap-icon://capital-projects"/>
 					</f:header>
 					<f:content>
 						<core:Fragment id="fr1" fragmentName="refx.leaseuix.components.gridcondition.listcondition" type="XML"/>

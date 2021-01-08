@@ -41,6 +41,15 @@
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
+			<ObjectPageSection titleUppercase="false" id="section3" title="Condition">
+				<subSections>
+					<ObjectPageSubSection id="condition" title="Condition" titleUppercase="false">
+						<blocks>
+							<contract:ConditionBlock1 id="blk3"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
 		</sections>
 	</ObjectPageLayout>
 

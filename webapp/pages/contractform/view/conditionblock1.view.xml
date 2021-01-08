@@ -1,0 +1,3 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+<mvc:XMLView viewName="refx.leaseuix.components.gridcondition.gridcondition" id="gridcondition" async="true"></mvc:XMLView>
+</mvc:View>
