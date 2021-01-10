@@ -11,7 +11,8 @@
 	"Name": "#02-60to67; Outdoor Life Pte. Ltd [Outdoor Life]",
 	"IndustryId": "",
 	"Industry": "",
-	"RefSales" : true
-	
+	"RefSales" : true,
+	"SelectedUnits" : [],
+	"Conditions": []
 	
 }

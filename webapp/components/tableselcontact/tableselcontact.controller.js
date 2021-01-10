@@ -28,15 +28,7 @@ sap.ui.define([
 		
 		_initData: function(){
 			this.oSelectedContacts = new JSONModel(
-				 [ {
-				"BPID" : "ABC",
-				"FullName": "",
-				"EmailAddress": "",
-				"StreetName": "",
-				"CityName" : "",
-				"PostalCode" : "",
-				"BPRole": ""
-				} ]);
+				 [ ]);
 			this.getView().setModel(this.oSelectedContacts,"customerData");
 		},
 

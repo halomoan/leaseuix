@@ -44,19 +44,19 @@ sap.ui.define([
 			});
 			this.getView().setModel(viewData,"viewData");
 			
-			
 
 			var oModel = this.getModel();
 			var oThis = this;
+			
+			var oConditionValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/condformvalues.json");
+						
 			oModel.read("/ConditionTypeSet",{
 				filters: [new Filter("Lang", "EQ", 'EN'),new Filter("Id", "StartsWith", 'L')],
 				success: function (oData, oResponse) {
-						
+					var aResults = oConditionValuesModel.getData();
 						
 				   if (oData.results && oData.results.length > 0){
-						var aResults = {
-							"condlist" : []
-						};
+						
 				   		oData.results.map((cond) => {
 				   			var oItem = {
 				   				"id": cond.Id,
@@ -68,19 +68,22 @@ sap.ui.define([
 								]
 				   			};
 				   			aResults.condlist.push(oItem);
+				   			
+				   			if (cond.Text.startsWith("Sales-Based")){
+				   				aResults.salesbasedcond.push(cond.Id);
+				   			}
 				   		})
 				   }
-			       oThis.getView().setModel( new JSONModel(aResults) , "condformvalues");
+					
+					//condition sales base rule
+					aResults.salesrules = [{ Id: "10", Text: "Sales Rule"}];
+			        oThis.getView().setModel( new JSONModel(aResults) , "condformvalues");
 			    },
 			    error: function (oError) {
-			        console.log(oError);
+			       //console.log(oError);
 			    }
 			})
-			//this.oConditionValuesModel = new JSONModel(sap.ui.require.toUrl("refx/leaseuix/mockdata") + "/condformvalues.json");
-			this.oConditionModel = this.getModel("conditions");
-			this.byId("grid1").setModel(this.oConditionModel,"gridData");
-
-			//this.getView().setModel(this.oConditionValuesModel, "condformvalues");
+			this.byId("grid1").setModel(new JSONModel([]),"gridData");
 
 			this._DateSort = 1;
 		},
@@ -109,8 +112,8 @@ sap.ui.define([
 		},
 
 		onDelete: function(oEvent) {
-			var sPath = oEvent.getSource().getBindingContext().getPath();
-			var oModel = oEvent.getSource().getModel();
+			var sPath = oEvent.getSource().getBindingContext("gridData").getPath();
+			var oModel = oEvent.getSource().getModel("gridData");
 			var oData = oModel.getData();
 			var idx = sPath.split('/')[1];
 
@@ -165,14 +168,15 @@ sap.ui.define([
 		},
 
 		onItemEdit: function(oEvent) {
-			var sPath = oEvent.getSource().getBindingContext().getPath();
-			var oModel = oEvent.getSource().getModel();
-
+			var sPath = oEvent.getSource().getBindingContext("gridData").getPath();
+			var oModel = oEvent.getSource().getModel("gridData");
+			
+			
 			var oData = oModel.getProperty(sPath);
 
 			var idx = sPath.indexOf("/", 1);
 			var sPathHeader = sPath.substring(0, idx);
-			var oCondGroup = this.byId("grid1").getModel().getProperty(sPathHeader);
+			var oCondGroup = this.byId("grid1").getModel("gridData").getProperty(sPathHeader);
 
 			var oCondition = {};
 			Object.keys(oCondGroup).forEach(key => {
@@ -180,34 +184,49 @@ sap.ui.define([
 			});
 			oCondition["cond"] = [oData];
 
-			this.getView().getModel().setProperty("/condgroup", oCondGroup);
-			this.getView().getModel().setProperty("/formdata", oCondition);
+			this.getView().getModel("viewData").setProperty("/condgroup", oCondGroup);
+			this.getView().getModel("viewData").setProperty("/formdata", oCondition);
 
 			this.openConditionForm();
 
 		},
-		
-		_specialCond: function(oModel,sId,oItem) {
-			var oSalesBasedCond = oModel.getData().salesbasedcond;
-			
-			if (oSalesBasedCond.includes(sId)){
-				oItem.techstatus.showrate = false;
-			} else {
-				oItem.techstatus.showrate = true;
-			}
-			
+		onItemDelete: function(oEvent) {
+
+			var sPath = oEvent.getSource().getBindingContext("gridData").getPath();
+			var idx = sPath.split('/')[3];
+			var oModel = oEvent.getSource().getModel("gridData");
+			var oData = oModel.getData();
+
+			var sText = "Are you sure to delete ?";
+
+			MessageBox.confirm(sText, {
+				title: "Confirmation",
+				initialFocus: MessageBox.Action.CANCEL,
+				onClose: function(sButton) {
+					if (sButton === MessageBox.Action.OK) {
+						oData[0].cond.splice(idx, 1);
+						oModel.refresh();
+					}
+					// else if (sButton === MessageBox.Action.CANCEL) {
+					//     console.log('A');
+					// } else if (sButton === "Custom Button") {
+					//   console.log('B');
+					// .}
+				}
+			});
 		},
+	
 		onItemAdd: function(oEvent) {
 
 			var oVModel = this.getView().getModel("condformvalues");
 			
 			var oNewItem = {...oVModel.getData().conditem};
 
-			var sPath = oEvent.getSource().getBindingContext().getPath();
-			var oModel = oEvent.getSource().getModel();
-			var oCondGroup = oModel.getProperty(sPath);
-
-
+			var sPath = oEvent.getSource().getBindingContext("gridData").getPath();
+			var oGridModel = oEvent.getSource().getModel("gridData");
+			var oCondGroup = oGridModel.getProperty(sPath);
+			
+			
 			this._specialCond(oVModel,oCondGroup.id,oNewItem);
 
 			
@@ -242,14 +261,24 @@ sap.ui.define([
 			});
 			oCondition["cond"] = [oCondGroup.cond[iIndex + 1]];
 
-			this.getView().getModel().setProperty("/condgroup", oCondGroup);
-			this.getView().getModel().setProperty("/formdata", oCondition);
-			//this.getView().getModel().refresh();
+		
+			this.getView().getModel("viewData").setProperty("/condgroup", oCondGroup);
+			this.getView().getModel("viewData").setProperty("/formdata", oCondition);
+			oGridModel.refresh();
 
 			this.openConditionForm();
 
 		},
-
+		_specialCond: function(oModel,sId,oItem) {
+			var oSalesBasedCond = oModel.getData().salesbasedcond;
+			
+			if (oSalesBasedCond.includes(sId)){
+				oItem.techstatus.showrate = false;
+			} else {
+				oItem.techstatus.showrate = true;
+			}
+			
+		},
 		_getHightlight: function(sFromDate, sToDate) {
 			var oFromDate = new Date(this.formatter.yyyy_MM_dd(sFromDate));
 			var oToDate = new Date(this.formatter.yyyy_MM_dd(sToDate));
@@ -273,31 +302,7 @@ sap.ui.define([
 			}
 		},
 
-		onItemDelete: function(oEvent) {
-
-			var sPath = oEvent.getSource().getBindingContext().getPath();
-			var idx = sPath.split('/')[3];
-			var oModel = oEvent.getSource().getModel();
-			var oData = oModel.getData();
-
-			var sText = "Are you sure to delete ?";
-
-			MessageBox.confirm(sText, {
-				title: "Confirmation",
-				initialFocus: MessageBox.Action.CANCEL,
-				onClose: function(sButton) {
-					if (sButton === MessageBox.Action.OK) {
-						oData[0].cond.splice(idx, 1);
-						oModel.refresh();
-					}
-					// else if (sButton === MessageBox.Action.CANCEL) {
-					//     console.log('A');
-					// } else if (sButton === "Custom Button") {
-					//   console.log('B');
-					// .}
-				}
-			});
-		},
+	
 		// onValidateFieldGroup: function(oEvent) {
 
 		// 	$('input[aria-required=true]').each(function(){
@@ -325,11 +330,11 @@ sap.ui.define([
 				});
 			}
 
-			oView.getModel().setProperty("/stgwzd/stgItems", aStgItems);
-			oView.getModel().setProperty("/condgroup", oTemplateCond);
-			oView.getModel().setProperty("/stgwzd/index", 0);
-			oView.getModel().setProperty("/stgwzd/showOK", false);
-			oView.getModel().setProperty("/stgwzd/conds", []);
+			oView.getModel("viewModel").setProperty("/stgwzd/stgItems", aStgItems);
+			oView.getModel("viewModel").setProperty("/condgroup", oTemplateCond);
+			oView.getModel("viewModel").setProperty("/stgwzd/index", 0);
+			oView.getModel("viewModel").setProperty("/stgwzd/showOK", false);
+			oView.getModel("viewModel").setProperty("/stgwzd/conds", []);
 
 			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.staggeredwizard",this);
 			var navCon = this.byId("navStgWzd");
@@ -340,11 +345,11 @@ sap.ui.define([
 
 			this._formDataOri = {...oView.getModel().getProperty("/formdata")
 			};
-			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.conditionDialog");
+			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.conditionDialog",this);
 		},
 
 		cancelDialog: function() {
-			var oData = this.getView().getModel().getProperty("/formdata");
+			var oData = this.getView().getModel("viewData").getProperty("/formdata");
 
 			for (var key in this._formDataOri) {
 				oData[key] = this._formDataOri[key];
@@ -368,7 +373,7 @@ sap.ui.define([
 				var max = oView.getModel().getProperty("/stgwzd/max");
 				var aConditions = oView.getModel().getProperty("/stgwzd/conds");
 
-				var oCondGroup = this.getView().getModel().getProperty("/condgroup");
+				var oCondGroup = this.getView().getModel("viewData").getProperty("/condgroup");
 
 				if (index != 0) {
 					var oStatus = this._validForm("stgForm");
@@ -405,7 +410,7 @@ sap.ui.define([
 						oView.getModel().setProperty("/stgwzd/index", index);
 						oCondition.cond[0].id = index;
 						oCondGroup.cond[index - 1] = oCondition.cond[0];
-						this.getView().getModel().setProperty("/condgroup", oCondGroup);
+						this.getView().getModel("viewData").setProperty("/condgroup", oCondGroup);
 
 					}
 
@@ -509,10 +514,13 @@ sap.ui.define([
 		},
 
 		closeDialog: function() {
+			
 			var oStatus = this._validForm("form0");
-
+			
+		
+			
 			if (!oStatus.hasError) {
-				this.byId("grid1").getModel().refresh();
+				this.byId("grid1").getModel("gridData").refresh();
 				this.byId("conditionDialog").close();
 			} else {
 				MessageToast.show(oStatus.msg);
@@ -533,7 +541,7 @@ sap.ui.define([
 			}
 		},
 		_validForm: function(fragname) {
-			var oData = this.getView().getModel().getProperty("/formdata").cond[0];
+			var oData = this.getView().getModel("viewData").getProperty("/formdata").cond[0];
 			var fragId = this.getView().getId();
 			var oStatus = {
 				"hasError": false,
@@ -586,15 +594,12 @@ sap.ui.define([
 			} else {
 				sap.ui.core.Fragment.byId(fragId, formId + "fromDate").setValueState(sap.ui.core.ValueState.None);
 			}
-
-			var oCondGroup = this.getView().getModel().getProperty("/condgroup");
+			var oCondGroup = this.getView().getModel("viewData").getProperty("/condgroup");
 
 			oCondGroup.cond.forEach(function(cond) {
 
 				if (cond.id != oData.id && cond.condpurposeid === oData.condpurposeid) {
 
-					
-					
 					var bOverlap = (oData.fromDate >= cond.fromDate) && (oData.fromDate <= cond.toDate) ||
 						(cond.fromDate >= oData.fromDate) && (cond.fromDate <= oData.toDate);
 						
@@ -621,8 +626,8 @@ sap.ui.define([
 		},
 
 		onDateSort: function(oEvent) {
-			var sPath = oEvent.getSource().getBindingContext().getPath();
-			var oData = oEvent.getSource().getModel().getProperty(sPath);
+			var sPath = oEvent.getSource().getBindingContext("gridData").getPath();
+			var oData = oEvent.getSource().getModel("gridData").getProperty(sPath);
 
 			var aData = oData.cond;
 
@@ -637,7 +642,7 @@ sap.ui.define([
 			// } else {
 			// 	oEvent.getSource().setTooltip("Sort by Date Descending");
 			// }
-			oEvent.getSource().getModel().refresh();
+			oEvent.getSource().getModel("gridData").refresh();
 		},
 
 		// onCondFormChange: function(oEvent){
@@ -710,9 +715,9 @@ sap.ui.define([
 				oDragModelData = oDragModel.getData().condlist;
 
 			} else {
-				oDragModel = oDragContainer.getModel();
+				oDragModel = oDragContainer.getModel("gridData");
 				oDragModelData = oDragModel.getData();
-
+				
 			}
 
 			if (oDropped && oDropped.isA("sap.m.StandardListItem")) {
@@ -723,15 +728,25 @@ sap.ui.define([
 			} else {
 				oDropModel = oDropContainer.getModel("gridData");
 				oDropModelData = oDropModel.getData();
-			
+				
 			}
 
-			var iDragPosition = oDragContainer.indexOfItem(oDragged),
-				iDropPosition = oDropContainer.indexOfItem(oDropped);
+	
+		
 
+		
+				
 			// remove the item
-			var oItem = oDragModelData[iDragPosition];
-
+			//var oItem = oDragModelData[iDragPosition];
+			var sPath = oDragged.getBindingContext("condformvalues").getPath();
+			var oItem = oDragModel.getProperty(sPath);
+			
+			//var iDragPosition = oDragContainer.indexOfItem(oDragged),
+			var iDragPosition = sPath.match(/\d+$/g)[0],
+				iDropPosition = oDropContainer.indexOfItem(oDropped);
+			
+			
+			
 			if (oDragModel !== oDropModel && this._isCardExist(oItem.id)) {
 				MessageBox.error("Duplicate Condition Type detected !");
 				return false;
@@ -748,15 +763,19 @@ sap.ui.define([
 				iDropPosition++;
 			}
 
-			console.log(oDropModelData);
 			// insert the control in target aggregation
 			oDropModelData.splice(iDropPosition, 0, oItem);
+			
+		
 
 			if (oDragModel !== oDropModel) {
 				if (oDragged.isA("sap.m.StandardListItem")) {
 
 					oDragModel.setData(oDragModelData, "condformvalues");
 					oDropModel.setData(oDropModelData);
+					
+					var oFormModel = this.getModel("contractForm");
+					oFormModel.setProperty("/Conditions",oDropModelData);
 
 				} else {
 					oDragModel.setData(oDragModelData, "");
@@ -774,7 +793,7 @@ sap.ui.define([
 		},
 
 		_isCardExist: function(sKey) {
-			var oData = this.byId("grid1").getModel().getData();
+			var oData = this.byId("grid1").getModel("gridData").getData();
 
 			var index = $.inArray(sKey, $.map(oData, function(n) {
 				return n.id;

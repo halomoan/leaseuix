@@ -107,6 +107,8 @@ sap.ui.define([
 				
 			    var oFormModel = this.getModel("contractForm");
 				oFormModel.setProperty("/Customer",oCustomer);
+				
+				console.log(oFormModel);
 			}
 			
 			

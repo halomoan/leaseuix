@@ -1,56 +1,5 @@
 {
-	"condlist": [{
-			"id": "L101",
-			"title": "Base Rent",
-			"rows": 4,
-			"columns": 5,
-			"cond": [
-
-			]
-
-		}, {
-			"id": "L102",
-			"title": "Service Charge Rent",
-			"rows": 4,
-			"columns": 5,
-			"cond": [
-
-			]
-		}, {
-			"id": "L103",
-			"title": "A&P Rent",
-			"rows": 4,
-			"columns": 5,
-			"cond": [
-
-			]
-		}, {
-			"id": "L105",
-			"title": "Sales-Based Rent",
-			"rows": 4,
-			"columns": 5,
-			"cond": [
-
-			]
-		}, {
-			"id": "L115",
-			"title": "Deposit Rent",
-			"rows": 4,
-			"columns": 5,
-			"cond": [
-
-			]
-		}, {
-			"id": "L116",
-			"title": "Security Deposit",
-			"rows": 4,
-			"columns": 5,
-			"cond": [
-
-			]
-		}
-
-	],
+	"condlist": [],
 	"frequnits": [{
 		"id": "Monthly",
 		"text": "Monthly"
@@ -59,18 +8,7 @@
 		"text": "Yearly"
 
 	}],
-	"condpurposes": [{
-			"id": "A",
-			"text": "Actual Rent"
-		}, {
-			"id": "B",
-			"text": "One-Time Actual Rent"
-		}, {
-			"id": "I",
-			"text": "Statistical"
-		}
 
-	],
 	"salesrules": [],
 	"formulas": [{
 		"id": "B",
@@ -83,7 +21,7 @@
 		"text": "Sales-Based Rent"
 	}],
 	"currency": "SGD",
-	"salesbasedcond": ["L105", "L130"],
+	"salesbasedcond": [],
 	"maxstaggered": 4,
 	"noofstaggered": 0,
 	"condition": {
