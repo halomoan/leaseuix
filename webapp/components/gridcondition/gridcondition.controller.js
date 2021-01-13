@@ -196,10 +196,15 @@ sap.ui.define([
 		onItemDelete: function(oEvent) {
 
 			var sPath = oEvent.getSource().getBindingContext("gridData").getPath();
-			var idx = sPath.split('/')[3];
+			var aIdx = sPath.split('/');
+			
+			var iItem = aIdx[3];
+			var iGroup = aIdx[1];
+			
 			var oModel = oEvent.getSource().getModel("gridData");
 			var oData = oModel.getData();
 
+			console.log(sPath);
 			var sText = "Are you sure to delete ?";
 
 			MessageBox.confirm(sText, {
@@ -207,7 +212,7 @@ sap.ui.define([
 				initialFocus: MessageBox.Action.CANCEL,
 				onClose: function(sButton) {
 					if (sButton === MessageBox.Action.OK) {
-						oData[0].cond.splice(idx, 1);
+						oData[iGroup].cond.splice(iItem, 1);
 						oModel.refresh();
 					}
 					// else if (sButton === MessageBox.Action.CANCEL) {

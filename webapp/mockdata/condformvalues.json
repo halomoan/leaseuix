@@ -27,7 +27,7 @@
 	"condition": {
 		"id": "L101",
 		"title": "Base Rent",
-		"rows": 1,
+		"rows": 4,
 		"columns": 5,
 		"dontapply": false,
 		"cond": [{
