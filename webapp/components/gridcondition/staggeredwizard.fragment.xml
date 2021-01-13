@@ -9,9 +9,9 @@
 						<f:content>
 						<Label text="No of Staggered"></Label>
 						
-						<ComboBox items="{path: '/stgwzd/stgItems', sorter: { path: 'text' }}" change="validNoStaggered" selectedKey="{/stgwzd/max}" >
+						<ComboBox items="{path: 'viewData>/stgwzd/stgItems', sorter: { path: 'text' }}" change="validNoStaggered" selectedKey="{viewData>/stgwzd/max}" >
 							<items>
-							<core:Item  key="{id}" text="{text}"/>
+							<core:Item  key="{viewData>id}" text="{viewData>text}"/>
 							</items>
 						</ComboBox>
 						<ObjectStatus
@@ -42,9 +42,9 @@
 					<VBox fitContainer="true">
 						<core:Fragment id="stgForm" fragmentName="refx.leaseuix.components.gridcondition.normalform" type="XML" />
 						<OverflowToolbar class="sapUiSmallMargin customCSS" style="Clear">
-							<Label text="Step: {/stgwzd/index} / {/stgwzd/max}" class="fontSize1_5 green" design="Bold"></Label>
+							<Label text="Step: {viewData>/stgwzd/index} / {viewData>/stgwzd/max}" class="fontSize1_5 green" design="Bold"></Label>
 							<ToolbarSpacer/>
-							<Button text="&lt;&lt; Prev" press="onStgWzdNext" type="Reject" visible="{/stgwzd/showPrev}">
+							<Button text="&lt;&lt; Prev" press="onStgWzdNext" type="Reject" visible="{viewData>/stgwzd/showPrev}">
 								<layoutData>
 									<FlexItemData growFactor="1"/>
 								</layoutData>
@@ -52,7 +52,7 @@
 									<core:CustomData key="target" value="back"/>
 								</customData>
 							</Button>
-							<Button text="Next &gt;&gt;" press="onStgWzdNext" type="Accept" visible="{/stgwzd/showNext}">
+							<Button text="Next &gt;&gt;" press="onStgWzdNext" type="Accept" visible="{viewData>/stgwzd/showNext}">
 								<layoutData>
 									<FlexItemData growFactor="1"/>
 								</layoutData>
@@ -66,7 +66,7 @@
 			</Page>
 		</NavContainer>
 		<beginButton>
-			<Button text="OK" press="closeStgWizard" visible="{/stgwzd/showOK}"/>
+			<Button text="OK" press="closeStgWizard" visible="{viewData>/stgwzd/showOK}"/>
 		</beginButton>
 		<endButton>
 			<Button text="Cancel" press="cancelStgWizard"/>

@@ -289,7 +289,7 @@
 			</Page>
 		</NavContainer>
 		<beginButton>
-			<Button text="OK" press="closeStdWizard" visible="{/stdwzd/showOK}"/>
+			<Button text="OK" press="closeStdWizard" visible="{viewData>/stdwzd/showOK}"/>
 		</beginButton>
 		<endButton>
 			<Button text="Cancel" press="cancelStdWizard"/>

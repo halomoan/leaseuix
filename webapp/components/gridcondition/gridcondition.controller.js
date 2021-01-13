@@ -37,6 +37,7 @@ sap.ui.define([
 					"showError": false,
 					"index": 0,
 					"max": 1,
+					"stgItems": null,
 					"conds": []
 				},
 				"formdata": {},
@@ -96,12 +97,14 @@ sap.ui.define([
 
 				var sId = oItem.getId();
 				sId = sId.substring(sId.length - 4, sId.length);
+				
 
 				switch (sId) {
 					case "wzd1":
 						this.openStdWizardFrom();
 						break;
 					case "wzd2":
+					
 						this.openstgWizardForm();
 						break;
 				}
@@ -243,12 +246,12 @@ sap.ui.define([
 						iMaxId = oCondGroup.cond[i].id;
 					}	
 				}
-				oNewItem.id = iMaxId + 10;
+				oNewItem.id = iMaxId + 1;
 				
 				oNewItem.curr = oCondGroup.cond[iIndex].curr;
 			} else {
 
-				oNewItem.id = 10;
+				oNewItem.id = 1;
 				oNewItem.curr = oVModel.getData().currency;
 
 			}
@@ -317,11 +320,14 @@ sap.ui.define([
 			navCon.to(this.byId("stdForm0"), "show");
 		},
 		openstgWizardForm: function() {
+			
+			
 			var oView = this.getView();
+			
 
 			var oTemplateCond = {...oView.getModel("condformvalues").getProperty("/condition")
 			};
-			const max = this.getView().getModel("condformvalues").getProperty("/maxstaggered");
+			const max = oView.getModel("condformvalues").getProperty("/maxstaggered");
 			var aStgItems = [];
 			for (var i = 1; i <= max; i++) {
 				aStgItems.push({
@@ -330,14 +336,15 @@ sap.ui.define([
 				});
 			}
 
-			oView.getModel("viewModel").setProperty("/stgwzd/stgItems", aStgItems);
-			oView.getModel("viewModel").setProperty("/condgroup", oTemplateCond);
-			oView.getModel("viewModel").setProperty("/stgwzd/index", 0);
-			oView.getModel("viewModel").setProperty("/stgwzd/showOK", false);
-			oView.getModel("viewModel").setProperty("/stgwzd/conds", []);
-
+			oView.getModel("viewData").setProperty("/stgwzd/stgItems", aStgItems);
+			oView.getModel("viewData").setProperty("/condgroup", oTemplateCond);
+			oView.getModel("viewData").setProperty("/stgwzd/index", 0);
+			oView.getModel("viewData").setProperty("/stgwzd/showOK", false);
+			oView.getModel("viewData").setProperty("/stgwzd/conds", []);
+			
 			this.showFormDialogFragment(this.getView(), this._formFragments, "refx.leaseuix.components.gridcondition.staggeredwizard",this);
 			var navCon = this.byId("navStgWzd");
+			
 			navCon.to(this.byId("stgForm0"), "show");
 		},
 		openConditionForm: function() {
@@ -369,9 +376,9 @@ sap.ui.define([
 
 			if (target) {
 
-				var index = oView.getModel().getProperty("/stgwzd/index");
-				var max = oView.getModel().getProperty("/stgwzd/max");
-				var aConditions = oView.getModel().getProperty("/stgwzd/conds");
+				var index = oView.getModel("viewData").getProperty("/stgwzd/index");
+				var max = oView.getModel("viewData").getProperty("/stgwzd/max");
+				var aConditions = oView.getModel("viewData").getProperty("/stgwzd/conds");
 
 				var oCondGroup = this.getView().getModel("viewData").getProperty("/condgroup");
 
@@ -404,10 +411,10 @@ sap.ui.define([
 							aConditions.push(oCondition);
 
 							this._stgWzdDefaultValue(aConditions, index - 1);
-							oView.getModel().setProperty("/stgwzd/conds", aConditions);
+							oView.getModel("viewData").setProperty("/stgwzd/conds", aConditions);
 						}
-						oView.getModel().setProperty("/formdata", oCondition);
-						oView.getModel().setProperty("/stgwzd/index", index);
+						oView.getModel("viewData").setProperty("/formdata", oCondition);
+						oView.getModel("viewData").setProperty("/stgwzd/index", index);
 						oCondition.cond[0].id = index;
 						oCondGroup.cond[index - 1] = oCondition.cond[0];
 						this.getView().getModel("viewData").setProperty("/condgroup", oCondGroup);
@@ -424,17 +431,17 @@ sap.ui.define([
 					if (index > 0) {
 						var oCondition = aConditions[index - 1];
 						if (oCondition) {
-							oView.getModel().setProperty("/formdata", oCondition);
+							oView.getModel("viewData").setProperty("/formdata", oCondition);
 
 						}
-						oView.getModel().setProperty("/stgwzd/index", index);
+						oView.getModel("viewData").setProperty("/stgwzd/index", index);
 
 					}
 				}
 
-				oView.getModel().setProperty("/stgwzd/showNext", (index < max));
-				oView.getModel().setProperty("/stgwzd/showPrev", (index > 1));
-				oView.getModel().setProperty("/stgwzd/showOK", (index == max && index > 0));
+				oView.getModel("viewData").setProperty("/stgwzd/showNext", (index < max));
+				oView.getModel("viewData").setProperty("/stgwzd/showPrev", (index > 1));
+				oView.getModel("viewData").setProperty("/stgwzd/showOK", (index == max && index > 0));
 
 			} else {
 				navCon.back();
@@ -467,9 +474,9 @@ sap.ui.define([
 
 				if (idx === (oData.length - 1)) {
 
-					this.getView().getModel().setProperty("/stdwzd/showOK", true);
+					this.getView().getModel("viewData").setProperty("/stdwzd/showOK", true);
 				} else {
-					this.getView().getModel().setProperty("/stdwzd/showOK", false);
+					this.getView().getModel("viewData").setProperty("/stdwzd/showOK", false);
 				}
 				navCon.to(this.byId(target), "slide");
 			} else {
@@ -480,16 +487,20 @@ sap.ui.define([
 			//Standard Wizard
 			var oModel = this.getView().getModel("condformvalues");
 
-			var oData = oModel.getProperty("/stdWizard").filter(item => !item.dontapply);
-
-			this.byId("grid1").getModel().setProperty("/", oData);
+			var aStdData = oModel.getProperty("/stdWizard").filter(item => !item.dontapply);
+			
+			var aData = [...aStdData];
+			this.byId("grid1").getModel("gridData").setProperty("/", aData);
+			
+			var oFormModel = this.getModel("contractForm");
+			oFormModel.setProperty("/Conditions",aData);
 
 			this.byId("stdWizardDialog").close();
 		},
 		closeStgWizard: function() {
 			//Staggered Wizard
 			if (!this._validForm("stgForm").hasError) {
-				var aConditions = this.getView().getModel().getProperty("/stgwzd/conds");
+				var aConditions = this.getView().getModel("viewData").getProperty("/stgwzd/conds");
 				var oData = JSON.parse(JSON.stringify(aConditions[0]));
 
 				oData.cond[0].highlight = this._getHightlight(oData.cond[0].fromDate, oData.cond[0].toDate);
@@ -498,7 +509,7 @@ sap.ui.define([
 					oData.cond.push(aConditions[i].cond[0]);
 				}
 
-				this.byId("grid1").getModel().setProperty("/", [oData]);
+				this.byId("grid1").getModel("gridData").setProperty("/", [oData]);
 				this.byId("stgWizardDialog").close();
 			}
 
